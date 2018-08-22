@@ -1230,8 +1230,9 @@ namespace MyCharacterSheet
                         NewFile(e.Control);
                         break;
                     //Quit Program
-                    case Keys.Escape:
-                        Close();
+                    case Keys.Q:
+                        if (e.Control)
+                            Close();
                         break;
                     //Full Screen
                     case Keys.F11:

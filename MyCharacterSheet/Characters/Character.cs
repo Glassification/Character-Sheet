@@ -711,7 +711,7 @@ namespace MyCharacterSheet.Characters
 
         #endregion
 
-        #region Non-Borwsable Accessors
+        #region Non-Browsable Accessors
 
         [Browsable(false)]
         [ReadOnly(true)]

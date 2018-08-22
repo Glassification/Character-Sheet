@@ -5187,8 +5187,9 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(144, 28);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
             this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.ToolTipText = "Ctrl+N";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             this.newToolStripMenuItem.MouseEnter += new System.EventHandler(this.newToolStripMenuItem_MouseEnter);
             this.newToolStripMenuItem.MouseLeave += new System.EventHandler(this.newToolStripMenuItem_MouseLeave);
@@ -5196,8 +5197,9 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(144, 28);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
             this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.ToolTipText = "Ctrl+O";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             this.openToolStripMenuItem.MouseEnter += new System.EventHandler(this.openToolStripMenuItem_MouseEnter);
             this.openToolStripMenuItem.MouseLeave += new System.EventHandler(this.openToolStripMenuItem_MouseLeave);
@@ -5205,8 +5207,9 @@
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(144, 28);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
             this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.ToolTipText = "Ctrl+S";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             this.saveToolStripMenuItem.MouseEnter += new System.EventHandler(this.saveToolStripMenuItem_MouseEnter);
             this.saveToolStripMenuItem.MouseLeave += new System.EventHandler(this.saveToolStripMenuItem_MouseLeave);
@@ -5214,8 +5217,9 @@
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(144, 28);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
             this.saveAsToolStripMenuItem.Text = "Save As";
+            this.saveAsToolStripMenuItem.ToolTipText = "Ctrl+Shift+S";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             this.saveAsToolStripMenuItem.MouseEnter += new System.EventHandler(this.saveAsToolStripMenuItem_MouseEnter);
             this.saveAsToolStripMenuItem.MouseLeave += new System.EventHandler(this.saveAsToolStripMenuItem_MouseLeave);
@@ -5223,8 +5227,9 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(144, 28);
-            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
+            this.exitToolStripMenuItem.Text = "Quit";
+            this.exitToolStripMenuItem.ToolTipText = "Ctrl+Q";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             this.exitToolStripMenuItem.MouseEnter += new System.EventHandler(this.exitToolStripMenuItem_MouseEnter);
             this.exitToolStripMenuItem.MouseLeave += new System.EventHandler(this.exitToolStripMenuItem_MouseLeave);
