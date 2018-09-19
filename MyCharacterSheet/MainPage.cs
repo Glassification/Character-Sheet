@@ -478,30 +478,32 @@ namespace MyCharacterSheet
             //Load mute state
             if (Settings.RememberMute)
             {
-                Program.Mute = Settings.MuteState;
-                muteToolStripMenuItem.Checked = Program.Mute;
+                Mute();
             }
 
             //Load tab state
             if (Settings.RememberLastTab)
             {
-                switch (Settings.LastTab)
+                switch ((Pages)Settings.LastTab)
                 {
                     default:
-                    case 0:
-                        btnPrimaryPanel_Click(new object(), new EventArgs());
+                    case Pages.Primary:
+                        btnPrimaryPanel_Click(new object(), EventArgs.Empty);
                         break;
-                    case 1:
-                        btnSecondaryPanel_Click(new object(), new EventArgs());
+                    case Pages.Secondary:
+                        btnSecondaryPanel_Click(new object(), EventArgs.Empty);
                         break;
-                    case 2:
-                        btnTertiaryPanel_Click(new object(), new EventArgs());
+                    case Pages.Tertiary:
+                        btnTertiaryPanel_Click(new object(), EventArgs.Empty);
                         break;
-                    case 3:
-                        btnCampainPanel_Click(new object(), new EventArgs());
+                    case Pages.Campain:
+                        btnCampainPanel_Click(new object(), EventArgs.Empty);
                         break;
                 }
             }
+
+            //Load animal companion
+            oTertiaryPage.SetAnimalCompanionVisibility();
         }
 
         /// =========================================
@@ -647,6 +649,27 @@ namespace MyCharacterSheet
                 WindowState = FormWindowState.Maximized;
             }
             Fullscreen = !Fullscreen;
+
+            //Toggle image
+            if (Fullscreen)
+                fullscreenToolStripMenuItem.Image = Properties.Resources.fullscreen_selected_128;
+            else
+                fullscreenToolStripMenuItem.Image = Properties.Resources.fullscreen_128;
+        }
+
+        /// =========================================
+        /// Mute()
+        /// =========================================
+        private void Mute()
+        {
+            Program.Mute = !Program.Mute;
+            muteToolStripMenuItem.Checked = Program.Mute;
+
+            //Toggle image
+            if (Program.Mute)
+                muteToolStripMenuItem.Image = Properties.Resources.mute_selected_128;
+            else
+                muteToolStripMenuItem.Image = Properties.Resources.mute_128;
         }
 
         /// =========================================
@@ -666,10 +689,17 @@ namespace MyCharacterSheet
         /// =========================================
         private void OpenSettings(bool control)
         {
+            bool animal = Settings.HideAnimalCompanion;
+
             if (!control)
             {
                 oSettingsPage.ShowPane();
                 SetAutosaveState();
+
+                if (animal != Settings.HideAnimalCompanion)
+                {
+                    oTertiaryPage.SetAnimalCompanionVisibility();
+                }
 
                 InvalidateAll();
             }
@@ -704,7 +734,7 @@ namespace MyCharacterSheet
         {
             if (!control)
             {
-                longRestToolStripMenuItem_Click(new object(), new EventArgs());
+                longRestToolStripMenuItem_Click(new object(), EventArgs.Empty);
             }
         }
 
@@ -1237,48 +1267,49 @@ namespace MyCharacterSheet
                     //Full Screen
                     case Keys.F11:
                         FullScreen();
-                        fullscreenToolStripMenuItem.Checked = !fullscreenToolStripMenuItem.Checked;
+                        fullscreenToolStripMenuItem.Checked = Fullscreen;
                         break;
+                    //----------------------------------------------------------------
                     //Open Properties
                     case Keys.C:
                         OpenProperties(e.Control);
                         break;
                     //Open Divide Loot
-                    case Keys.L:
+                    case Keys.D:
                         OpenDivideLoot(e.Control);
                         break;
                     //Open Roll Dice
-                    case Keys.D:
+                    case Keys.R:
                         OpenRollDice(e.Control);
                         break;
                     //Long Rest
-                    case Keys.R:
+                    case Keys.L:
                         LongRest(e.Control);
                         break;
                     //Mute
                     case Keys.M:
-                        Program.Mute = !Program.Mute;
-                        muteToolStripMenuItem.Checked = Program.Mute;
+                        Mute();
                         break;
+                    //----------------------------------------------------------------
                     //Main Page
                     case Keys.D1:
                         if (!e.Control)
-                            btnPrimaryPanel_Click(new object(), new EventArgs());
+                            btnPrimaryPanel_Click(new object(), EventArgs.Empty);
                         break;
                     //Secondary Page
                     case Keys.D2:
                         if (!e.Control)
-                            btnSecondaryPanel_Click(new object(), new EventArgs());
+                            btnSecondaryPanel_Click(new object(), EventArgs.Empty);
                         break;
                     //Tertiary Page
                     case Keys.D3:
                         if (!e.Control)
-                            btnTertiaryPanel_Click(new object(), new EventArgs());
+                            btnTertiaryPanel_Click(new object(), EventArgs.Empty);
                         break;
                     // Campain Page
                     case Keys.D4:
                         if (!e.Control)
-                            btnCampainPanel_Click(new object(), new EventArgs());
+                            btnCampainPanel_Click(new object(), EventArgs.Empty);
                         break;
                 }
             }
@@ -3079,10 +3110,7 @@ namespace MyCharacterSheet
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Sounds.ButtonClick();
-            oSettingsPage.ShowPane();
-            SetAutosaveState();
-
-            InvalidateAll();
+            OpenSettings(false);
         }
 
         /// =========================================
@@ -3264,6 +3292,7 @@ namespace MyCharacterSheet
         private void propertiesToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
             propertiesToolStripMenuItem.ForeColor = Color.Black;
+            propertiesToolStripMenuItem.Image = Properties.Resources.properties_selected_128;
         }
 
         /// =========================================
@@ -3272,6 +3301,25 @@ namespace MyCharacterSheet
         private void propertiesToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             propertiesToolStripMenuItem.ForeColor = Color.White;
+            propertiesToolStripMenuItem.Image = Properties.Resources.properties_128;
+        }
+
+        /// =========================================
+        /// settingsToolStripMenuItem_MouseEnter()
+        /// =========================================
+        private void settingsToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            settingsToolStripMenuItem.ForeColor = Color.Black;
+            settingsToolStripMenuItem.Image = Properties.Resources.settings_selected_128;
+        }
+
+        /// =========================================
+        /// settingsToolStripMenuItem_MouseLeave()
+        /// =========================================
+        private void settingsToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            settingsToolStripMenuItem.ForeColor = Color.White;
+            settingsToolStripMenuItem.Image = Properties.Resources.settings_128;
         }
 
         /// =========================================
@@ -3280,6 +3328,7 @@ namespace MyCharacterSheet
         private void muteToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
             muteToolStripMenuItem.ForeColor = Color.Black;
+            muteToolStripMenuItem.Image = Properties.Resources.mute_selected_128;
         }
 
         /// =========================================
@@ -3288,6 +3337,8 @@ namespace MyCharacterSheet
         private void muteToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             muteToolStripMenuItem.ForeColor = Color.White;
+            if (!Program.Mute)
+                muteToolStripMenuItem.Image = Properties.Resources.mute_128;
         }
 
         /// =========================================
@@ -3296,6 +3347,7 @@ namespace MyCharacterSheet
         private void newToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
             newToolStripMenuItem.ForeColor = Color.Black;
+            newToolStripMenuItem.Image = Properties.Resources.new_file_selected_128;
         }
 
         /// =========================================
@@ -3304,6 +3356,7 @@ namespace MyCharacterSheet
         private void newToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             newToolStripMenuItem.ForeColor = Color.White;
+            newToolStripMenuItem.Image = Properties.Resources.new_file_128;
         }
 
         /// =========================================
@@ -3312,6 +3365,7 @@ namespace MyCharacterSheet
         private void openToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
             openToolStripMenuItem.ForeColor = Color.Black;
+            openToolStripMenuItem.Image = Properties.Resources.open_file_selected_128;
         }
 
         /// =========================================
@@ -3320,6 +3374,7 @@ namespace MyCharacterSheet
         private void openToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             openToolStripMenuItem.ForeColor = Color.White;
+            openToolStripMenuItem.Image = Properties.Resources.open_file_128;
         }
 
         /// =========================================
@@ -3328,6 +3383,7 @@ namespace MyCharacterSheet
         private void saveToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
             saveToolStripMenuItem.ForeColor = Color.Black;
+            saveToolStripMenuItem.Image = Properties.Resources.save_file_selected_128;
         }
 
         /// =========================================
@@ -3336,6 +3392,7 @@ namespace MyCharacterSheet
         private void saveToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             saveToolStripMenuItem.ForeColor = Color.White;
+            saveToolStripMenuItem.Image = Properties.Resources.save_file_128;
         }
 
         /// =========================================
@@ -3344,6 +3401,7 @@ namespace MyCharacterSheet
         private void saveAsToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
             saveAsToolStripMenuItem.ForeColor = Color.Black;
+            saveAsToolStripMenuItem.Image = Properties.Resources.save_as_file_selected_128;
         }
 
         /// =========================================
@@ -3352,6 +3410,7 @@ namespace MyCharacterSheet
         private void saveAsToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             saveAsToolStripMenuItem.ForeColor = Color.White;
+            saveAsToolStripMenuItem.Image = Properties.Resources.save_as_file_128;
         }
 
         /// =========================================
@@ -3360,6 +3419,7 @@ namespace MyCharacterSheet
         private void exitToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
             exitToolStripMenuItem.ForeColor = Color.Black;
+            exitToolStripMenuItem.Image = Properties.Resources.quit_selected_128;
         }
 
         /// =========================================
@@ -3368,6 +3428,7 @@ namespace MyCharacterSheet
         private void exitToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             exitToolStripMenuItem.ForeColor = Color.White;
+            exitToolStripMenuItem.Image = Properties.Resources.quit_128;
         }
 
         /// =========================================
@@ -3376,6 +3437,7 @@ namespace MyCharacterSheet
         private void fullscreenToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
             fullscreenToolStripMenuItem.ForeColor = Color.Black;
+            fullscreenToolStripMenuItem.Image = Properties.Resources.fullscreen_selected_128;
         }
 
         /// =========================================
@@ -3384,6 +3446,10 @@ namespace MyCharacterSheet
         private void fullscreenToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             fullscreenToolStripMenuItem.ForeColor = Color.White;
+            fullscreenToolStripMenuItem.Image = Properties.Resources.fullscreen_128;
+
+            if(Fullscreen)
+                fullscreenToolStripMenuItem.Image = Properties.Resources.fullscreen_selected_128;
         }
 
         /// =========================================
@@ -3392,6 +3458,7 @@ namespace MyCharacterSheet
         private void divideLootToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
             divideLootToolStripMenuItem.ForeColor = Color.Black;
+            divideLootToolStripMenuItem.Image = Properties.Resources.divide_loot_selected_128;
         }
 
         /// =========================================
@@ -3400,6 +3467,7 @@ namespace MyCharacterSheet
         private void divideLootToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             divideLootToolStripMenuItem.ForeColor = Color.White;
+            divideLootToolStripMenuItem.Image = Properties.Resources.divide_loot_128;
         }
 
         /// =========================================
@@ -3408,6 +3476,7 @@ namespace MyCharacterSheet
         private void diceRollerToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
             diceRollerToolStripMenuItem.ForeColor = Color.Black;
+            diceRollerToolStripMenuItem.Image = Properties.Resources.roll_dice_selected_128;
         }
 
         /// =========================================
@@ -3416,6 +3485,7 @@ namespace MyCharacterSheet
         private void diceRollerToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             diceRollerToolStripMenuItem.ForeColor = Color.White;
+            diceRollerToolStripMenuItem.Image = Properties.Resources.roll_dice_128;
         }
 
         /// =========================================
@@ -3424,6 +3494,7 @@ namespace MyCharacterSheet
         private void longRestToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
             longRestToolStripMenuItem.ForeColor = Color.Black;
+            longRestToolStripMenuItem.Image = Properties.Resources.long_rest_selected_128;
         }
 
         /// =========================================
@@ -3432,6 +3503,7 @@ namespace MyCharacterSheet
         private void longRestToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
             longRestToolStripMenuItem.ForeColor = Color.White;
+            longRestToolStripMenuItem.Image = Properties.Resources.long_rest_128;
         }
 
         #endregion

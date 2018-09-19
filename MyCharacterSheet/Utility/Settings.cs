@@ -12,14 +12,13 @@ namespace MyCharacterSheet.Utility
 
         public static void Default()
         {
-            RememberMute     = false;
-            MuteState        = Program.Mute;
-            RememberLastTab  = false;
-            LastTab          = 0;
-            AutosaveEnable   = false;
-            AutosaveInterval = 1;
-            DefaultColour    = Color.White;
-            DefaultFont      = new Font("Microsoft Sans Serif", 12f, FontStyle.Regular);
+            RememberMute        = false;
+            MuteState           = Program.Mute;
+            RememberLastTab     = false;
+            LastTab             = 0;
+            AutosaveEnable      = false;
+            AutosaveInterval    = 1;
+            HideAnimalCompanion = false;
         }
 
         public static bool RememberMute
@@ -58,13 +57,7 @@ namespace MyCharacterSheet.Utility
             set;
         }
 
-        public static Color DefaultColour
-        {
-            get;
-            set;
-        }
-
-        public static Font DefaultFont
+        public static bool HideAnimalCompanion
         {
             get;
             set;

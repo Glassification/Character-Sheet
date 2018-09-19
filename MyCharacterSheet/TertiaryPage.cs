@@ -9,6 +9,14 @@ namespace MyCharacterSheet
     public partial class TertiaryPage : UserControl
     {
 
+        #region Constants
+
+        private const int CLASS_HEIGHT  = 20;
+        private const int SPELL_HEIGHT  = 50;
+        private const int ANIMAL_HEIGHT = 30;
+
+        #endregion
+
         #region Members
 
         private List<float> oTertiaryLabelSizes = new List<float>();
@@ -27,6 +35,7 @@ namespace MyCharacterSheet
             //Initialize components
             InitializeComponent();
             Drawing = false;
+            RowIndex = 1;
 
             //Set initial state
             FillLabelList();
@@ -80,6 +89,39 @@ namespace MyCharacterSheet
             abilityDropDown.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
             for (int i = 0; i < Constants.AbilitiesLength(); i++)
                 abilityDropDown.Items.Add(Constants.Ability(i));
+        }
+
+        /// =========================================
+        /// SetAnimalCompanion()
+        /// =========================================
+        public void SetAnimalCompanionVisibility()
+        {
+            if (Settings.HideAnimalCompanion)
+            {
+                AnimalCompanion = oTertiaryTableLayoutPanel.Controls[RowIndex];
+                oTertiaryTableLayoutPanel.Controls.RemoveAt(RowIndex);
+                oTertiaryTableLayoutPanel.RowStyles.RemoveAt(RowIndex);
+
+                oTertiaryTableLayoutPanel.RowStyles[0].Height = CLASS_HEIGHT;
+                oTertiaryTableLayoutPanel.RowStyles[1].Height = SPELL_HEIGHT + ANIMAL_HEIGHT;
+                oTertiaryTableLayoutPanel.RowCount--;
+
+                //The last row switches to 2 after starting at 1 for some reason.
+                //This whole thing doesn't make sense.
+                if (RowIndex == 1)
+                    RowIndex = 2;
+
+            }
+            else if (oTertiaryTableLayoutPanel.RowCount == 2)
+            {
+                oTertiaryTableLayoutPanel.RowStyles.Add(new RowStyle());
+                oTertiaryTableLayoutPanel.Controls.Add(AnimalCompanion, 0, 2);
+
+                oTertiaryTableLayoutPanel.RowStyles[0].Height = CLASS_HEIGHT;
+                oTertiaryTableLayoutPanel.RowStyles[1].Height = SPELL_HEIGHT;
+                oTertiaryTableLayoutPanel.RowStyles[2].Height = ANIMAL_HEIGHT;
+                oTertiaryTableLayoutPanel.RowCount++;
+            }
         }
 
         /// =========================================
@@ -157,7 +199,7 @@ namespace MyCharacterSheet
                 DataGridViewRow row = oSpellListDataView.Rows[index];
                 tokens = spell.Split(Constants.DELIMITER);
 
-                row.Cells[oPrepared.Index].Value = tokens[13];
+                row.Cells[oPrepared.Index].Value = Convert.ToBoolean(tokens[13]);
                 row.Cells[oName.Index].Value = tokens[0];
                 row.Cells[oLevel.Index].Value = tokens[1];
                 row.Cells[oPage.Index].Value = tokens[2];
@@ -199,7 +241,7 @@ namespace MyCharacterSheet
                           (string)row.Cells[oSave.Index].Value + Constants.DELIMITER +
                           (string)row.Cells[oDamage.Index].Value + Constants.DELIMITER +
                           (string)row.Cells[oDescription.Index].Value + Constants.DELIMITER +
-                                  row.Cells[oPrepared.Index].Value.ToString();
+                                  Convert.ToBoolean(row.Cells[oPrepared.Index].Value);
                 }
                 count++;
                 list.Add(str);
@@ -241,6 +283,12 @@ namespace MyCharacterSheet
             set;
         }
 
+        private int RowIndex
+        {
+            get;
+            set;
+        }
+
         private float MagicHeaderSize
         {
             get;
@@ -266,6 +314,12 @@ namespace MyCharacterSheet
         }
 
         private bool Drawing
+        {
+            get;
+            set;
+        }
+
+        private Control AnimalCompanion
         {
             get;
             set;
@@ -1030,5 +1084,12 @@ namespace MyCharacterSheet
 
         #endregion
 
+        private void oSpellListDataView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 0 && e.RowIndex >= 0)
+            {
+                //Console.WriteLine(oSpellListDataView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+            }
+        }
     }
 }

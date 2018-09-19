@@ -29,29 +29,23 @@ namespace MyCharacterSheet.Persistence
 
                 List<string> spellList = new List<string>();
 
-                string armorType, armorWorn, stealth, shield, conditions, name, speed, senses, hitDice, family;
+                string armorType, armorWorn, stealth, shield, conditions, name, speed, senses, hitDice;
                 int armorAC, shieldAC, miscAC, magicAC, maxHP, currentHP, tempHP, success, failure, d6, d8, d10, d12, spentD6, spentD8, spentD10, spentD12;
                 int totalOne, totalTwo, totalThree, totalFour, totalFive, totalSix, totalSeven, totalEight, totalNine, totalPact;
                 int usedOne, usedTwo, usedThree, usedFour, usedFive, usedSix, usedSeven, usedEight, usedNine, usedPact;
                 int level, ac, hp, currHP, strength, dexterity, constitution, intelligence, wisdom, charisma, perception;
-                int style;
-                float fontSize;
                 Pair attack, type, atkBonus, damage, reach, note;
                 PresetPair dmgBonus;
 
                 //Parse Settings
                 element = root.Element("Settings");
-                Settings.MuteState        = bool.Parse(    (string)element.Element("Mute").Attribute("value"));
-                Settings.RememberMute     = bool.Parse(    (string)element.Element("Mute").Attribute("remember"));
-                Settings.RememberLastTab  = bool.Parse(    (string)element.Element("Tab").Attribute("remember"));
-                Settings.LastTab          = int.Parse(     (string)element.Element("Tab").Attribute("last"));
-                Settings.AutosaveEnable   = bool.Parse(    (string)element.Element("AutoSave").Attribute("enabled"));
-                Settings.AutosaveInterval = int.Parse(     (string)element.Element("AutoSave").Attribute("interval"));
-                Settings.DefaultColour    = Color.FromName((string)element.Element("DefaultColour").Attribute("value"));
-                family                    =                (string)element.Element("DefaultFont").Attribute("family");
-                fontSize                  = float.Parse(   (string)element.Element("DefaultFont").Attribute("size"));
-                style                     = int.Parse(     (string)element.Element("DefaultFont").Attribute("style"));
-                Settings.DefaultFont      = new Font(family, fontSize, (FontStyle)style);
+                Settings.MuteState           = bool.Parse(    (string)element.Element("Mute").Attribute("value"));
+                Settings.RememberMute        = bool.Parse(    (string)element.Element("Mute").Attribute("remember"));
+                Settings.RememberLastTab     = bool.Parse(    (string)element.Element("Tab").Attribute("remember"));
+                Settings.LastTab             = int.Parse(     (string)element.Element("Tab").Attribute("last"));
+                Settings.AutosaveEnable      = bool.Parse(    (string)element.Element("AutoSave").Attribute("enabled"));
+                Settings.AutosaveInterval    = int.Parse(     (string)element.Element("AutoSave").Attribute("interval"));
+                Settings.HideAnimalCompanion = bool.Parse(    (string)element.Element("AnimalCompanion").Attribute("hidden"));
 
                 //Parse Attributes
                 element = root.Element("Attributes");

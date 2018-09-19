@@ -1,12 +1,6 @@
 ﻿using MyCharacterSheet.Utility;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MyCharacterSheet
@@ -30,12 +24,11 @@ namespace MyCharacterSheet
         /// =========================================
         public void ShowPane()
         {
-            Mute          = Settings.RememberMute;
-            RememberTab   = Settings.RememberLastTab;
-            Autosave      = Settings.AutosaveEnable;
-            Interval      = Settings.AutosaveInterval;
-            DefaultTextColour = Settings.DefaultColour;
-            DefaultTextFont   = Settings.DefaultFont;
+            Mute              = Settings.RememberMute;
+            RememberTab       = Settings.RememberLastTab;
+            Autosave          = Settings.AutosaveEnable;
+            Interval          = Settings.AutosaveInterval;
+            AnimalCompanion   = Settings.HideAnimalCompanion;
 
             trkAutosave.Enabled = Autosave;
             oAutosaveInterval.Enabled = Autosave;
@@ -48,12 +41,11 @@ namespace MyCharacterSheet
         /// =========================================
         private void SaveChanges()
         {
-            Settings.RememberMute     = Mute;
-            Settings.RememberLastTab  = RememberTab;
-            Settings.AutosaveEnable   = Autosave;
-            Settings.AutosaveInterval = Interval;
-            Settings.DefaultColour    = DefaultTextColour;
-            Settings.DefaultFont      = DefaultTextFont;
+            Settings.RememberMute        = Mute;
+            Settings.RememberLastTab     = RememberTab;
+            Settings.AutosaveEnable      = Autosave;
+            Settings.AutosaveInterval    = Interval;
+            Settings.HideAnimalCompanion = AnimalCompanion;
         }
 
         /// =========================================
@@ -88,6 +80,12 @@ namespace MyCharacterSheet
             set;
         }
 
+        private bool AnimalCompanion
+        {
+            get;
+            set;
+        }
+
         private bool Autosave
         {
             get;
@@ -95,18 +93,6 @@ namespace MyCharacterSheet
         }
 
         private int Interval
-        {
-            get;
-            set;
-        }
-
-        private Color DefaultTextColour
-        {
-            get;
-            set;
-        }
-
-        private Font DefaultTextFont
         {
             get;
             set;
@@ -136,6 +122,7 @@ namespace MyCharacterSheet
             chkAutosave.Checked = Autosave;
             trkAutosave.Value = Constants.AutosaveIndex(Interval);
             oAutosaveInterval.Text = FormatAutosvaeLabel();
+            chkAnimalCompanion.Checked = AnimalCompanion;
 
             Drawing = false;
         }
@@ -151,44 +138,8 @@ namespace MyCharacterSheet
                     Close();
                     break;
                 case Keys.Return:
-                    btnOK_Click(new object(), new EventArgs());
+                    btnOK_Click(new object(), EventArgs.Empty);
                     break;
-            }
-        }
-
-        /// =========================================
-        /// btnColour_Click()
-        /// =========================================
-        private void btnColour_Click(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-
-            DialogResult result;
-
-            oColorDialog.Color = DefaultTextColour;
-            result = oColorDialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                DefaultTextColour = oColorDialog.Color;
-            }
-        }
-
-        /// =========================================
-        /// btnFont_Click()
-        /// =========================================
-        private void btnFont_Click(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-
-            DialogResult result;
-
-            oFontDialog.Font = DefaultTextFont;
-            result = oFontDialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                DefaultTextFont = oFontDialog.Font;
             }
         }
 
@@ -241,6 +192,19 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
+        /// chkAnimalCompanion_CheckedChanged()
+        /// =========================================
+        private void chkAnimalCompanion_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!Drawing)
+            {
+                Sounds.ButtonClick();
+            }
+
+            AnimalCompanion = chkAnimalCompanion.Checked;
+        }
+
+        /// =========================================
         /// chkAutosave_CheckedChanged()
         /// =========================================
         private void chkAutosave_CheckedChanged(object sender, EventArgs e)
@@ -266,6 +230,6 @@ namespace MyCharacterSheet
         }
 
         #endregion
-        
+
     }
 }

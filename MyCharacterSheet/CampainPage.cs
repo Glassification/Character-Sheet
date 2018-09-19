@@ -637,7 +637,7 @@ namespace MyCharacterSheet
             //Drag and drop list
             else if (e.Button == MouseButtons.Left)
             {
-                oDocumentList_SelectedIndexChanged(new object(), new EventArgs());
+                oDocumentList_SelectedIndexChanged(new object(), EventArgs.Empty);
 
                 if (oDocumentList.SelectedIndex != -1)
                 {

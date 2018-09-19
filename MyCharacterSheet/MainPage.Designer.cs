@@ -353,9 +353,6 @@
             this.tableLayoutPanel23 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel24 = new System.Windows.Forms.TableLayoutPanel();
             this.label29 = new System.Windows.Forms.Label();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel61 = new System.Windows.Forms.TableLayoutPanel();
-            this.oAC = new System.Windows.Forms.Label();
             this.tableLayoutPanel25 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel26 = new System.Windows.Forms.TableLayoutPanel();
             this.label31 = new System.Windows.Forms.Label();
@@ -380,9 +377,6 @@
             this.tableLayoutPanel30 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel31 = new System.Windows.Forms.TableLayoutPanel();
             this.label55 = new System.Windows.Forms.Label();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel60 = new System.Windows.Forms.TableLayoutPanel();
-            this.oHitPoints = new System.Windows.Forms.Label();
             this.tableLayoutPanel32 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel33 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel34 = new System.Windows.Forms.TableLayoutPanel();
@@ -503,17 +497,8 @@
             this.oSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.oMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.muteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fullscreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.divideLootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.diceRollerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -529,6 +514,21 @@
             this.oTabPanelTable = new System.Windows.Forms.TableLayoutPanel();
             this.oTabTimer = new System.Windows.Forms.Timer(this.components);
             this.oAutosaveTimer = new System.Windows.Forms.Timer(this.components);
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.muteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fullscreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel61 = new System.Windows.Forms.TableLayoutPanel();
+            this.oAC = new System.Windows.Forms.Label();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel60 = new System.Windows.Forms.TableLayoutPanel();
+            this.oHitPoints = new System.Windows.Forms.Label();
             this.oPrimaryTable.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -553,8 +553,6 @@
             this.tableLayoutPanel42.SuspendLayout();
             this.tableLayoutPanel23.SuspendLayout();
             this.tableLayoutPanel24.SuspendLayout();
-            this.panel8.SuspendLayout();
-            this.tableLayoutPanel61.SuspendLayout();
             this.tableLayoutPanel25.SuspendLayout();
             this.tableLayoutPanel26.SuspendLayout();
             this.tableLayoutPanel27.SuspendLayout();
@@ -562,8 +560,6 @@
             this.tableLayoutPanel29.SuspendLayout();
             this.tableLayoutPanel30.SuspendLayout();
             this.tableLayoutPanel31.SuspendLayout();
-            this.panel7.SuspendLayout();
-            this.tableLayoutPanel60.SuspendLayout();
             this.tableLayoutPanel32.SuspendLayout();
             this.tableLayoutPanel33.SuspendLayout();
             this.tableLayoutPanel34.SuspendLayout();
@@ -606,6 +602,10 @@
             this.oSavePanel.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.oTabPanel.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.tableLayoutPanel61.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.tableLayoutPanel60.SuspendLayout();
             this.SuspendLayout();
             // 
             // oPrimaryTable
@@ -2912,46 +2912,6 @@
             this.label29.Text = "Armor Class";
             this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // panel8
-            // 
-            this.panel8.BackColor = System.Drawing.Color.White;
-            this.panel8.BackgroundImage = global::MyCharacterSheet.Properties.Resources.Shield1;
-            this.panel8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panel8.Controls.Add(this.tableLayoutPanel61);
-            this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel8.Location = new System.Drawing.Point(0, 38);
-            this.panel8.Margin = new System.Windows.Forms.Padding(0);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(119, 155);
-            this.panel8.TabIndex = 1;
-            // 
-            // tableLayoutPanel61
-            // 
-            this.tableLayoutPanel61.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel61.ColumnCount = 1;
-            this.tableLayoutPanel61.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel61.Controls.Add(this.oAC, 0, 0);
-            this.tableLayoutPanel61.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel61.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel61.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tableLayoutPanel61.Name = "tableLayoutPanel61";
-            this.tableLayoutPanel61.RowCount = 1;
-            this.tableLayoutPanel61.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel61.Size = new System.Drawing.Size(119, 155);
-            this.tableLayoutPanel61.TabIndex = 0;
-            // 
-            // oAC
-            // 
-            this.oAC.AutoSize = true;
-            this.oAC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.oAC.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.oAC.Location = new System.Drawing.Point(3, 0);
-            this.oAC.Name = "oAC";
-            this.oAC.Size = new System.Drawing.Size(113, 155);
-            this.oAC.TabIndex = 0;
-            this.oAC.Text = "-1";
-            this.oAC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // tableLayoutPanel25
             // 
             this.tableLayoutPanel25.ColumnCount = 1;
@@ -3328,48 +3288,6 @@
             this.label55.TabIndex = 0;
             this.label55.Text = "Hit Points";
             this.label55.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.Color.White;
-            this.panel7.BackgroundImage = global::MyCharacterSheet.Properties.Resources.Heart;
-            this.panel7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panel7.Controls.Add(this.tableLayoutPanel60);
-            this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel7.Location = new System.Drawing.Point(0, 32);
-            this.panel7.Margin = new System.Windows.Forms.Padding(0);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(119, 114);
-            this.panel7.TabIndex = 1;
-            // 
-            // tableLayoutPanel60
-            // 
-            this.tableLayoutPanel60.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel60.ColumnCount = 1;
-            this.tableLayoutPanel60.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel60.Controls.Add(this.oHitPoints, 0, 0);
-            this.tableLayoutPanel60.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel60.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel60.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tableLayoutPanel60.Name = "tableLayoutPanel60";
-            this.tableLayoutPanel60.RowCount = 1;
-            this.tableLayoutPanel60.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel60.Size = new System.Drawing.Size(119, 114);
-            this.tableLayoutPanel60.TabIndex = 0;
-            // 
-            // oHitPoints
-            // 
-            this.oHitPoints.AutoSize = true;
-            this.oHitPoints.BackColor = System.Drawing.Color.Transparent;
-            this.oHitPoints.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.oHitPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.oHitPoints.Location = new System.Drawing.Point(0, 0);
-            this.oHitPoints.Margin = new System.Windows.Forms.Padding(0);
-            this.oHitPoints.Name = "oHitPoints";
-            this.oHitPoints.Size = new System.Drawing.Size(119, 114);
-            this.oHitPoints.TabIndex = 1;
-            this.oHitPoints.Text = "-1";
-            this.oHitPoints.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel32
             // 
@@ -5171,6 +5089,7 @@
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
@@ -5183,56 +5102,6 @@
             this.fileToolStripMenuItem.DropDownClosed += new System.EventHandler(this.fileToolStripMenuItem_DropDownClosed);
             this.fileToolStripMenuItem.DropDownOpened += new System.EventHandler(this.fileToolStripMenuItem_DropDownOpened);
             this.fileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
-            // 
-            // newToolStripMenuItem
-            // 
-            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
-            this.newToolStripMenuItem.Text = "New";
-            this.newToolStripMenuItem.ToolTipText = "Ctrl+N";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
-            this.newToolStripMenuItem.MouseEnter += new System.EventHandler(this.newToolStripMenuItem_MouseEnter);
-            this.newToolStripMenuItem.MouseLeave += new System.EventHandler(this.newToolStripMenuItem_MouseLeave);
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.ToolTipText = "Ctrl+O";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            this.openToolStripMenuItem.MouseEnter += new System.EventHandler(this.openToolStripMenuItem_MouseEnter);
-            this.openToolStripMenuItem.MouseLeave += new System.EventHandler(this.openToolStripMenuItem_MouseLeave);
-            // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
-            this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.ToolTipText = "Ctrl+S";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            this.saveToolStripMenuItem.MouseEnter += new System.EventHandler(this.saveToolStripMenuItem_MouseEnter);
-            this.saveToolStripMenuItem.MouseLeave += new System.EventHandler(this.saveToolStripMenuItem_MouseLeave);
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
-            this.saveAsToolStripMenuItem.Text = "Save As";
-            this.saveAsToolStripMenuItem.ToolTipText = "Ctrl+Shift+S";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
-            this.saveAsToolStripMenuItem.MouseEnter += new System.EventHandler(this.saveAsToolStripMenuItem_MouseEnter);
-            this.saveAsToolStripMenuItem.MouseLeave += new System.EventHandler(this.saveAsToolStripMenuItem_MouseLeave);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
-            this.exitToolStripMenuItem.Text = "Quit";
-            this.exitToolStripMenuItem.ToolTipText = "Ctrl+Q";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            this.exitToolStripMenuItem.MouseEnter += new System.EventHandler(this.exitToolStripMenuItem_MouseEnter);
-            this.exitToolStripMenuItem.MouseLeave += new System.EventHandler(this.exitToolStripMenuItem_MouseLeave);
             // 
             // editToolStripMenuItem
             // 
@@ -5247,32 +5116,6 @@
             this.editToolStripMenuItem.DropDownOpened += new System.EventHandler(this.editToolStripMenuItem_DropDownOpened);
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
-            // muteToolStripMenuItem
-            // 
-            this.muteToolStripMenuItem.CheckOnClick = true;
-            this.muteToolStripMenuItem.Name = "muteToolStripMenuItem";
-            this.muteToolStripMenuItem.Size = new System.Drawing.Size(163, 28);
-            this.muteToolStripMenuItem.Text = "Mute";
-            this.muteToolStripMenuItem.Click += new System.EventHandler(this.muteToolStripMenuItem_Click);
-            this.muteToolStripMenuItem.MouseEnter += new System.EventHandler(this.muteToolStripMenuItem_MouseEnter);
-            this.muteToolStripMenuItem.MouseLeave += new System.EventHandler(this.muteToolStripMenuItem_MouseLeave);
-            // 
-            // propertiesToolStripMenuItem
-            // 
-            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(163, 28);
-            this.propertiesToolStripMenuItem.Text = "Properties";
-            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
-            this.propertiesToolStripMenuItem.MouseEnter += new System.EventHandler(this.propertiesToolStripMenuItem_MouseEnter);
-            this.propertiesToolStripMenuItem.MouseLeave += new System.EventHandler(this.propertiesToolStripMenuItem_MouseLeave);
-            // 
-            // settingsToolStripMenuItem
-            // 
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(163, 28);
-            this.settingsToolStripMenuItem.Text = "Settings";
-            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
-            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -5283,16 +5126,6 @@
             this.viewToolStripMenuItem.DropDownClosed += new System.EventHandler(this.viewToolStripMenuItem_DropDownClosed);
             this.viewToolStripMenuItem.DropDownOpened += new System.EventHandler(this.viewToolStripMenuItem_DropDownOpened);
             this.viewToolStripMenuItem.Click += new System.EventHandler(this.viewToolStripMenuItem_Click);
-            // 
-            // fullscreenToolStripMenuItem
-            // 
-            this.fullscreenToolStripMenuItem.CheckOnClick = true;
-            this.fullscreenToolStripMenuItem.Name = "fullscreenToolStripMenuItem";
-            this.fullscreenToolStripMenuItem.Size = new System.Drawing.Size(161, 28);
-            this.fullscreenToolStripMenuItem.Text = "Fullscreen";
-            this.fullscreenToolStripMenuItem.Click += new System.EventHandler(this.fullscreenToolStripMenuItem_Click);
-            this.fullscreenToolStripMenuItem.MouseEnter += new System.EventHandler(this.fullscreenToolStripMenuItem_MouseEnter);
-            this.fullscreenToolStripMenuItem.MouseLeave += new System.EventHandler(this.fullscreenToolStripMenuItem_MouseLeave);
             // 
             // toolsToolStripMenuItem
             // 
@@ -5309,8 +5142,10 @@
             // 
             // divideLootToolStripMenuItem
             // 
+            this.divideLootToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.divide_loot_128;
             this.divideLootToolStripMenuItem.Name = "divideLootToolStripMenuItem";
-            this.divideLootToolStripMenuItem.Size = new System.Drawing.Size(172, 28);
+            this.divideLootToolStripMenuItem.ShortcutKeyDisplayString = "D";
+            this.divideLootToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
             this.divideLootToolStripMenuItem.Text = "Divide Loot";
             this.divideLootToolStripMenuItem.Click += new System.EventHandler(this.divideLootToolStripMenuItem_Click);
             this.divideLootToolStripMenuItem.MouseEnter += new System.EventHandler(this.divideLootToolStripMenuItem_MouseEnter);
@@ -5318,8 +5153,10 @@
             // 
             // diceRollerToolStripMenuItem
             // 
+            this.diceRollerToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.roll_dice_128;
             this.diceRollerToolStripMenuItem.Name = "diceRollerToolStripMenuItem";
-            this.diceRollerToolStripMenuItem.Size = new System.Drawing.Size(172, 28);
+            this.diceRollerToolStripMenuItem.ShortcutKeyDisplayString = "R";
+            this.diceRollerToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
             this.diceRollerToolStripMenuItem.Text = "Roll Dice";
             this.diceRollerToolStripMenuItem.Click += new System.EventHandler(this.diceRollerToolStripMenuItem_Click);
             this.diceRollerToolStripMenuItem.MouseEnter += new System.EventHandler(this.diceRollerToolStripMenuItem_MouseEnter);
@@ -5327,8 +5164,10 @@
             // 
             // longRestToolStripMenuItem
             // 
+            this.longRestToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.long_rest_128;
             this.longRestToolStripMenuItem.Name = "longRestToolStripMenuItem";
-            this.longRestToolStripMenuItem.Size = new System.Drawing.Size(172, 28);
+            this.longRestToolStripMenuItem.ShortcutKeyDisplayString = "L";
+            this.longRestToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
             this.longRestToolStripMenuItem.Text = "Long Rest";
             this.longRestToolStripMenuItem.Click += new System.EventHandler(this.longRestToolStripMenuItem_Click);
             this.longRestToolStripMenuItem.MouseEnter += new System.EventHandler(this.longRestToolStripMenuItem_MouseEnter);
@@ -5438,6 +5277,189 @@
             this.oAutosaveTimer.Interval = 60000;
             this.oAutosaveTimer.Tick += new System.EventHandler(this.oAutosaveTimer_Tick);
             // 
+            // newToolStripMenuItem
+            // 
+            this.newToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.new_file_128;
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+N";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(248, 28);
+            this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            this.newToolStripMenuItem.MouseEnter += new System.EventHandler(this.newToolStripMenuItem_MouseEnter);
+            this.newToolStripMenuItem.MouseLeave += new System.EventHandler(this.newToolStripMenuItem_MouseLeave);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.open_file_128;
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+O";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(248, 28);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.openToolStripMenuItem.MouseEnter += new System.EventHandler(this.openToolStripMenuItem_MouseEnter);
+            this.openToolStripMenuItem.MouseLeave += new System.EventHandler(this.openToolStripMenuItem_MouseLeave);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.save_file_128;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+S";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(248, 28);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            this.saveToolStripMenuItem.MouseEnter += new System.EventHandler(this.saveToolStripMenuItem_MouseEnter);
+            this.saveToolStripMenuItem.MouseLeave += new System.EventHandler(this.saveToolStripMenuItem_MouseLeave);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.save_as_file_128;
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Shift+S";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(248, 28);
+            this.saveAsToolStripMenuItem.Text = "Save As";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            this.saveAsToolStripMenuItem.MouseEnter += new System.EventHandler(this.saveAsToolStripMenuItem_MouseEnter);
+            this.saveAsToolStripMenuItem.MouseLeave += new System.EventHandler(this.saveAsToolStripMenuItem_MouseLeave);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.quit_128;
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Q";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(248, 28);
+            this.exitToolStripMenuItem.Text = "Quit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.MouseEnter += new System.EventHandler(this.exitToolStripMenuItem_MouseEnter);
+            this.exitToolStripMenuItem.MouseLeave += new System.EventHandler(this.exitToolStripMenuItem_MouseLeave);
+            // 
+            // muteToolStripMenuItem
+            // 
+            this.muteToolStripMenuItem.CheckOnClick = true;
+            this.muteToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.mute_128;
+            this.muteToolStripMenuItem.Name = "muteToolStripMenuItem";
+            this.muteToolStripMenuItem.ShortcutKeyDisplayString = "M";
+            this.muteToolStripMenuItem.Size = new System.Drawing.Size(184, 28);
+            this.muteToolStripMenuItem.Text = "Mute";
+            this.muteToolStripMenuItem.Click += new System.EventHandler(this.muteToolStripMenuItem_Click);
+            this.muteToolStripMenuItem.MouseEnter += new System.EventHandler(this.muteToolStripMenuItem_MouseEnter);
+            this.muteToolStripMenuItem.MouseLeave += new System.EventHandler(this.muteToolStripMenuItem_MouseLeave);
+            // 
+            // propertiesToolStripMenuItem
+            // 
+            this.propertiesToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.properties_128;
+            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
+            this.propertiesToolStripMenuItem.ShortcutKeyDisplayString = "C";
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(184, 28);
+            this.propertiesToolStripMenuItem.Text = "Properties";
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
+            this.propertiesToolStripMenuItem.MouseEnter += new System.EventHandler(this.propertiesToolStripMenuItem_MouseEnter);
+            this.propertiesToolStripMenuItem.MouseLeave += new System.EventHandler(this.propertiesToolStripMenuItem_MouseLeave);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.settings_128;
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.ShortcutKeyDisplayString = "S";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(184, 28);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            this.settingsToolStripMenuItem.MouseEnter += new System.EventHandler(this.settingsToolStripMenuItem_MouseEnter);
+            this.settingsToolStripMenuItem.MouseLeave += new System.EventHandler(this.settingsToolStripMenuItem_MouseLeave);
+            // 
+            // fullscreenToolStripMenuItem
+            // 
+            this.fullscreenToolStripMenuItem.CheckOnClick = true;
+            this.fullscreenToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.fullscreen_128;
+            this.fullscreenToolStripMenuItem.Name = "fullscreenToolStripMenuItem";
+            this.fullscreenToolStripMenuItem.ShortcutKeyDisplayString = "F11";
+            this.fullscreenToolStripMenuItem.Size = new System.Drawing.Size(197, 28);
+            this.fullscreenToolStripMenuItem.Text = "Fullscreen";
+            this.fullscreenToolStripMenuItem.Click += new System.EventHandler(this.fullscreenToolStripMenuItem_Click);
+            this.fullscreenToolStripMenuItem.MouseEnter += new System.EventHandler(this.fullscreenToolStripMenuItem_MouseEnter);
+            this.fullscreenToolStripMenuItem.MouseLeave += new System.EventHandler(this.fullscreenToolStripMenuItem_MouseLeave);
+            // 
+            // panel8
+            // 
+            this.panel8.BackColor = System.Drawing.Color.White;
+            this.panel8.BackgroundImage = global::MyCharacterSheet.Properties.Resources.Shield1;
+            this.panel8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel8.Controls.Add(this.tableLayoutPanel61);
+            this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel8.Location = new System.Drawing.Point(0, 38);
+            this.panel8.Margin = new System.Windows.Forms.Padding(0);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(119, 155);
+            this.panel8.TabIndex = 1;
+            // 
+            // tableLayoutPanel61
+            // 
+            this.tableLayoutPanel61.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel61.ColumnCount = 1;
+            this.tableLayoutPanel61.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel61.Controls.Add(this.oAC, 0, 0);
+            this.tableLayoutPanel61.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel61.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel61.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tableLayoutPanel61.Name = "tableLayoutPanel61";
+            this.tableLayoutPanel61.RowCount = 1;
+            this.tableLayoutPanel61.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel61.Size = new System.Drawing.Size(119, 155);
+            this.tableLayoutPanel61.TabIndex = 0;
+            // 
+            // oAC
+            // 
+            this.oAC.AutoSize = true;
+            this.oAC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.oAC.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.oAC.Location = new System.Drawing.Point(3, 0);
+            this.oAC.Name = "oAC";
+            this.oAC.Size = new System.Drawing.Size(113, 155);
+            this.oAC.TabIndex = 0;
+            this.oAC.Text = "-1";
+            this.oAC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.White;
+            this.panel7.BackgroundImage = global::MyCharacterSheet.Properties.Resources.Heart;
+            this.panel7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel7.Controls.Add(this.tableLayoutPanel60);
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel7.Location = new System.Drawing.Point(0, 32);
+            this.panel7.Margin = new System.Windows.Forms.Padding(0);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(119, 114);
+            this.panel7.TabIndex = 1;
+            // 
+            // tableLayoutPanel60
+            // 
+            this.tableLayoutPanel60.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel60.ColumnCount = 1;
+            this.tableLayoutPanel60.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel60.Controls.Add(this.oHitPoints, 0, 0);
+            this.tableLayoutPanel60.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel60.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel60.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tableLayoutPanel60.Name = "tableLayoutPanel60";
+            this.tableLayoutPanel60.RowCount = 1;
+            this.tableLayoutPanel60.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel60.Size = new System.Drawing.Size(119, 114);
+            this.tableLayoutPanel60.TabIndex = 0;
+            // 
+            // oHitPoints
+            // 
+            this.oHitPoints.AutoSize = true;
+            this.oHitPoints.BackColor = System.Drawing.Color.Transparent;
+            this.oHitPoints.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.oHitPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.oHitPoints.Location = new System.Drawing.Point(0, 0);
+            this.oHitPoints.Margin = new System.Windows.Forms.Padding(0);
+            this.oHitPoints.Name = "oHitPoints";
+            this.oHitPoints.Size = new System.Drawing.Size(119, 114);
+            this.oHitPoints.TabIndex = 1;
+            this.oHitPoints.Text = "-1";
+            this.oHitPoints.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -5498,9 +5520,6 @@
             this.tableLayoutPanel23.ResumeLayout(false);
             this.tableLayoutPanel24.ResumeLayout(false);
             this.tableLayoutPanel24.PerformLayout();
-            this.panel8.ResumeLayout(false);
-            this.tableLayoutPanel61.ResumeLayout(false);
-            this.tableLayoutPanel61.PerformLayout();
             this.tableLayoutPanel25.ResumeLayout(false);
             this.tableLayoutPanel26.ResumeLayout(false);
             this.tableLayoutPanel26.PerformLayout();
@@ -5512,9 +5531,6 @@
             this.tableLayoutPanel30.ResumeLayout(false);
             this.tableLayoutPanel31.ResumeLayout(false);
             this.tableLayoutPanel31.PerformLayout();
-            this.panel7.ResumeLayout(false);
-            this.tableLayoutPanel60.ResumeLayout(false);
-            this.tableLayoutPanel60.PerformLayout();
             this.tableLayoutPanel32.ResumeLayout(false);
             this.tableLayoutPanel33.ResumeLayout(false);
             this.tableLayoutPanel33.PerformLayout();
@@ -5584,6 +5600,12 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.oTabPanel.ResumeLayout(false);
+            this.panel8.ResumeLayout(false);
+            this.tableLayoutPanel61.ResumeLayout(false);
+            this.tableLayoutPanel61.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.tableLayoutPanel60.ResumeLayout(false);
+            this.tableLayoutPanel60.PerformLayout();
             this.ResumeLayout(false);
 
         }

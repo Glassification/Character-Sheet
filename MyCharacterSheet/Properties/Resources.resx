@@ -121,29 +121,11 @@
   <data name="Heart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Heart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="open-file-folder-icon_51237" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\open-file-folder-icon_51237.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Shield1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shield.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Shield" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shield.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="48-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\48-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="175x175-75" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\175x175-75.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="512px-Fullscreen_font_awesome.svg" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\512px-Fullscreen_font_awesome.svg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="1000px-High-contrast-application-exit.svg" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1000px-High-contrast-application-exit.svg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="img_231651" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_231651.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="click" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\click.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -159,5 +141,80 @@
   </data>
   <data name="I_Say_Hey" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\I_Say_Hey.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="divide_loot_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\divide_loot_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="divide_loot_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\divide_loot_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dndnextlogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dndnextlogo.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fullscreen_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fullscreen_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fullscreen_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fullscreen_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="long_rest_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\long_rest_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="long_rest_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\long_rest_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mute_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mute_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mute_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mute_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="new_file_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\new_file_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="new_file_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\new_file_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="open_file_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\open_file_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="open_file_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\open_file_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="properties_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\properties_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="properties_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\properties_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="quit_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\quit_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="quit_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\quit_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="roll_dice_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\roll_dice_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="roll_dice_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\roll_dice_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="save_as_file_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\save_as_file_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="save_as_file_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\save_as_file_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="save_file_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\save_file_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="save_file_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\save_file_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="settings_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\settings_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="settings_selected_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\settings_selected_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

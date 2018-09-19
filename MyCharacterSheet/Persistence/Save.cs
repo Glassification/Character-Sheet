@@ -39,11 +39,10 @@ namespace MyCharacterSheet.Persistence
             XDocument xml = new XDocument(
                 new XElement("Character",
                     new XElement("Settings",
-                        new XElement("Mute",          new XAttribute("remember", Settings.RememberMute),                new XAttribute("value", Settings.MuteState)),
-                        new XElement("Tab",           new XAttribute("remember", Settings.RememberLastTab),             new XAttribute("last", Settings.LastTab)),
-                        new XElement("AutoSave",      new XAttribute("enabled",  Settings.AutosaveEnable),              new XAttribute("interval", Settings.AutosaveInterval)),
-                        new XElement("DefaultColour", new XAttribute("value",    Settings.DefaultColour.Name)),
-                        new XElement("DefaultFont",   new XAttribute("family",   Settings.DefaultFont.FontFamily.Name), new XAttribute("size", Settings.DefaultFont.Size),      new XAttribute("style", (int)Settings.DefaultFont.Style))
+                        new XElement("Mute",            new XAttribute("remember", Settings.RememberMute),                new XAttribute("value",    Settings.MuteState)),
+                        new XElement("Tab",             new XAttribute("remember", Settings.RememberLastTab),             new XAttribute("last",     Settings.LastTab)),
+                        new XElement("AutoSave",        new XAttribute("enabled",  Settings.AutosaveEnable),              new XAttribute("interval", Settings.AutosaveInterval)),
+                        new XElement("AnimalCompanion", new XAttribute("hidden",   Settings.HideAnimalCompanion))
                         ),
                     new XElement("Attributes",
                         new XElement("Strength",     new XAttribute("value", character.Strength)),
@@ -246,7 +245,7 @@ namespace MyCharacterSheet.Persistence
                                     new XAttribute("area",        spell[9]),
                                     new XAttribute("save",        spell[10]),
                                     new XAttribute("damage",      spell[11]),
-                                    new XAttribute("descritpion", spell[12]),
+                                    new XAttribute("description", spell[12]),
                                     new XAttribute("prepared",    spell[13])
                                 )
                             )

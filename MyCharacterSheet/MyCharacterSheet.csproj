@@ -34,7 +34,7 @@
     <NoWarn>IDE1006;IDE0018</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\dungeons-dragons-clipart-dungeons-and-dragon-16.ico</ApplicationIcon>
+    <ApplicationIcon>dndnextlogo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -223,20 +223,39 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="dndnextlogo.ico" />
     <Content Include="Library\VisualStudioTabControl.dll" />
+    <Content Include="Resources\divide_loot_128.png" />
+    <Content Include="Resources\divide_loot_selected_128.png" />
+    <Content Include="Resources\dndnextlogo.ico" />
+    <Content Include="Resources\fullscreen_128.png" />
+    <Content Include="Resources\fullscreen_selected_128.png" />
     <Content Include="Resources\He_Man.gif" />
     <Content Include="Resources\input.wav" />
-    <Content Include="Resources\1000px-High-contrast-application-exit.svg.png" />
-    <Content Include="Resources\175x175-75.png" />
-    <Content Include="Resources\48-512.png" />
-    <Content Include="Resources\512px-Fullscreen_font_awesome.svg.png" />
     <Content Include="Resources\click.wav" />
-    <Content Include="Resources\dungeons-dragons-clipart-dungeons-and-dragon-16.ico" />
     <Content Include="Resources\Heart.png" />
-    <Content Include="Resources\img_231651.png" />
     <Content Include="Resources\I_Say_Hey.wav" />
-    <Content Include="Resources\open-file-folder-icon_51237.png" />
+    <Content Include="Resources\long_rest_128.png" />
+    <Content Include="Resources\long_rest_selected_128.png" />
+    <Content Include="Resources\mute_128.png" />
+    <Content Include="Resources\mute_selected_128.png" />
+    <Content Include="Resources\new_file_128.png" />
+    <Content Include="Resources\new_file_selected_128.png" />
+    <Content Include="Resources\open_file_128.png" />
+    <Content Include="Resources\open_file_selected_128.png" />
+    <Content Include="Resources\properties_128.png" />
+    <Content Include="Resources\properties_selected_128.png" />
+    <Content Include="Resources\quit_128.png" />
+    <Content Include="Resources\quit_selected_128.png" />
+    <Content Include="Resources\roll_dice_128.png" />
+    <Content Include="Resources\roll_dice_selected_128.png" />
+    <Content Include="Resources\save_as_file_128.png" />
+    <Content Include="Resources\save_as_file_selected_128.png" />
+    <Content Include="Resources\save_file_128.png" />
+    <Content Include="Resources\save_file_selected_128.png" />
     <Content Include="Resources\Secret.wav" />
+    <Content Include="Resources\settings_128.png" />
+    <Content Include="Resources\settings_selected_128.png" />
     <Content Include="Resources\Shield.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
