@@ -1,15 +1,27 @@
 ﻿using System;
-using System.Drawing;
 
 namespace MyCharacterSheet.Utility
 {
+    /// <summary>
+    /// Provides constants and static methods for global properties of the character sheet.
+    /// </summary>
     public static class Settings
     {
+
+        #region Static Constructor
+
         static Settings()
         {
             Default();
         }
 
+        #endregion
+
+        #region Methods
+
+        /// =========================================
+        /// Default()
+        /// =========================================
         public static void Default()
         {
             RememberMute        = false;
@@ -19,7 +31,13 @@ namespace MyCharacterSheet.Utility
             AutosaveEnable      = false;
             AutosaveInterval    = 1;
             HideAnimalCompanion = false;
+            UseCoinWeight          = false;
+            UseEncumbrance         = false;
         }
+
+        #endregion
+
+        #region Accessors
 
         public static bool RememberMute
         {
@@ -62,5 +80,20 @@ namespace MyCharacterSheet.Utility
             get;
             set;
         }
+
+        public static bool UseCoinWeight
+        {
+            get;
+            set;
+        }
+
+        public static bool UseEncumbrance
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
     }
 }

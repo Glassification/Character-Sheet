@@ -6,9 +6,55 @@ namespace MyCharacterSheet.Characters
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class Companion : ExpandableObjectConverter
     {
-        public Companion(string name, int ac, string hitDice, int hp, int currentHP, string speed, int strength, int dexterity, int constitution, int intelligence,
-                         int wisdom, int charisma, int perception, string senses, Pair attack, Pair type, Pair atkBonus, Pair damage, PresetPair dmgType,
-                         Pair reach, Pair notes)
+
+        #region Constructor
+
+        public Companion()
+        {
+            Name = "";
+            AC = 0;
+            HitDice = "";
+            HP = 0;
+            CurrentHP = 0;
+            Speed = "";
+            Strength = 0;
+            Dexterity = 0;
+            Constitution = 0;
+            Intelligence = 0;
+            Wisdom = 0;
+            Charisma = 0;
+            Perception = 0;
+            Senses = "";
+            Attack = new Pair();
+            Type = new Pair();
+            AtkBonus = new Pair();
+            Damage = new Pair();
+            DmgType = new PresetPair();
+            Reach = new Pair();
+            Notes = new Pair();
+        }
+
+        public Companion(   string name, 
+                            int ac, 
+                            string hitDice, 
+                            int hp, 
+                            int currentHP, 
+                            string speed, 
+                            int strength, 
+                            int dexterity, 
+                            int constitution, 
+                            int intelligence,         
+                            int wisdom, 
+                            int charisma, 
+                            int perception, 
+                            string senses, 
+                            Pair attack, 
+                            Pair type, 
+                            Pair atkBonus, 
+                            Pair damage, 
+                            PresetPair dmgType,   
+                            Pair reach, 
+                            Pair notes)
         {
             Name = name;
             AC = ac;
@@ -32,6 +78,8 @@ namespace MyCharacterSheet.Characters
             Reach = reach.Copy();
             Notes = notes.Copy();
         }
+
+        #endregion
 
         #region Accessors
 

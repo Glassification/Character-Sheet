@@ -3,9 +3,16 @@
     public class Player
     {
 
+        #region Constants
+
+        public const int CURRENCIES = 5;
+        public enum Currency { Platinum, Gold, Electrum, Silver, Copper };
+
+        #endregion
+
         #region Members
 
-        public int[] currency = new int[5];
+        public int[] currency = new int[CURRENCIES];
 
         #endregion
 
@@ -24,11 +31,11 @@
         /// =========================================
         public Player(int cp, int sp, int ep, int gp, int pp)
         {
-            currency[4] = cp;
-            currency[3] = sp;
-            currency[2] = ep;
-            currency[1] = gp;
-            currency[0] = pp;
+            currency[(int)Currency.Copper]   = cp;
+            currency[(int)Currency.Silver]   = sp;
+            currency[(int)Currency.Electrum] = ep;
+            currency[(int)Currency.Gold]     = gp;
+            currency[(int)Currency.Platinum] = pp;
         }
 
         #endregion
@@ -53,11 +60,11 @@
         {
             get
             {
-                return currency[4];
+                return currency[(int)Currency.Copper];
             }
             set
             {
-                currency[4] = value;
+                currency[(int)Currency.Copper] = value;
             }
         }
 
@@ -65,11 +72,11 @@
         {
             get
             {
-                return currency[3];
+                return currency[(int)Currency.Silver];
             }
             set
             {
-                currency[3] = value;
+                currency[(int)Currency.Silver] = value;
             }
         }
 
@@ -77,11 +84,11 @@
         {
             get
             {
-                return currency[2];
+                return currency[(int)Currency.Electrum];
             }
             set
             {
-                currency[2] = value;
+                currency[(int)Currency.Electrum] = value;
             }
         }
 
@@ -89,11 +96,11 @@
         {
             get
             {
-                return currency[1];
+                return currency[(int)Currency.Gold];
             }
             set
             {
-                currency[1] = value;
+                currency[(int)Currency.Gold] = value;
             }
         }
 
@@ -101,11 +108,11 @@
         {
             get
             {
-                return currency[0];
+                return currency[(int)Currency.Platinum];
             }
             set
             {
-                currency[0] = value;
+                currency[(int)Currency.Platinum] = value;
             }
         }
 

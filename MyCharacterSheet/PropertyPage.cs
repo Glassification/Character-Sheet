@@ -1,4 +1,5 @@
 ﻿using MyCharacterSheet.Characters;
+using MyCharacterSheet.Utility;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -114,18 +115,19 @@ namespace MyCharacterSheet
             switch (e.KeyCode)
             {
                 case Keys.Escape:
-                    Old.Copy(Program.Character);
-                    Confirm = false;
-                    Close();
+                    btnCancel_Click(null, EventArgs.Empty);
                     break;
                 case Keys.Enter:
-                    Confirm = true;
-                    Close();
+                    btnOk_Click(null, EventArgs.Empty);
                     break;
             }
         }
 
         #endregion
 
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

@@ -1,9 +1,11 @@
-﻿using MyCharacterSheet.Utility;
+﻿using MyCharacterSheet.Lists;
+using MyCharacterSheet.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
@@ -12,13 +14,12 @@ namespace MyCharacterSheet
 
         #region Constants
 
-        private const int MENU_HEIGHT    = 26;
-        private const int MENU_RATE      = 2;
-        private const int TAB_WIDTH      = 47;
-        private const int TAB_RATE       = 4;
-        private const int SAVE_X_OFFSET  = 170;
-        private const int SAVE_Y_OFFSET  = 95;
-        private const int CONTEXT_OFFSET = 2;
+        private const int   MENU_HEIGHT     = 26;
+        private const int   MENU_RATE       = 2;
+        private const int   TAB_WIDTH       = 47;
+        private const int   TAB_RATE        = 4;
+        private const int   SAVE_X_OFFSET   = 170;
+        private const int   SAVE_Y_OFFSET   = 95;
 
         #endregion
 
@@ -28,6 +29,7 @@ namespace MyCharacterSheet
         private DivideLootPage  oDivideLootPage  = new DivideLootPage();
         private DiceRollerPage  oDiceRollerPage  = new DiceRollerPage();
         private SettingsPage    oSettingsPage    = new SettingsPage();
+        public  TablePage       oTablePage       = new TablePage();
         private EasterEggPage   oEasterEggPage   = new EasterEggPage();
 
         private List<Label>     oLabels          = new List<Label>();
@@ -44,11 +46,17 @@ namespace MyCharacterSheet
         private VerticalButton  btnTertiary      = new VerticalButton();
         private VerticalButton  btnCampain       = new VerticalButton();
 
-        private Rectangle       dragBoxFromMouseDown;
-        private int             rowIndexFromMouseDown;
-        private int             rowIndexOfItemUnderMouseToDrop;
+        private Rectangle   dragBoxFromMouseDown;
+        private int         rowIndexFromMouseDown;
+        private int         rowIndexOfItemUnderMouseToDrop;
 
-        public enum Pages { Primary, Secondary, Tertiary, Campain};
+        public enum Pages   { Primary, Secondary, Tertiary, Campain};
+
+        public enum Saves   { Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma};
+
+        public enum Skills  { Athletics,     Acrobatics, SleightOfHand, Stealth,        Arcana,      History,
+                              Investigation, Nature,     Religion,      AnimalHandling, Insight,     Medicine,
+                              Perception,    Survival,   Deception,     Intimidation,   Performance, Persuasion};
 
         #endregion
 
@@ -64,7 +72,7 @@ namespace MyCharacterSheet
             InitializeComponent();
  
             //Create message filter
-            MouseDownFilter filter = new MouseDownFilter(this);
+            NativeMethods filter = new NativeMethods(this);
             filter.FormClicked += mouseFilter_FormClicked;
             Application.AddMessageFilter(filter);
 
@@ -74,7 +82,7 @@ namespace MyCharacterSheet
             MinimumSize = Size;
 
             //Load blank character sheet
-            Program.FileLocation = Constants.NEW_FILE;
+            Program.FileLocation = NEW_FILE;
             Program.Character.CreateCharacterSheet();
 
             //Load secondary page
@@ -97,15 +105,15 @@ namespace MyCharacterSheet
 
             //Set intial program state
             FillLabelList();
-            fillSizes();
-            fillComboBoxes();
-            loadPageLists();
-            createMenuStrip();
-            setTabPanel();
-            createTabButtons();
-            createSaveProgressBar();
+            FillSizes();
+            LoadPageLists();
+            CreateMenuStrip();
+            SetTabPanel();
+            CreateTabButtons();
+            CreateSaveProgressBar();
             FormatInputBoxes();
             FormatContextMenus();
+            Mute(Program.Mute);
 
             //Get absolute position of mouse
             AddNestedMouseHandler(this, NestedControl_Mousemove);
@@ -154,7 +162,7 @@ namespace MyCharacterSheet
                 foreach (Control c in root.Controls)
                 {
                     //Ignore specified componets
-                    if (!c.Name.Equals("oSpellListDataView"))
+                    if (!c.Name.Equals(""))
                     {
                         AddNestedMouseHandler(c, nestedHandler);
                     }
@@ -163,45 +171,44 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// loadMainPage()
+        /// LoadPageLists()
         /// =========================================
-        private void loadPageLists()
+        private void LoadPageLists()
         {
             FillWeapons();
             FillAmmo();
             oSecondaryPage.FillAbility();
             oSecondaryPage.FillInventory();
-            oSecondaryPage.FillNotes();
             oTertiaryPage.FillSpellclass();
             oTertiaryPage.FillSpellList();
         }
 
         /// =========================================
-        /// createTabButtons()
+        /// CreateTabButtons()
         /// =========================================
-        private void createTabButtons()
+        private void CreateTabButtons()
         {
             btnPrimary.Dock = DockStyle.Fill;
             btnPrimary.FlatStyle = FlatStyle.Popup;
-            btnPrimary.BackColor = Constants.DarkBlue;
+            btnPrimary.BackColor = DarkBlue;
             btnPrimary.Font = new Font(btnPrimary.Font.FontFamily, 10f);
             btnPrimary.VerticalText = "Character Status";
 
             btnSecondary.Dock = DockStyle.Fill;
             btnSecondary.FlatStyle = FlatStyle.Popup;
-            btnSecondary.BackColor = Constants.DarkGrey;
+            btnSecondary.BackColor = DarkGrey;
             btnSecondary.Font = new Font(btnSecondary.Font.FontFamily, 10f);
             btnSecondary.VerticalText = "Character Details";
 
             btnTertiary.Dock = DockStyle.Fill;
             btnTertiary.FlatStyle = FlatStyle.Popup;
-            btnTertiary.BackColor = Constants.DarkGrey;
+            btnTertiary.BackColor = DarkGrey;
             btnTertiary.Font = new Font(btnTertiary.Font.FontFamily, 10f);
             btnTertiary.VerticalText = "Spellcasting";
 
             btnCampain.Dock = DockStyle.Fill;
             btnCampain.FlatStyle = FlatStyle.Popup;
-            btnCampain.BackColor = Constants.DarkGrey;
+            btnCampain.BackColor = DarkGrey;
             btnCampain.Font = new Font(btnTertiary.Font.FontFamily, 10f);
             btnCampain.VerticalText = "Campain Notes";
 
@@ -217,9 +224,9 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// setTabPanel()
+        /// SetTabPanel()
         /// =========================================
-        private void setTabPanel()
+        private void SetTabPanel()
         {
             oTabPanel.Location = new Point(0, 0);
             oTabPanel.Height = Size.Height;
@@ -230,98 +237,35 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// setDeathSaves()
+        /// CreateSaveProgressBar()
         /// =========================================
-        private void setDeathSaves()
-        {
-            switch (Program.Character.HitPoints.DeathSaveSuccess)
-            {
-                case 3:
-                    chkSuccess1.Checked = true;
-                    chkSuccess2.Checked = true;
-                    chkSuccess3.Checked = true;
-                    break;
-                case 2:
-                    chkSuccess1.Checked = true;
-                    chkSuccess2.Checked = true;
-                    break;
-                case 1:
-                    chkSuccess1.Checked = true;
-                    break;
-            }
-
-            switch (Program.Character.HitPoints.DeathSaveFailure)
-            {
-                case 3:
-                    chkFailure1.Checked = true;
-                    chkFailure2.Checked = true;
-                    chkFailure3.Checked = true;
-                    break;
-                case 2:
-                    chkFailure1.Checked = true;
-                    chkFailure2.Checked = true;
-                    break;
-                case 1:
-                    chkFailure1.Checked = true;
-                    break;
-            }
-        }
-
-        /// =========================================
-        /// getDeathSaves()
-        /// =========================================
-        private void getDeathSaves()
-        {
-            int success = 0, failure = 0;
-
-            if (chkSuccess1.Checked)
-                success++;
-            if (chkSuccess2.Checked)
-                success++;
-            if (chkSuccess3.Checked)
-                success++;
-
-            if (chkFailure1.Checked)
-                failure++;
-            if (chkFailure2.Checked)
-                failure++;
-            if (chkFailure3.Checked)
-                failure++;
-
-            Program.Character.HitPoints.DeathSaveSuccess = success;
-            Program.Character.HitPoints.DeathSaveFailure = failure;
-        }
-
-        /// =========================================
-        /// createSaveProgressBar()
-        /// =========================================
-        private void createSaveProgressBar()
+        private void CreateSaveProgressBar()
         {
             oSavePanel.Location = new Point(Size.Width  - SAVE_X_OFFSET, Size.Height - SAVE_Y_OFFSET);
             oSavePanel.Visible = false;
         }
 
         /// =========================================
-        /// createMenuStrip()
+        /// CreateMenuStrip()
         /// =========================================
-        private void createMenuStrip()
+        private void CreateMenuStrip()
         {
-            oMenuStrip.BackColor = Constants.DarkGrey;
+            oMenuStrip.BackColor = DarkGrey;
             oMenuStrip.ForeColor = Color.White;
             
             foreach (ToolStripMenuItem item in oMenuStrip.Items)
             {
-                item.BackColor = Constants.DarkGrey;
+                item.BackColor = DarkGrey;
                 item.ForeColor = Color.White;
 
                 foreach (ToolStripMenuItem children in item.DropDownItems)
                 {
-                    children.BackColor = Constants.DarkGrey;
+                    children.BackColor = DarkGrey;
                     children.ForeColor = Color.White;
 
                     foreach (ToolStripMenuItem children2 in children.DropDownItems)
                     {
-                        children2.BackColor = Constants.DarkGrey;
+                        children2.BackColor = DarkGrey;
                         children2.ForeColor = Color.White;
                     }
                 }
@@ -338,35 +282,9 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// fillComboBoxes()
+        /// FillSizes()
         /// =========================================
-        private void fillComboBoxes()
-        {
-            DataGridViewComboBoxColumn dmgDropDown, abilityDropDown, ammoDmgDropdown;
-
-            //fill weapon damage dropdown list
-            dmgDropDown = oWeaponDataGrid.Columns[DmgType.Index] as DataGridViewComboBoxColumn;
-            dmgDropDown.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
-            for (int i = 0; i < Constants.DamageTypeLength(); i++)
-                dmgDropDown.Items.Add(Constants.DamageType(i));
-
-            //fill weapon ability dropdown list
-            abilityDropDown = oWeaponDataGrid.Columns[Ability.Index] as DataGridViewComboBoxColumn;
-            abilityDropDown.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
-            for (int i = 0; i < Constants.AbilitiesLength(); i++)
-                abilityDropDown.Items.Add(Constants.Ability(i));
-
-            //fill ammo damage dropdown list
-            ammoDmgDropdown = oAmmoGridView.Columns[AmmoDmgType.Index] as DataGridViewComboBoxColumn;
-            ammoDmgDropdown.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
-            for (int i = 0; i < Constants.DamageTypeLength(); i++)
-                ammoDmgDropdown.Items.Add(Constants.DamageType(i));
-        }
-
-        /// =========================================
-        /// fillSizes()
-        /// =========================================
-        private void fillSizes()
+        private void FillSizes()
         {
             foreach (Label l in oLabels)
                 oLabelSizes.Add(l.Font.Size);
@@ -378,96 +296,56 @@ namespace MyCharacterSheet
             HeaderSize = oWeaponDataGrid.ColumnHeadersDefaultCellStyle.Font.Size;
             RowSize = oWeaponDataGrid.DefaultCellStyle.Font.Size;
             InputFontHP = oInputHP.Font.Size;
-            CurrencySize = oInputGP.Font.Size;
+            CheckBoxSize = checkBox1.Font.Size;
         }
 
         /// =========================================
-        /// fillAmmoList()
+        /// FillAmmo()
         /// =========================================
         private void FillAmmo()
         {
-            string[] tokens;
             oAmmoGridView.Rows.Clear();
 
-            foreach (string ammo in Program.Character.oAmmo)
+            foreach (Ammunition ammo in Program.Character.oAmmo)
             {
                 int index = oAmmoGridView.Rows.Add();
                 DataGridViewRow row = oAmmoGridView.Rows[index];
-                tokens = ammo.Split(Constants.DELIMITER);
 
-                row.Cells[Ammo.Index].Value = tokens[0];
-                row.Cells[Qty.Index].Value = tokens[1];
-                row.Cells[ammoDmgBonus.Index].Value = tokens[2];
-                row.Cells[AmmoDmgType.Index].Value = tokens[3];
-                row.Cells[Used.Index].Value = tokens[4];
+                row.Cells[Ammo.Index].Value = ammo.Name;
+                row.Cells[Qty.Index].Value = ammo.Quantity;
+                row.Cells[ammoDmgBonus.Index].Value = ammo.Bonus;
+                row.Cells[AmmoDmgType.Index].Value = ammo.Type;
+                row.Cells[Used.Index].Value = ammo.Used;
+
+               // row.Cells[oIncrement.Index].
+
+                row.Tag = ammo.ID;
             }
         }
 
         /// =========================================
-        /// fillWeaponsList()
+        /// FillWeapons()
         /// =========================================
         private void FillWeapons()
         {
             oWeaponDataGrid.Rows.Clear();
-            string[] tokens;
 
-            foreach (string weapon in Program.Character.oWeapons)
+            foreach (Weapon weapon in Program.Character.oWeapons)
             {
                 int index = oWeaponDataGrid.Rows.Add();
                 DataGridViewRow row = oWeaponDataGrid.Rows[index];
-                tokens = weapon.Split(Constants.DELIMITER);
 
-                row.Cells[Weapons.Index].Value = tokens[0];
-                row.Cells[AttackBonus.Index].Value = Program.Character.GetBonus(tokens[1]);
-                row.Cells[Ability.Index].Value = tokens[1];
-                row.Cells[Dmg.Index].Value = tokens[2];
-                row.Cells[MiscBonus.Index].Value = tokens[3];
-                row.Cells[DmgType.Index].Value = tokens[4];
-                row.Cells[Range.Index].Value = tokens[5];
-                row.Cells[Notes.Index].Value = tokens[6];
+                row.Cells[Weapons.Index].Value = weapon.Name;
+                row.Cells[AttackBonus.Index].Value = Program.Character.GetBonus(weapon.Ability);
+                row.Cells[Ability.Index].Value = weapon.Ability;
+                row.Cells[Dmg.Index].Value = weapon.Damage;
+                row.Cells[MiscBonus.Index].Value = weapon.Misc;
+                row.Cells[DmgType.Index].Value = weapon.Type;
+                row.Cells[Range.Index].Value = weapon.Range;
+                row.Cells[Notes.Index].Value = weapon.Notes;
+
+                row.Tag = weapon.ID;
             }
-        }
-
-        /// =========================================
-        /// fillWeapons()
-        /// =========================================
-        private void WriteWeapons(List<string> list)
-        {
-            string str;
-
-            foreach (DataGridViewRow row in oWeaponDataGrid.Rows)
-            {
-                str = (string)row.Cells[Weapons.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Ability.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Dmg.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[MiscBonus.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[DmgType.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Range.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Notes.Index].Value;
-
-                list.Add(str);
-            }
-            list.RemoveAt(list.Count - 1);
-        }
-
-        /// =========================================
-        /// fillAmmo()
-        /// =========================================
-        private void WriteAmmo(List<string> list)
-        {
-            string str;
-
-            foreach (DataGridViewRow row in oAmmoGridView.Rows)
-            {
-                str = (string)row.Cells[Ammo.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Qty.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[ammoDmgBonus.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[AmmoDmgType.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Used.Index].Value;
-
-                list.Add(str);
-            }
-            list.RemoveAt(list.Count - 1);
         }
 
         /// =========================================
@@ -478,7 +356,7 @@ namespace MyCharacterSheet
             //Load mute state
             if (Settings.RememberMute)
             {
-                Mute();
+                Mute(Settings.MuteState);
             }
 
             //Load tab state
@@ -488,16 +366,16 @@ namespace MyCharacterSheet
                 {
                     default:
                     case Pages.Primary:
-                        btnPrimaryPanel_Click(new object(), EventArgs.Empty);
+                        btnPrimaryPanel_Click(null, EventArgs.Empty);
                         break;
                     case Pages.Secondary:
-                        btnSecondaryPanel_Click(new object(), EventArgs.Empty);
+                        btnSecondaryPanel_Click(null, EventArgs.Empty);
                         break;
                     case Pages.Tertiary:
-                        btnTertiaryPanel_Click(new object(), EventArgs.Empty);
+                        btnTertiaryPanel_Click(null, EventArgs.Empty);
                         break;
                     case Pages.Campain:
-                        btnCampainPanel_Click(new object(), EventArgs.Empty);
+                        btnCampainPanel_Click(null, EventArgs.Empty);
                         break;
                 }
             }
@@ -511,32 +389,11 @@ namespace MyCharacterSheet
         /// =========================================
         private void Save()
         {
-            Program.Character.oWeapons.Clear();
-            WriteWeapons(Program.Character.oWeapons);
-
-            Program.Character.oAmmo.Clear();
-            WriteAmmo(Program.Character.oAmmo);
-
-            Program.Character.oInventory.Clear();
-            oSecondaryPage.WriteInventory(Program.Character.oInventory);
-
-            Program.Character.oAbility.Clear();
-            oSecondaryPage.WriteAbility(Program.Character.oAbility);
-
-            Program.Character.oNotes.Clear();
-            oSecondaryPage.WriteNotes(Program.Character.oNotes);
-
-            Program.Character.Spellcasting.spellClass.Clear();
-            oTertiaryPage.WriteSpellclass(Program.Character.Spellcasting.spellClass);
-
-            Program.Character.Spellcasting.spellList.Clear();
-            oTertiaryPage.WriteSpellList(Program.Character.Spellcasting.spellList);
-
             Program.Character.oDocuments.Clear();
             oCampainPage.WriteCampainNotes();
 
-            getDeathSaves();
             Settings.LastTab = (int)GetCurrentTab();
+            Settings.MuteState = Program.Mute;
             Program.Modified = false;
             Program.Character.SaveCharacterSheet();
         }
@@ -548,7 +405,7 @@ namespace MyCharacterSheet
         {
             DialogResult result;
 
-            if (control && (shift || Program.FileLocation.Equals(Constants.NEW_FILE)))
+            if (control && (shift || Program.FileLocation.Equals(NEW_FILE)))
             {
                 result = oSaveFileDialog.ShowDialog();
 
@@ -584,8 +441,7 @@ namespace MyCharacterSheet
                     {
                         Program.FileLocation = oOpenFileDialog.FileName;
                         Program.Character.LoadCharacterSheet();
-                        loadPageLists();
-                        setDeathSaves();
+                        LoadPageLists();
                         oCampainPage.ClearDocumentList();
                         oCampainPage.FillDocumentList();
 
@@ -621,12 +477,13 @@ namespace MyCharacterSheet
                     if (result == DialogResult.Yes)
                         Save();
 
-                    Program.FileLocation = Constants.NEW_FILE;
+                    Program.FileLocation = NEW_FILE;
                     Program.Character.CreateCharacterSheet();
                     Settings.Default();
                     SetAutosaveState();
+                    oTertiaryPage.SetAnimalCompanionVisibility();
                     oCampainPage.ClearDocumentList();
-                    loadPageLists();
+                    LoadPageLists();
                     InvalidateAll();
                 }
             }
@@ -660,9 +517,9 @@ namespace MyCharacterSheet
         /// =========================================
         /// Mute()
         /// =========================================
-        private void Mute()
+        private void Mute(bool muteState)
         {
-            Program.Mute = !Program.Mute;
+            Program.Mute = muteState;
             muteToolStripMenuItem.Checked = Program.Mute;
 
             //Toggle image
@@ -706,6 +563,15 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
+        /// OpenTables()
+        /// =========================================
+        public void OpenTables()
+        {
+            oTablePage.ShowPane();
+            LoadPageLists();
+        }
+
+        /// =========================================
         /// OpenDivideLoot()
         /// =========================================
         private void OpenDivideLoot(bool control)
@@ -734,7 +600,7 @@ namespace MyCharacterSheet
         {
             if (!control)
             {
-                longRestToolStripMenuItem_Click(new object(), EventArgs.Empty);
+                longRestToolStripMenuItem_Click(null, EventArgs.Empty);
             }
         }
 
@@ -771,18 +637,6 @@ namespace MyCharacterSheet
         /// =========================================
         private void FormatInputBoxes()
         {
-            oInputCP.Width = oPanelCP.Width;
-            oInputSP.Width = oPanelSP.Width;
-            oInputEP.Width = oPanelEP.Width;
-            oInputGP.Width = oPanelGP.Width;
-            oInputPP.Width = oPanelPP.Width;
-
-            oInputCP.Location = new Point(0, (oPanelCP.Height / 2) - (oInputCP.Height / 2));
-            oInputSP.Location = new Point(0, (oPanelSP.Height / 2) - (oInputSP.Height / 2));
-            oInputEP.Location = new Point(0, (oPanelEP.Height / 2) - (oInputEP.Height / 2));
-            oInputGP.Location = new Point(0, (oPanelGP.Height / 2) - (oInputGP.Height / 2));
-            oInputPP.Location = new Point(0, (oPanelPP.Height / 2) - (oInputPP.Height / 2));
-
             oInputHP.Width = oPanelHP.Width;
             oInputHP.Location = new Point(0, (oPanelHP.Height / 2) - (oInputHP.Height / 2));
         }
@@ -792,11 +646,17 @@ namespace MyCharacterSheet
         /// =========================================
         private void FormatContextMenus()
         {
-            oWeaponDeleteRowMenu.BackColor = Constants.DarkGrey;
-            oWeaponDeleteRowMenu.ForeColor = Color.White;
+            oWeaponContextMenu.BackColor = DarkGrey;
+            oWeaponContextMenu.ForeColor = Color.White;
 
-            oAmmoDeleteRowMenu.BackColor = Constants.DarkGrey;
-            oAmmoDeleteRowMenu.ForeColor = Color.White;
+            oAddWeaponContextMenu.BackColor = DarkGrey;
+            oAddWeaponContextMenu.ForeColor = Color.White;
+
+            oAmmoContextMenu.BackColor = DarkGrey;
+            oAmmoContextMenu.ForeColor = Color.White;
+
+            oAddAmmoContextMenu.BackColor = DarkGrey;
+            oAddAmmoContextMenu.ForeColor = Color.White;
         }
 
         /// =========================================
@@ -821,7 +681,7 @@ namespace MyCharacterSheet
         {
             string str = "";
 
-            if (!Program.FileLocation.Equals(Constants.NEW_FILE))
+            if (!Program.FileLocation.Equals(NEW_FILE))
             {
                 for (int i = 0; i < padding; i++)
                     str += " ";
@@ -858,7 +718,6 @@ namespace MyCharacterSheet
                 case Pages.Secondary:
                     isInside |= IsInside(oSecondaryPage.AbilityGridView());
                     isInside |= IsInside(oSecondaryPage.InventoryGridView());
-                    isInside |= IsInside(oSecondaryPage.NoteGridView());
                     break;
                 case Pages.Tertiary:
                     isInside |= IsInside(oTertiaryPage.SpellListGridView());
@@ -942,6 +801,39 @@ namespace MyCharacterSheet
             }
         }
 
+        /// =========================================
+        /// FormatCondition()
+        /// =========================================
+        private string FormatCondition()
+        {
+            string condition;
+
+            condition = Program.Character.HitPoints.Conditions;
+
+            // Check if comma is needed
+            if (!Program.Character.HitPoints.Conditions.Equals("") && !Program.Character.MovementCondition.Equals(""))
+            {
+                condition += ", ";
+            }
+
+            condition += Program.Character.MovementCondition;
+
+            return condition;
+        }
+
+        /// =========================================
+        /// ResizeText()
+        /// =========================================
+        public void ResizeLabels()
+        {
+            //Resize Labels
+            for (int i = 0; i < oLabels.Count; i++)
+            {
+                oLabels[i].Font = new Font(oLabels[i].Font.FontFamily, oLabelSizes[i] * Ratio, oLabels[i].Font.Style);
+                ScaleFont(oLabels[i]);
+            }
+        }
+
         #endregion
 
         #region Accessors
@@ -964,6 +856,12 @@ namespace MyCharacterSheet
             set;
         }
 
+        private float CheckBoxSize
+        {
+            get;
+            set;
+        }
+
         private float RowSize
         {
             get;
@@ -971,12 +869,6 @@ namespace MyCharacterSheet
         }
 
         private float InputFontHP
-        {
-            get;
-            set;
-        }
-
-        private float CurrencySize
         {
             get;
             set;
@@ -1030,6 +922,14 @@ namespace MyCharacterSheet
             set;
         }
 
+        public float Ratio
+        {
+            get
+            {
+                return Size.Width / (OriginalSize.Width + 0f);
+            }
+        }
+
         #endregion
 
         #region Frame Events
@@ -1051,7 +951,7 @@ namespace MyCharacterSheet
                 oEXP.Text = Program.Character.EXP + " / " + Constants.Experience(Program.Character.Level);
                 oClass.Text = Program.Character.Class;
                 oLanguage.Text = Program.Character.Language;
-                oMovement.Text = Program.Character.Movement;
+                oMovement.Text = Program.Character.GetMovement();
                 oVision.Text = Program.Character.Vision;
 
                 oStrScore.Text = Program.Character.Strength + "";
@@ -1149,10 +1049,19 @@ namespace MyCharacterSheet
                 oMagicAC.Text = Program.Character.ArmorClass.MagicAC + "";
 
                 oHitPoints.Text = (Program.Character.HitPoints.HP + Program.Character.HitPoints.TempHP) + "";
+                oTotalHitPoints.Text = "/" + Program.Character.HitPoints.MaxHP;
                 oHitPoints.ForeColor = Program.Character.HitPoints.HitPointsColour;
+                //oTotalHitPoints.ForeColor = Program.Character.HitPoints.HitPointsColour;
                 oInitiative.Text = Program.Character.Initiative + "";
                 oPassivePerception.Text = Program.Character.PassivePerception + "";
-                oConditions.Text = Program.Character.HitPoints.Conditions;
+
+                oClassType.Text = Program.Character.ClassResource;
+                oPool.Text = Program.Character.Pool + "";
+                oSpent.Text = Program.Character.Spent + "";
+
+                oPool.BackColor = Constants.TotalBoxColour(Program.Character.Pool, Program.Character.Spent);
+                oSpent.ForeColor = Constants.TextColour(Program.Character.Pool, Program.Character.Spent);
+                oSpent.BackColor = Constants.UsedBoxColour(Program.Character.Pool, Program.Character.Spent);
 
                 oTotalD6.Text = Program.Character.HitPoints.D6 + "";
                 oTotalD8.Text = Program.Character.HitPoints.D8 + "";
@@ -1177,17 +1086,12 @@ namespace MyCharacterSheet
                 oTotalD10.BackColor = Constants.TotalBoxColour(Program.Character.HitPoints.D10, Program.Character.HitPoints.SpentD10);
                 oTotalD12.BackColor = Constants.TotalBoxColour(Program.Character.HitPoints.D12, Program.Character.HitPoints.SpentD12);
 
-                oInputCP.Text = Program.Character.CP + "";
-                oInputSP.Text = Program.Character.SP + "";
-                oInputEP.Text = Program.Character.EP + "";
-                oInputGP.Text = Program.Character.GP + "";
-                oInputPP.Text = Program.Character.PP + "";
-                oGoldValue.Text = Program.Character.TotalGold + "";
-
                 foreach (DataGridViewRow row in oWeaponDataGrid.Rows)
                 {
                     row.Cells[AttackBonus.Index].Value = Program.Character.GetBonus((string)row.Cells[Ability.Index].Value);
                 }
+
+                ResizeLabels();
 
                 Drawing = false;
             }
@@ -1208,7 +1112,7 @@ namespace MyCharacterSheet
                 switch (result)
                 {
                     case DialogResult.Yes:
-                        if (Program.FileLocation.Equals(Constants.NEW_FILE))
+                        if (Program.FileLocation.Equals(NEW_FILE))
                         {
                             if (oSaveFileDialog.ShowDialog() == DialogResult.OK)
                             {
@@ -1282,34 +1186,38 @@ namespace MyCharacterSheet
                     case Keys.R:
                         OpenRollDice(e.Control);
                         break;
+                    //Open Tables
+                    case Keys.T:
+                        OpenTables();
+                        break;
                     //Long Rest
                     case Keys.L:
                         LongRest(e.Control);
                         break;
                     //Mute
                     case Keys.M:
-                        Mute();
+                        Mute(!Program.Mute);
                         break;
                     //----------------------------------------------------------------
                     //Main Page
                     case Keys.D1:
                         if (!e.Control)
-                            btnPrimaryPanel_Click(new object(), EventArgs.Empty);
+                            btnPrimaryPanel_Click(null, EventArgs.Empty);
                         break;
                     //Secondary Page
                     case Keys.D2:
                         if (!e.Control)
-                            btnSecondaryPanel_Click(new object(), EventArgs.Empty);
+                            btnSecondaryPanel_Click(null, EventArgs.Empty);
                         break;
                     //Tertiary Page
                     case Keys.D3:
                         if (!e.Control)
-                            btnTertiaryPanel_Click(new object(), EventArgs.Empty);
+                            btnTertiaryPanel_Click(null, EventArgs.Empty);
                         break;
                     // Campain Page
                     case Keys.D4:
                         if (!e.Control)
-                            btnCampainPanel_Click(new object(), EventArgs.Empty);
+                            btnCampainPanel_Click(null, EventArgs.Empty);
                         break;
                 }
             }
@@ -1320,40 +1228,34 @@ namespace MyCharacterSheet
         /// =========================================
         private void MainPage_Resize(object sender, EventArgs e)
         {
-            float mod = 1.25f;
-            float ratio = Size.Width / (OriginalSize.Width + 0f);
-            
             FormatInputBoxes();
-            setTabPanel();
+            SetTabPanel();
             MenuPanel.Width = Size.Width;
             oSavePanel.Location = new Point(Size.Width - SAVE_X_OFFSET, Size.Height - SAVE_Y_OFFSET);
 
-            if (ratio != float.PositiveInfinity)
+            if (Ratio != float.PositiveInfinity)
             {
-                oSecondaryPage.ResizeText(mod, ratio);
-                oTertiaryPage.ResizeText(mod, ratio);
-                oCampainPage.ResizeText(mod, ratio);
+                oSecondaryPage.ResizeText();
+                oTertiaryPage.ResizeText();
+                oCampainPage.ResizeText();
 
-                //Resize Labels
-                for (int i = 0; i < oLabels.Count; i++)
-                {
-                    oLabels[i].Font = new Font(oLabels[i].Font.FontFamily, oLabelSizes[i] * ratio, oLabels[i].Font.Style);
-                }
-
-                //Resize Currency Input
-                oInputCP.Font = new Font(oInputCP.Font.FontFamily, CurrencySize * (ratio == 1 ? ratio : (ratio / mod)), oInputCP.Font.Style);
-                oInputSP.Font = new Font(oInputCP.Font.FontFamily, CurrencySize * (ratio == 1 ? ratio : (ratio / mod)), oInputCP.Font.Style);
-                oInputEP.Font = new Font(oInputCP.Font.FontFamily, CurrencySize * (ratio == 1 ? ratio : (ratio / mod)), oInputCP.Font.Style);
-                oInputGP.Font = new Font(oInputCP.Font.FontFamily, CurrencySize * (ratio == 1 ? ratio : (ratio / mod)), oInputCP.Font.Style);
-                oInputPP.Font = new Font(oInputCP.Font.FontFamily, CurrencySize * (ratio == 1 ? ratio : (ratio / mod)), oInputCP.Font.Style);
+                ResizeLabels();
 
                 //Resize Weapon/Ammo Headers
-                oWeaponDataGrid.ColumnHeadersDefaultCellStyle.Font = new Font(oWeaponDataGrid.ColumnHeadersDefaultCellStyle.Font.FontFamily, HeaderSize * (ratio == 1 ? ratio : (ratio / mod)), oWeaponDataGrid.ColumnHeadersDefaultCellStyle.Font.Style);
-                oAmmoGridView.ColumnHeadersDefaultCellStyle.Font = new Font(oAmmoGridView.ColumnHeadersDefaultCellStyle.Font.FontFamily, HeaderSize * (ratio == 1 ? ratio : (ratio / mod)), oAmmoGridView.ColumnHeadersDefaultCellStyle.Font.Style);
+                oWeaponDataGrid.ColumnHeadersDefaultCellStyle.Font = new Font(oWeaponDataGrid.ColumnHeadersDefaultCellStyle.Font.FontFamily, HeaderSize * (Ratio == 1 ? Ratio : (Ratio / SIZE_MOD)), oWeaponDataGrid.ColumnHeadersDefaultCellStyle.Font.Style);
+                oAmmoGridView.ColumnHeadersDefaultCellStyle.Font = new Font(oAmmoGridView.ColumnHeadersDefaultCellStyle.Font.FontFamily, HeaderSize * (Ratio == 1 ? Ratio : (Ratio / SIZE_MOD)), oAmmoGridView.ColumnHeadersDefaultCellStyle.Font.Style);
 
                 //Resize Weapon/Ammo Rows
-                oWeaponDataGrid.DefaultCellStyle.Font = new Font(oWeaponDataGrid.DefaultCellStyle.Font.FontFamily, RowSize * (ratio == 1 ? ratio : (ratio / mod)), oWeaponDataGrid.Font.Style);
-                oAmmoGridView.DefaultCellStyle.Font = new Font(oAmmoGridView.DefaultCellStyle.Font.FontFamily, RowSize * (ratio == 1 ? ratio : (ratio / mod)), oAmmoGridView.Font.Style);
+                oWeaponDataGrid.DefaultCellStyle.Font = new Font(oWeaponDataGrid.DefaultCellStyle.Font.FontFamily, RowSize * (Ratio == 1 ? Ratio : (Ratio / SIZE_MOD)), oWeaponDataGrid.Font.Style);
+                oAmmoGridView.DefaultCellStyle.Font = new Font(oAmmoGridView.DefaultCellStyle.Font.FontFamily, RowSize * (Ratio == 1 ? Ratio : (Ratio / SIZE_MOD)), oAmmoGridView.Font.Style);
+
+                //Resize checkboxes
+                checkBox1.Font = new Font(checkBox1.Font.FontFamily, CheckBoxSize * (Ratio == 1 ? Ratio : (Ratio / SIZE_MOD)), checkBox1.Font.Style);
+                checkBox2.Font = new Font(checkBox2.Font.FontFamily, CheckBoxSize * (Ratio == 1 ? Ratio : (Ratio / SIZE_MOD)), checkBox2.Font.Style);
+                checkBox3.Font = new Font(checkBox3.Font.FontFamily, CheckBoxSize * (Ratio == 1 ? Ratio : (Ratio / SIZE_MOD)), checkBox3.Font.Style);
+                checkBox4.Font = new Font(checkBox4.Font.FontFamily, CheckBoxSize * (Ratio == 1 ? Ratio : (Ratio / SIZE_MOD)), checkBox4.Font.Style);
+                checkBox5.Font = new Font(checkBox5.Font.FontFamily, CheckBoxSize * (Ratio == 1 ? Ratio : (Ratio / SIZE_MOD)), checkBox5.Font.Style);
+                checkBox6.Font = new Font(checkBox6.Font.FontFamily, CheckBoxSize * (Ratio == 1 ? Ratio : (Ratio / SIZE_MOD)), checkBox6.Font.Style);
             }
         }
 
@@ -1450,7 +1352,7 @@ namespace MyCharacterSheet
             {
                 AutosaveTick = 1;
 
-                if (!Program.FileLocation.Equals(Constants.NEW_FILE))
+                if (!Program.FileLocation.Equals(NEW_FILE))
                 {
                     Save();
                     ShowSavePopup();
@@ -1499,10 +1401,10 @@ namespace MyCharacterSheet
         /// =========================================
         private void oInputHP_KeyDown(object sender, KeyEventArgs e)
         {
-            int hp, temp, damage;
-
             if (e.KeyCode == Keys.Return)
             {
+                int hp, temp, damage;
+
                 e.SuppressKeyPress = true;
 
                 if (int.TryParse(oInputHP.Text, out hp))
@@ -1570,382 +1472,12 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// oInputCP_KeyPress()
-        /// =========================================
-        private void oInputCP_KeyDown(object sender, KeyEventArgs e)
-        {
-            int cp;
-
-            if (e.KeyCode == Keys.Return)
-            {
-                e.SuppressKeyPress = true;
-                oInputCP.Text = TrimLeadingZero(oInputCP.Text);
-
-                if (int.TryParse(oInputCP.Text, out cp))
-                {
-                    if (!Drawing)
-                    {
-                        Program.Modified = true;
-                    }
-
-                    Program.Character.CP = cp;
-                    oGoldValue.Text = Program.Character.TotalGold + "";
-                }
-                else
-                {
-                    oInputCP.Text = Program.Character.CP + "";
-                }
-            }
-        }
-
-        /// =========================================
-        /// oInputSP_KeyPress()
-        /// =========================================
-        private void oInputSP_KeyDown(object sender, KeyEventArgs e)
-        {
-            int sp;
-
-            if (e.KeyCode == Keys.Return)
-            {
-                e.SuppressKeyPress = true;
-                oInputSP.Text = TrimLeadingZero(oInputSP.Text);
-
-                if (int.TryParse(oInputSP.Text, out sp))
-                {
-                    if (!Drawing)
-                    {
-                        Program.Modified = true;
-                    }
-
-                    Program.Character.SP = sp;
-                    oGoldValue.Text = Program.Character.TotalGold + "";
-                }
-                else
-                {
-                    oInputSP.Text = Program.Character.SP + "";
-                }
-            }
-        }
-
-        /// =========================================
-        /// oInputEP_KeyPress()
-        /// =========================================
-        private void oInputEP_KeyDown(object sender, KeyEventArgs e)
-        {
-            int ep;
-
-            if (e.KeyCode == Keys.Return)
-            {
-                e.SuppressKeyPress = true;
-                oInputEP.Text = TrimLeadingZero(oInputEP.Text);
-
-                if (int.TryParse(oInputEP.Text, out ep))
-                {
-                    if (!Drawing)
-                    {
-                        Program.Modified = true;
-                    }
-
-                    Program.Character.EP = ep;
-                    oGoldValue.Text = Program.Character.TotalGold + "";
-                }
-                else
-                {
-                    oInputEP.Text = Program.Character.EP + "";
-                }
-            }
-        }
-
-        /// =========================================
-        /// oInputGP_KeyPress()
-        /// =========================================
-        private void oInputGP_KeyDown(object sender, KeyEventArgs e)
-        {
-            int gp;
-
-            if (e.KeyCode == Keys.Return)
-            {
-                e.SuppressKeyPress = true;
-                oInputGP.Text = TrimLeadingZero(oInputGP.Text);
-
-                if (int.TryParse(oInputGP.Text, out gp))
-                {
-                    if (!Drawing)
-                    {
-                        Program.Modified = true;
-                    }
-
-                    Program.Character.GP = gp;
-                    oGoldValue.Text = Program.Character.TotalGold + "";
-                }
-                else
-                {
-                    oInputGP.Text = Program.Character.GP + "";
-                }
-            }
-        }
-
-        /// =========================================
-        /// oInputPP_KeyPress()
-        /// =========================================
-        private void oInputPP_KeyDown(object sender, KeyEventArgs e)
-        {
-            int pp;
-
-            if (e.KeyCode == Keys.Return)
-            {
-                e.SuppressKeyPress = true;
-                oInputPP.Text = TrimLeadingZero(oInputPP.Text);
-
-                if (int.TryParse(oInputPP.Text, out pp))
-                {
-                    if (!Drawing)
-                    {
-                        Program.Modified = true;
-                    }
-
-                    Program.Character.PP = pp;
-                    oGoldValue.Text = Program.Character.TotalGold + "";
-                }
-                else
-                {
-                    oInputPP.Text = Program.Character.PP + "";
-                }
-            }
-        }
-
-        /// =========================================
         /// oInputHP_TextChanged()
         /// =========================================
         private void oInputHP_TextChanged(object sender, EventArgs e)
         {
             Program.Modified = true;
             Invalidate();
-        }
-
-        /// =========================================
-        /// oInputCP_Enter()
-        /// =========================================
-        private void oInputCP_Enter(object sender, EventArgs e)
-        {
-            Program.Typing = true;
-        }
-
-        /// =========================================
-        /// oInputSP_Enter()
-        /// =========================================
-        private void oInputSP_Enter(object sender, EventArgs e)
-        {
-            Program.Typing = true;
-        }
-
-        /// =========================================
-        /// oInputEP_Enter()
-        /// =========================================
-        private void oInputEP_Enter(object sender, EventArgs e)
-        {
-            Program.Typing = true;
-        }
-
-        /// =========================================
-        /// oInputGP_Enter()
-        /// =========================================
-        private void oInputGP_Enter(object sender, EventArgs e)
-        {
-            Program.Typing = true;
-        }
-
-        /// =========================================
-        /// oInputPP_Enter()
-        /// =========================================
-        private void oInputPP_Enter(object sender, EventArgs e)
-        {
-            Program.Typing = true;
-        }
-
-        /// =========================================
-        /// oInputCP_Leave()
-        /// =========================================
-        private void oInputCP_Leave(object sender, EventArgs e)
-        {
-            int cp;
-
-            oInputCP.Text = TrimLeadingZero(oInputCP.Text);
-
-            if (int.TryParse(oInputCP.Text, out cp))
-            {
-                if (!Drawing)
-                {
-                    Program.Modified = true;
-                }
-
-                Program.Character.CP = cp;
-                oGoldValue.Text = Program.Character.TotalGold + "";
-            }
-            else
-            {
-                oInputCP.Text = Program.Character.CP + "";
-            }
-
-            Program.Typing = false;
-        }
-
-        /// =========================================
-        /// oInputSP_Leave()
-        /// =========================================
-        private void oInputSP_Leave(object sender, EventArgs e)
-        {
-            int sp;
-
-            oInputSP.Text = TrimLeadingZero(oInputSP.Text);
-
-            if (int.TryParse(oInputSP.Text, out sp))
-            {
-                if (!Drawing)
-                {
-                    Program.Modified = true;
-                }
-
-                Program.Character.SP = sp;
-                oGoldValue.Text = Program.Character.TotalGold + "";
-            }
-            else
-            {
-                oInputSP.Text = Program.Character.SP + "";
-            }
-
-            Program.Typing = false;
-        }
-
-        /// =========================================
-        /// oInputEP_Leave()
-        /// =========================================
-        private void oInputEP_Leave(object sender, EventArgs e)
-        {
-            int ep;
-
-            oInputEP.Text = TrimLeadingZero(oInputEP.Text);
-
-            if (int.TryParse(oInputEP.Text, out ep))
-            {
-                if (!Drawing)
-                {
-                    Program.Modified = true;
-                }
-
-                Program.Character.EP = ep;
-                oGoldValue.Text = Program.Character.TotalGold + "";
-            }
-            else
-            {
-                oInputEP.Text = Program.Character.EP + "";
-            }
-
-            Program.Typing = false;
-        }
-
-        /// =========================================
-        /// oInputGP_Leave()
-        /// =========================================
-        private void oInputGP_Leave(object sender, EventArgs e)
-        {
-            int gp;
-
-            oInputGP.Text = TrimLeadingZero(oInputGP.Text);
-
-            if (int.TryParse(oInputGP.Text, out gp))
-            {
-                if (!Drawing)
-                {
-                    Program.Modified = true;
-                }
-
-                Program.Character.GP = gp;
-                oGoldValue.Text = Program.Character.TotalGold + "";
-            }
-            else
-            {
-                oInputGP.Text = Program.Character.GP + "";
-            }
-
-            Program.Typing = false;
-        }
-
-        /// =========================================
-        /// oInputPP_Leave()
-        /// =========================================
-        private void oInputPP_Leave(object sender, EventArgs e)
-        {
-            int pp;
-
-            oInputPP.Text = TrimLeadingZero(oInputPP.Text);
-
-            if (int.TryParse(oInputPP.Text, out pp))
-            {
-                if (!Drawing)
-                {
-                    Program.Modified = true;
-                }
-
-                Program.Character.PP = pp;
-                oGoldValue.Text = Program.Character.TotalGold + "";
-            }
-            else
-            {
-                oInputPP.Text = Program.Character.PP + "";
-            }
-
-            Program.Typing = false;
-        }
-
-        /// =========================================
-        /// oPanelCP_Click()
-        /// =========================================
-        private void oPanelCP_Click(object sender, EventArgs e)
-        {
-            oInputCP.Select();
-            oInputCP.SelectionStart = oInputCP.Text.Length;
-            oInputCP.SelectionLength = 0;
-        }
-
-        /// =========================================
-        /// oPanelSP_Click()
-        /// =========================================
-        private void oPanelSP_Click(object sender, EventArgs e)
-        {
-            oInputSP.Select();
-            oInputSP.SelectionStart = oInputSP.Text.Length;
-            oInputSP.SelectionLength = 0;
-        }
-
-        /// =========================================
-        /// oInputEP_Click()
-        /// =========================================
-        private void oPanelEP_Click(object sender, EventArgs e)
-        {
-            oInputEP.Select();
-            oInputEP.SelectionStart = oInputEP.Text.Length;
-            oInputEP.SelectionLength = 0;
-        }
-
-        /// =========================================
-        /// oInputGP_Click()
-        /// =========================================
-        private void oPanelGP_Click(object sender, EventArgs e)
-        {
-            oInputGP.Select();
-            oInputGP.SelectionStart = oInputGP.Text.Length;
-            oInputGP.SelectionLength = 0;
-        }
-
-        /// =========================================
-        /// oInputPP_Click()
-        /// =========================================
-        private void oPanelPP_Click(object sender, EventArgs e)
-        {
-            oInputPP.Select();
-            oInputPP.SelectionStart = oInputPP.Text.Length;
-            oInputPP.SelectionLength = 0;
         }
 
         #endregion
@@ -1959,10 +1491,10 @@ namespace MyCharacterSheet
         {
             Sounds.ButtonClick();
 
-            btnPrimary.BackColor = Constants.DarkBlue;
-            btnSecondary.BackColor = Constants.DarkGrey;
-            btnTertiary.BackColor = Constants.DarkGrey;
-            btnCampain.BackColor = Constants.DarkGrey;
+            btnPrimary.BackColor = DarkBlue;
+            btnSecondary.BackColor = DarkGrey;
+            btnTertiary.BackColor = DarkGrey;
+            btnCampain.BackColor = DarkGrey;
 
             oSecondaryPage.Visible = false;
             oTertiaryPage.Visible = false;
@@ -1980,16 +1512,18 @@ namespace MyCharacterSheet
         {
             Sounds.ButtonClick();
 
-            btnPrimary.BackColor = Constants.DarkGrey;
-            btnSecondary.BackColor = Constants.DarkBlue;
-            btnTertiary.BackColor = Constants.DarkGrey;
-            btnCampain.BackColor = Constants.DarkGrey;
+            btnPrimary.BackColor = DarkGrey;
+            btnSecondary.BackColor = DarkBlue;
+            btnTertiary.BackColor = DarkGrey;
+            btnCampain.BackColor = DarkGrey;
 
             oPrimaryTable.Visible = false;
             oTertiaryPage.Visible = false;
             oCampainPage.Visible = false;
             oSecondaryPage.Visible = true;
             oSecondaryPage.DefaultFocus();
+
+            oSecondaryPage.FormatInputBoxes();
         }
 
         /// =========================================
@@ -1999,10 +1533,10 @@ namespace MyCharacterSheet
         {
             Sounds.ButtonClick();
 
-            btnPrimary.BackColor = Constants.DarkGrey;
-            btnSecondary.BackColor = Constants.DarkGrey;
-            btnTertiary.BackColor = Constants.DarkBlue;
-            btnCampain.BackColor = Constants.DarkGrey;
+            btnPrimary.BackColor = DarkGrey;
+            btnSecondary.BackColor = DarkGrey;
+            btnTertiary.BackColor = DarkBlue;
+            btnCampain.BackColor = DarkGrey;
 
             oPrimaryTable.Visible = false;
             oSecondaryPage.Visible = false;
@@ -2018,10 +1552,10 @@ namespace MyCharacterSheet
         {
             Sounds.ButtonClick();
 
-            btnPrimary.BackColor = Constants.DarkGrey;
-            btnSecondary.BackColor = Constants.DarkGrey;
-            btnTertiary.BackColor = Constants.DarkGrey;
-            btnCampain.BackColor = Constants.DarkBlue;
+            btnPrimary.BackColor = DarkGrey;
+            btnSecondary.BackColor = DarkGrey;
+            btnTertiary.BackColor = DarkGrey;
+            btnCampain.BackColor = DarkBlue;
 
             oPrimaryTable.Visible = false;
             oSecondaryPage.Visible = false;
@@ -2033,6 +1567,39 @@ namespace MyCharacterSheet
         #endregion
 
         #region Hit Dice Events
+
+        /// =========================================
+        /// oSpent_DoubleClick()
+        /// =========================================
+        private void oSpent_DoubleClick(object sender, EventArgs e)
+        {
+            if ((Program.Character.Spent + 1) <= Program.Character.Pool)
+            {
+                Program.Character.Spent++;
+                Program.Modified = true;
+                Sounds.ButtonClick();
+
+                if (Program.Character.Spent == Program.Character.Pool)
+                {
+                    oSpent.Cursor = Cursors.Default;
+                }
+
+                Invalidate();
+            }
+        }
+
+        /// =========================================
+        /// oSpent_MouseEnter()
+        /// =========================================
+        private void oSpent_MouseEnter(object sender, EventArgs e)
+        {
+            if ((Program.Character.Spent + 1) <= Program.Character.Pool)
+            {
+                oSpent.Cursor = Cursors.Hand;
+            }
+            else
+                oSpent.Cursor = Cursors.Default;
+        }
 
         /// =========================================
         /// oSpentD6_DoubleClick()
@@ -2170,6 +1737,64 @@ namespace MyCharacterSheet
 
         #region DataGrid Events
 
+        // =========================================
+        /// oWeaponDataGrid_Sorted()
+        /// =========================================
+        private void oWeaponDataGrid_Sorted(object sender, EventArgs e)
+        {
+            int index;
+            string rowID;
+            Weapon item;
+
+            // Sort each item
+            for (int i = 0; i < oWeaponDataGrid.Rows.Count; i++)
+            {
+                rowID = oWeaponDataGrid.Rows[i].Tag as string;
+
+                // Check if already in correct position 
+                if (!rowID.Equals(Program.Character.oWeapons[i].ID))
+                {
+                    index = Program.Character.GetWeaponIndex(rowID);
+                    item = Program.Character.oWeapons[index];
+
+                    Program.Character.oWeapons.RemoveAt(index);
+                    Program.Character.oWeapons.Insert(index, Program.Character.oWeapons[i]);
+
+                    Program.Character.oWeapons.RemoveAt(i);
+                    Program.Character.oWeapons.Insert(i, item);
+                }
+            }
+        }
+
+        /// =========================================
+        /// oAmmoGridView_Sorted()
+        /// =========================================
+        private void oAmmoGridView_Sorted(object sender, EventArgs e)
+        {
+            int index;
+            string rowID;
+            Ammunition item;
+
+            // Sort each item
+            for (int i = 0; i < oAmmoGridView.Rows.Count; i++)
+            {
+                rowID = oAmmoGridView.Rows[i].Tag as string;
+
+                // Check if already in correct position 
+                if (!rowID.Equals(Program.Character.oAmmo[i].ID))
+                {
+                    index = Program.Character.GetAmmoIndex(rowID);
+                    item = Program.Character.oAmmo[index];
+
+                    Program.Character.oAmmo.RemoveAt(index);
+                    Program.Character.oAmmo.Insert(index, Program.Character.oAmmo[i]);
+
+                    Program.Character.oAmmo.RemoveAt(i);
+                    Program.Character.oAmmo.Insert(i, item);
+                }
+            }
+        }
+
         /// =========================================
         /// oWeaponDataGrid_CellValueChanged()
         /// =========================================
@@ -2191,12 +1816,23 @@ namespace MyCharacterSheet
         /// =========================================
         private void oWeaponDataGrid_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oWeaponDataGrid.RowCount-1)
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oWeaponDataGrid.RowCount)
             {
                 Rectangle rect = oWeaponDataGrid.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
                 Row = e.RowIndex;
-                oWeaponDeleteRowMenu.Show(oWeaponDataGrid ,new Point(rect.X + e.X + CONTEXT_OFFSET, rect.Y + e.Y + CONTEXT_OFFSET));
+                oWeaponContextMenu.Show(oWeaponDataGrid ,new Point(rect.X + e.X + OFFSET, rect.Y + e.Y + OFFSET));
             }
+        }
+
+        /// =========================================
+        /// deleteRowToolStripMenuItem_Click()
+        /// =========================================
+        private void weaponEditToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.Modified = true;
+
+            oTablePage.ShowPane(Tables.Weapons, Program.Character.oWeapons[Row]);
+            FillWeapons();
         }
 
         /// =========================================
@@ -2205,6 +1841,8 @@ namespace MyCharacterSheet
         private void deleteRowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Program.Modified = true;
+
+            Program.Character.RemoveWeaponItem(oWeaponDataGrid.Rows[Row].Tag as string);
             oWeaponDataGrid.Rows.RemoveAt(Row);
         }
 
@@ -2213,12 +1851,22 @@ namespace MyCharacterSheet
         /// =========================================
         private void oAmmoGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oAmmoGridView.RowCount-1)
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oAmmoGridView.RowCount)
             {
                 Rectangle rect = oAmmoGridView.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
                 Row = e.RowIndex;
-                oAmmoDeleteRowMenu.Show(oAmmoGridView, new Point(rect.X + e.X + CONTEXT_OFFSET, rect.Y + e.Y + CONTEXT_OFFSET));
+                oAmmoContextMenu.Show(oAmmoGridView, new Point(rect.X + e.X + OFFSET, rect.Y + e.Y + OFFSET));
             }
+        }
+
+        /// =========================================
+        /// addAmmoToolStripMenuItem_Click()
+        /// =========================================
+        private void addAmmoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.Modified = true;
+            oTablePage.ShowPane(Tables.Ammunition, Program.Character.oAmmo[Row]);
+            FillAmmo();
         }
 
         /// =========================================
@@ -2227,30 +1875,9 @@ namespace MyCharacterSheet
         private void deleteRowToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Program.Modified = true;
+
+            Program.Character.RemoveAmmoItem(oAmmoGridView.Rows[Row].Tag as string);
             oAmmoGridView.Rows.RemoveAt(Row);
-        }
-
-        /// =========================================
-        /// oWeaponDataGrid_CellEnter()
-        /// =========================================
-        private void oWeaponDataGrid_CellEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            Program.Typing = true;
-
-            //Open dropdown menu when clicked
-            if (e.ColumnIndex == DmgType.Index || e.ColumnIndex == Ability.Index)
-            {
-                oWeaponDataGrid.CurrentCell = oWeaponDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                oWeaponDataGrid.BeginEdit(true);
-            }
-        }
-
-        /// =========================================
-        /// oWeaponDataGrid_CellLeave()
-        /// =========================================
-        private void oWeaponDataGrid_CellLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            Program.Typing = false;
         }
 
         /// =========================================
@@ -2265,6 +1892,34 @@ namespace MyCharacterSheet
             {
                 oAmmoGridView.CurrentCell = oAmmoGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 oAmmoGridView.BeginEdit(true);
+            }
+        }
+
+        /// =========================================
+        /// oAmmoGridView_CellContentClick()
+        /// ========================================= 
+        private void oAmmoGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == oIncrement.Index || e.ColumnIndex == oDecrement.Index)
+            {
+                const int MIN = 0, MAX = 100;
+
+                string ID = oAmmoGridView.Rows[e.RowIndex].Tag.ToString();
+                int dataGridUsed    = int.Parse((string)oAmmoGridView.Rows[e.RowIndex].Cells[Used.Index].Value);
+                int quantity        = int.Parse((string)oAmmoGridView.Rows[e.RowIndex].Cells[Qty.Index].Value);
+
+                if (e.ColumnIndex == oIncrement.Index && dataGridUsed < MAX && dataGridUsed < quantity)
+                {
+                    dataGridUsed++;
+                    Program.Character.IncrementAmmoQuantity(ID);
+                }
+                else if (e.ColumnIndex == oDecrement.Index && dataGridUsed > MIN)
+                {
+                    dataGridUsed--;
+                    Program.Character.DecrementAmmoQuantity(ID);
+                }
+
+                oAmmoGridView.Rows[e.RowIndex].Cells[Used.Index].Value = dataGridUsed.ToString();
             }
         }
 
@@ -2293,35 +1948,67 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// oWeaponDeleteRowMenu_MouseEnter()
+        /// weaponEditToolStripMenuItem_MouseEnter()
         /// =========================================
-        private void oWeaponDeleteRowMenu_MouseEnter(object sender, EventArgs e)
+        private void weaponEditToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
-            oWeaponDeleteRowMenu.ForeColor = Color.Black;
+            weaponEditToolStripMenuItem.ForeColor = Color.Black;
         }
 
         /// =========================================
-        /// oWeaponDeleteRowMenu_MouseLeave()
+        /// weaponEditToolStripMenuItem_MouseLeave()
         /// =========================================
-        private void oWeaponDeleteRowMenu_MouseLeave(object sender, EventArgs e)
+        private void weaponEditToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
-            oWeaponDeleteRowMenu.ForeColor = Color.White;
+            weaponEditToolStripMenuItem.ForeColor = Color.White;
         }
 
         /// =========================================
-        /// oAmmoDeleteRowMenu_MouseEnter()
+        /// weaponDeleteToolStripMenuItem_MouseEnter()
         /// =========================================
-        private void oAmmoDeleteRowMenu_MouseEnter(object sender, EventArgs e)
+        private void weaponDeleteToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
-            oAmmoDeleteRowMenu.ForeColor = Color.Black;
+            weaponDeleteToolStripMenuItem.ForeColor = Color.Black;
         }
 
         /// =========================================
-        /// oAmmoDeleteRowMenu_MouseLeave()
+        /// weaponDeleteToolStripMenuItem_MouseLeave()
         /// =========================================
-        private void oAmmoDeleteRowMenu_MouseLeave(object sender, EventArgs e)
+        private void weaponDeleteToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
-            oAmmoDeleteRowMenu.ForeColor = Color.White;
+            weaponDeleteToolStripMenuItem.ForeColor = Color.White;
+        }
+
+        /// =========================================
+        /// addAmmoToolStripMenuItem_MouseEnter()
+        /// =========================================
+        private void addAmmoToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            editAmmoToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// addAmmoToolStripMenuItem_MouseLeave()
+        /// =========================================
+        private void addAmmoToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            editAmmoToolStripMenuItem.ForeColor = Color.White;
+        }
+
+        /// =========================================
+        /// ammoDeleteRowToolStripMenuItem_MouseEnter()
+        /// =========================================
+        private void ammoDeleteRowToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            ammoDeleteRowToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// ammoDeleteRowToolStripMenuItem_MouseLeave()
+        /// =========================================
+        private void ammoDeleteRowToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            ammoDeleteRowToolStripMenuItem.ForeColor = Color.White;
         }
 
         /// =========================================
@@ -2345,14 +2032,23 @@ namespace MyCharacterSheet
         {
             rowIndexFromMouseDown = oAmmoGridView.HitTest(e.X, e.Y).RowIndex;
 
-            if (rowIndexFromMouseDown != -1)
+            switch (e.Button)
             {
-                Size dragSize = SystemInformation.DragSize;
-                dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
-            }
-            else
-            {
-                dragBoxFromMouseDown = Rectangle.Empty;
+                case MouseButtons.Left:
+                    if (rowIndexFromMouseDown != -1)
+                    {
+                        Size dragSize = SystemInformation.DragSize;
+                        dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
+                    }
+                    else
+                    {
+                        dragBoxFromMouseDown = Rectangle.Empty;
+                    }
+                    break;
+                case MouseButtons.Right:
+                    if (rowIndexFromMouseDown == -1)
+                        oAddAmmoContextMenu.Show(oAmmoGridView, new Point(e.X + OFFSET, e.Y + OFFSET));
+                    break;
             }
         }
 
@@ -2369,6 +2065,8 @@ namespace MyCharacterSheet
         /// ========================================= 
         private void oAmmoGridView_DragDrop(object sender, DragEventArgs e)
         {
+            Ammunition item;
+
             if (oAmmoGridView.Rows.Count > 1)
             {
                 Point clientPoint = oAmmoGridView.PointToClient(new Point(e.X, e.Y));
@@ -2381,14 +2079,20 @@ namespace MyCharacterSheet
                     DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
-                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oAmmoGridView.Rows.Count - 1)
-                        rowIndexOfItemUnderMouseToDrop = oAmmoGridView.Rows.Count - 2;
+                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oAmmoGridView.Rows.Count)
+                        rowIndexOfItemUnderMouseToDrop = oAmmoGridView.Rows.Count - 1;
 
                     if (rowIndexFromMouseDown != rowIndexOfItemUnderMouseToDrop)
                         Program.Modified = true;
 
+                    // Move list item
                     oAmmoGridView.Rows.RemoveAt(rowIndexFromMouseDown);
                     oAmmoGridView.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
+
+                    // Move data item
+                    item = Program.Character.oAmmo[rowIndexFromMouseDown];
+                    Program.Character.oAmmo.RemoveAt(rowIndexFromMouseDown);
+                    Program.Character.oAmmo.Insert(rowIndexOfItemUnderMouseToDrop, item);
                 }
             }
         }
@@ -2414,14 +2118,23 @@ namespace MyCharacterSheet
         {
             rowIndexFromMouseDown = oWeaponDataGrid.HitTest(e.X, e.Y).RowIndex;
 
-            if (rowIndexFromMouseDown != -1)
+            switch (e.Button)
             {
-                Size dragSize = SystemInformation.DragSize;
-                dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
-            }
-            else
-            {
-                dragBoxFromMouseDown = Rectangle.Empty;
+                case MouseButtons.Left:
+                    if (rowIndexFromMouseDown != -1)
+                    {
+                        Size dragSize = SystemInformation.DragSize;
+                        dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
+                    }
+                    else
+                    {
+                        dragBoxFromMouseDown = Rectangle.Empty;
+                    }
+                    break;
+                case MouseButtons.Right:
+                    if (rowIndexFromMouseDown == -1)
+                        oAddWeaponContextMenu.Show(oWeaponDataGrid, new Point(e.X + OFFSET, e.Y + OFFSET));
+                    break;
             }
         }
 
@@ -2438,6 +2151,8 @@ namespace MyCharacterSheet
         /// ========================================= 
         private void oWeaponDataGrid_DragDrop(object sender, DragEventArgs e)
         {
+            Weapon item;
+
             if (oWeaponDataGrid.Rows.Count > 1)
             {
                 Point clientPoint = oWeaponDataGrid.PointToClient(new Point(e.X, e.Y));
@@ -2450,16 +2165,72 @@ namespace MyCharacterSheet
                     DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
-                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oWeaponDataGrid.Rows.Count - 1)
-                        rowIndexOfItemUnderMouseToDrop = oWeaponDataGrid.Rows.Count - 2;
+                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oWeaponDataGrid.Rows.Count)
+                        rowIndexOfItemUnderMouseToDrop = oWeaponDataGrid.Rows.Count - 1;
 
                     if (rowIndexFromMouseDown != rowIndexOfItemUnderMouseToDrop)
                         Program.Modified = true;
 
+                    // Move list item
                     oWeaponDataGrid.Rows.RemoveAt(rowIndexFromMouseDown);
                     oWeaponDataGrid.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
+
+                    // Move data item
+                    item = Program.Character.oWeapons[rowIndexFromMouseDown];
+                    Program.Character.oWeapons.RemoveAt(rowIndexFromMouseDown);
+                    Program.Character.oWeapons.Insert(rowIndexOfItemUnderMouseToDrop, item);
                 }
             }
+        }
+
+        /// =========================================
+        /// addWeaponToolStripMenuItem_Click()
+        /// ========================================= 
+        private void addWeaponToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            oTablePage.ShowPane(Tables.Weapons);
+            FillWeapons();
+        }
+
+        /// =========================================
+        /// addWeaponToolStripMenuItem_MouseEnter()
+        /// ========================================= 
+        private void addWeaponToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            addWeaponToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// addWeaponToolStripMenuItem_MouseLeave()
+        /// ========================================= 
+        private void addWeaponToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            addWeaponToolStripMenuItem.ForeColor = Color.White;
+        }
+
+        /// =========================================
+        /// addAmmoToolStripMenuItem_Click_1()
+        /// ========================================= 
+        private void addAmmoToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            oTablePage.ShowPane(Tables.Ammunition);
+            FillAmmo();
+        }
+
+        /// =========================================
+        /// addAmmoToolStripMenuItem_MouseEnter_1()
+        /// ========================================= 
+        private void addAmmoToolStripMenuItem_MouseEnter_1(object sender, EventArgs e)
+        {
+            addAmmoToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// addAmmoToolStripMenuItem_MouseLeave_1()
+        /// ========================================= 
+        private void addAmmoToolStripMenuItem_MouseLeave_1(object sender, EventArgs e)
+        {
+            addAmmoToolStripMenuItem.ForeColor = Color.White;
         }
 
         #endregion
@@ -2471,7 +2242,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkStrengthP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSavingThrows[0].Proficiency = chkStrengthP.Checked;
+            Program.Character.oSavingThrows[(int)Saves.Strength].Proficiency = chkStrengthP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2485,7 +2256,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkDexterityP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSavingThrows[1].Proficiency = chkDexterityP.Checked;
+            Program.Character.oSavingThrows[(int)Saves.Dexterity].Proficiency = chkDexterityP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2499,7 +2270,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkConstitutionP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSavingThrows[2].Proficiency = chkConstitutionP.Checked;
+            Program.Character.oSavingThrows[(int)Saves.Constitution].Proficiency = chkConstitutionP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2513,7 +2284,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkIntelligenceP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSavingThrows[3].Proficiency = chkIntelligenceP.Checked;
+            Program.Character.oSavingThrows[(int)Saves.Intelligence].Proficiency = chkIntelligenceP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2527,7 +2298,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkWisdomP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSavingThrows[4].Proficiency = chkWisdomP.Checked;
+            Program.Character.oSavingThrows[(int)Saves.Wisdom].Proficiency = chkWisdomP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2541,7 +2312,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkCharismaP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSavingThrows[5].Proficiency = chkCharismaP.Checked;
+            Program.Character.oSavingThrows[(int)Saves.Charisma].Proficiency = chkCharismaP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2555,7 +2326,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkAthleticsP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[0].Proficiency = chkAthleticsP.Checked;
+            Program.Character.oSkills[(int)Skills.Athletics].Proficiency = chkAthleticsP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2569,7 +2340,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkAthleticsE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[0].Expertise = chkAthleticsE.Checked;
+            Program.Character.oSkills[(int)Skills.Athletics].Expertise = chkAthleticsE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2583,7 +2354,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void ckAcrobaticsP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[1].Proficiency = ckAcrobaticsP.Checked;
+            Program.Character.oSkills[(int)Skills.Acrobatics].Proficiency = ckAcrobaticsP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2597,7 +2368,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void ckAcrobaticsE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[1].Expertise = ckAcrobaticsE.Checked;
+            Program.Character.oSkills[(int)Skills.Acrobatics].Expertise = ckAcrobaticsE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2611,7 +2382,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkSleightP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[2].Proficiency = chkSleightP.Checked;
+            Program.Character.oSkills[(int)Skills.SleightOfHand].Proficiency = chkSleightP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2625,7 +2396,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkSleightE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[2].Expertise = chkSleightE.Checked;
+            Program.Character.oSkills[(int)Skills.SleightOfHand].Expertise = chkSleightE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2639,7 +2410,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkStealthP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[3].Proficiency = chkStealthP.Checked;
+            Program.Character.oSkills[(int)Skills.Stealth].Proficiency = chkStealthP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2653,7 +2424,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkStealthE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[3].Expertise = chkStealthE.Checked;
+            Program.Character.oSkills[(int)Skills.Stealth].Expertise = chkStealthE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2667,7 +2438,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkArcanaP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[4].Proficiency = chkArcanaP.Checked;
+            Program.Character.oSkills[(int)Skills.Arcana].Proficiency = chkArcanaP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2681,7 +2452,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkArcanaE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[4].Expertise = chkArcanaE.Checked;
+            Program.Character.oSkills[(int)Skills.Arcana].Expertise = chkArcanaE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2695,7 +2466,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkHistoryP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[5].Proficiency = chkHistoryP.Checked;
+            Program.Character.oSkills[(int)Skills.History].Proficiency = chkHistoryP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2709,7 +2480,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkHistoryE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[5].Expertise = chkHistoryE.Checked;
+            Program.Character.oSkills[(int)Skills.History].Expertise = chkHistoryE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2723,7 +2494,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkInvestigationP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[6].Proficiency = chkInvestigationP.Checked;
+            Program.Character.oSkills[(int)Skills.Investigation].Proficiency = chkInvestigationP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2737,7 +2508,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkInvestigationE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[6].Expertise = chkInvestigationE.Checked;
+            Program.Character.oSkills[(int)Skills.Investigation].Expertise = chkInvestigationE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2751,7 +2522,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkNatureP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[7].Proficiency = chkNatureP.Checked;
+            Program.Character.oSkills[(int)Skills.Nature].Proficiency = chkNatureP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2765,7 +2536,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkNatureE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[7].Expertise = chkNatureE.Checked;
+            Program.Character.oSkills[(int)Skills.Nature].Expertise = chkNatureE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2779,7 +2550,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkReligionP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[8].Proficiency = chkReligionP.Checked;
+            Program.Character.oSkills[(int)Skills.Religion].Proficiency = chkReligionP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2793,7 +2564,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkReligionE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[8].Expertise = chkReligionE.Checked;
+            Program.Character.oSkills[(int)Skills.Religion].Expertise = chkReligionE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2807,7 +2578,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkAnimalP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[9].Proficiency = chkAnimalP.Checked;
+            Program.Character.oSkills[(int)Skills.AnimalHandling].Proficiency = chkAnimalP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2821,7 +2592,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkAnimalE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[9].Expertise = chkAnimalE.Checked;
+            Program.Character.oSkills[(int)Skills.AnimalHandling].Expertise = chkAnimalE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2835,7 +2606,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkInsightP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[10].Proficiency = chkInsightP.Checked;
+            Program.Character.oSkills[(int)Skills.Insight].Proficiency = chkInsightP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2849,7 +2620,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkInsightE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[10].Expertise = chkInsightE.Checked;
+            Program.Character.oSkills[(int)Skills.Insight].Expertise = chkInsightE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2863,7 +2634,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkMedicineP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[11].Proficiency = chkMedicineP.Checked;
+            Program.Character.oSkills[(int)Skills.Medicine].Proficiency = chkMedicineP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2877,7 +2648,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkMedicineE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[11].Expertise = chkMedicineE.Checked;
+            Program.Character.oSkills[(int)Skills.Medicine].Expertise = chkMedicineE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2891,7 +2662,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkPerceptionP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[12].Proficiency = chkPerceptionP.Checked;
+            Program.Character.oSkills[(int)Skills.Perception].Proficiency = chkPerceptionP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2905,7 +2676,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkPerceptionE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[12].Expertise = chkPerceptionE.Checked;
+            Program.Character.oSkills[(int)Skills.Perception].Expertise = chkPerceptionE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2919,7 +2690,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkSurvivalP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[13].Proficiency = chkSurvivalP.Checked;
+            Program.Character.oSkills[(int)Skills.Survival].Proficiency = chkSurvivalP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2933,7 +2704,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkSurvivalE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[13].Expertise = chkSurvivalE.Checked;
+            Program.Character.oSkills[(int)Skills.Survival].Expertise = chkSurvivalE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2947,7 +2718,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkDeceptionP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[14].Proficiency = chkDeceptionP.Checked;
+            Program.Character.oSkills[(int)Skills.Deception].Proficiency = chkDeceptionP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2961,7 +2732,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkDeceptionE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[14].Expertise = chkDeceptionE.Checked;
+            Program.Character.oSkills[(int)Skills.Deception].Expertise = chkDeceptionE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2975,7 +2746,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkIntimidationP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[15].Proficiency = chkIntimidationP.Checked;
+            Program.Character.oSkills[(int)Skills.Intimidation].Proficiency = chkIntimidationP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -2989,7 +2760,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkIntimidationE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[15].Expertise = chkIntimidationE.Checked;
+            Program.Character.oSkills[(int)Skills.Intimidation].Expertise = chkIntimidationE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -3003,7 +2774,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkPerformanceP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[16].Proficiency = chkPerformanceP.Checked;
+            Program.Character.oSkills[(int)Skills.Performance].Proficiency = chkPerformanceP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -3017,7 +2788,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkPerformanceE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[16].Expertise = chkPerformanceE.Checked;
+            Program.Character.oSkills[(int)Skills.Performance].Expertise = chkPerformanceE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -3031,7 +2802,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkPersuasionP_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[17].Proficiency = chkPersuasionP.Checked;
+            Program.Character.oSkills[(int)Skills.Persuasion].Proficiency = chkPersuasionP.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -3045,7 +2816,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void chkPersuasionE_CheckedChanged(object sender, EventArgs e)
         {
-            Program.Character.oSkills[17].Expertise = chkPersuasionE.Checked;
+            Program.Character.oSkills[(int)Skills.Persuasion].Expertise = chkPersuasionE.Checked;
             if (!Drawing)
             {
                 Sounds.ButtonClick();
@@ -3114,6 +2885,15 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
+        /// tablesToolStripMenuItem_Click()
+        /// =========================================
+        private void tablesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Sounds.ButtonClick();
+            OpenTables();
+        }
+
+        /// =========================================
         /// muteToolStripMenuItem_Click()
         /// =========================================
         private void muteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3166,6 +2946,10 @@ namespace MyCharacterSheet
             tmp = Program.Character.HitPoints.SpentD12;
             tmp -= Math.Max(Program.Character.HitPoints.D12 / 2, 1);
             Program.Character.HitPoints.SpentD12 = Math.Max(tmp, 0);
+
+            tmp = Program.Character.Spent;
+            tmp -= Math.Max(Program.Character.Pool / 2, 1);
+            Program.Character.Spent = Math.Max(tmp, 0);
 
             Program.Character.Spellcasting.ResetSpellSlots();
 
@@ -3320,6 +3104,24 @@ namespace MyCharacterSheet
         {
             settingsToolStripMenuItem.ForeColor = Color.White;
             settingsToolStripMenuItem.Image = Properties.Resources.settings_128;
+        }
+
+        /// =========================================
+        /// tablesToolStripMenuItem_MouseEnter()
+        /// =========================================
+        private void tablesToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            tablesToolStripMenuItem.ForeColor = Color.Black;
+            tablesToolStripMenuItem.Image = Properties.Resources.table_selected_128;
+        }
+
+        /// =========================================
+        /// tablesToolStripMenuItem_MouseLeave()
+        /// =========================================
+        private void tablesToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            tablesToolStripMenuItem.ForeColor = Color.White;
+            tablesToolStripMenuItem.Image = Properties.Resources.table_128;
         }
 
         /// =========================================
@@ -3523,83 +3325,6 @@ namespace MyCharacterSheet
                 oSavePanel.Visible = false;
             }
         }
-
-        #endregion
-
-        #region DeathSaves
-
-        /// =========================================
-        /// chkSuccess1_CheckedChanged()
-        /// =========================================
-        private void chkSuccess1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!Drawing)
-            {
-                Sounds.ButtonClick();
-                Program.Modified = true;
-            }
-        }
-
-        /// =========================================
-        /// chkSuccess2_CheckedChanged()
-        /// =========================================
-        private void chkSuccess2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!Drawing)
-            {
-                Sounds.ButtonClick();
-                Program.Modified = true;
-            }
-        }
-
-        /// =========================================
-        /// chkSuccess3_CheckedChanged()
-        /// =========================================
-        private void chkSuccess3_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!Drawing)
-            {
-                Sounds.ButtonClick();
-                Program.Modified = true;
-            }
-        }
-
-        /// =========================================
-        /// chkFailure1_CheckedChanged()
-        /// =========================================
-        private void chkFailure1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!Drawing)
-            {
-                Sounds.ButtonClick();
-                Program.Modified = true;
-            }
-        }
-
-        /// =========================================
-        /// chkFailure2_CheckedChanged()
-        /// =========================================
-        private void chkFailure2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!Drawing)
-            {
-                Sounds.ButtonClick();
-                Program.Modified = true;
-            }
-        }
-
-        /// =========================================
-        /// chkFailure3_CheckedChanged()
-        /// =========================================
-        private void chkFailure3_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!Drawing)
-            {
-                Sounds.ButtonClick();
-                Program.Modified = true;
-            }
-        }
-
 
 
         #endregion

@@ -1,16 +1,18 @@
 ﻿using MyCharacterSheet.Characters;
+using MyCharacterSheet.Lists;
 using MyCharacterSheet.SavingThrowsNamespace;
 using MyCharacterSheet.SkillsNamespace;
 using MyCharacterSheet.Utility;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace MyCharacterSheet.Persistence
 {
+    /// <summary>
+    /// Provides static methods for loading a character sheet from xml.
+    /// </summary>
     public static class Load
     {
 
@@ -27,17 +29,9 @@ namespace MyCharacterSheet.Persistence
                 XElement root = xml.Element("Character");
                 XElement element;
 
-                List<string> spellList = new List<string>();
-
-                string armorType, armorWorn, stealth, shield, conditions, name, speed, senses, hitDice;
-                int armorAC, shieldAC, miscAC, magicAC, maxHP, currentHP, tempHP, success, failure, d6, d8, d10, d12, spentD6, spentD8, spentD10, spentD12;
-                int totalOne, totalTwo, totalThree, totalFour, totalFive, totalSix, totalSeven, totalEight, totalNine, totalPact;
-                int usedOne, usedTwo, usedThree, usedFour, usedFive, usedSix, usedSeven, usedEight, usedNine, usedPact;
-                int level, ac, hp, currHP, strength, dexterity, constitution, intelligence, wisdom, charisma, perception;
-                Pair attack, type, atkBonus, damage, reach, note;
-                PresetPair dmgBonus;
-
-                //Parse Settings
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Settings
+                //-------------------------------------------------------------------------------------------------------
                 element = root.Element("Settings");
                 Settings.MuteState           = bool.Parse(    (string)element.Element("Mute").Attribute("value"));
                 Settings.RememberMute        = bool.Parse(    (string)element.Element("Mute").Attribute("remember"));
@@ -46,8 +40,12 @@ namespace MyCharacterSheet.Persistence
                 Settings.AutosaveEnable      = bool.Parse(    (string)element.Element("AutoSave").Attribute("enabled"));
                 Settings.AutosaveInterval    = int.Parse(     (string)element.Element("AutoSave").Attribute("interval"));
                 Settings.HideAnimalCompanion = bool.Parse(    (string)element.Element("AnimalCompanion").Attribute("hidden"));
+                Settings.UseCoinWeight          = bool.Parse(    (string)element.Element("CoinWeight").Attribute("ignore"));
+                Settings.UseEncumbrance         = bool.Parse(    (string)element.Element("Encumbrance").Attribute("use"));
 
-                //Parse Attributes
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Attributes
+                //-------------------------------------------------------------------------------------------------------
                 element = root.Element("Attributes");
                 character.Strength     = int.Parse((string)element.Element("Strength").Attribute("value"));
                 character.Dexterity    = int.Parse((string)element.Element("Dexterity").Attribute("value"));
@@ -56,7 +54,9 @@ namespace MyCharacterSheet.Persistence
                 character.Wisdom       = int.Parse((string)element.Element("Wisdom").Attribute("value"));
                 character.Charisma     = int.Parse((string)element.Element("Charisma").Attribute("value"));
 
-                //Parse Saving Throws
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Saving Throws
+                //-------------------------------------------------------------------------------------------------------
                 element = root.Element("Proficiency").Element("SavingThrows");
                 character.oSavingThrows.Add(new Strength(    (bool)element.Element("Strength").Attribute("proficiency")));
                 character.oSavingThrows.Add(new Dexterity(   (bool)element.Element("Dexterity").Attribute("proficiency")));
@@ -65,7 +65,9 @@ namespace MyCharacterSheet.Persistence
                 character.oSavingThrows.Add(new Wisdom(      (bool)element.Element("Wisdom").Attribute("proficiency")));
                 character.oSavingThrows.Add(new Charisma(    (bool)element.Element("Charisma").Attribute("proficiency")));
 
-                //Parse Skills
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Skills
+                //-------------------------------------------------------------------------------------------------------
                 element = root.Element("Proficiency").Element("Skills");
                 character.oSkills.Add(new Athletics(     (bool)element.Element("Athletics").Attribute("proficiency"),      (bool)element.Element("Athletics").Attribute("expertise")));
                 character.oSkills.Add(new Acrobatics(    (bool)element.Element("Acrobatics").Attribute("proficiency"),     (bool)element.Element("Acrobatics").Attribute("expertise")));
@@ -86,30 +88,48 @@ namespace MyCharacterSheet.Persistence
                 character.oSkills.Add(new Performance(   (bool)element.Element("Performance").Attribute("proficiency"),    (bool)element.Element("Performance").Attribute("expertise")));
                 character.oSkills.Add(new Persuasion(    (bool)element.Element("Persuasion").Attribute("proficiency"),     (bool)element.Element("Persuasion").Attribute("expertise")));
 
-                //Parse Equipment
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Equipment
+                //-------------------------------------------------------------------------------------------------------
                 element = root.Element("Proficiency").Element("Equipment");
                 character.Armor   = (string)element.Element("Armor").Attribute("proficiency");
                 character.Shields = (string)element.Element("Shields").Attribute("proficiency");
                 character.Weapons = (string)element.Element("Weapons").Attribute("proficiency");
                 character.Tools   = (string)element.Element("Tools").Attribute("proficiency");
 
-                //Parse Details
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Details
+                //-------------------------------------------------------------------------------------------------------
+                string playerClass;
+                int playerLevel;
+
                 element = root.Element("Details");
                 character.Name                   = (string)element.Element("Name").Attribute("value");
                 character.Race                   = (string)element.Element("Race").Attribute("value");
                 character.Background             = (string)element.Element("Background").Attribute("value");
                 character.Alignment              = (string)element.Element("Alignment").Attribute("value");
-                character.Level                  = (int)   element.Element("Level").Attribute("value");
                 character.EXP                    = (int)   element.Element("Experience").Attribute("value");
                 character.Language               = (string)element.Element("Language").Attribute("value");
                 character.InitiativeBonus        = (int)   element.Element("InitiativeBonus").Attribute("value");
-                character.Class                  = (string)element.Element("Class").Attribute("value");
                 character.PassivePerceptionBonus = (int)   element.Element("PerceptionBonus").Attribute("value");
                 character.Movement               = (string)element.Element("Movement").Attribute("value");
                 character.Vision                 = (string)element.Element("Vision").Attribute("value");
 
+                playerClass = (string)element.Element("Class1").Attribute("class");
+                playerLevel = (int)element.Element("Class1").Attribute("level");
+                character.PlayerClass1 = new PlayerClass(playerClass, playerLevel, 0);
 
-                //Parse Appearance
+                playerClass = (string)element.Element("Class2").Attribute("class");
+                playerLevel = (int)element.Element("Class2").Attribute("level");
+                character.PlayerClass2 = new PlayerClass(playerClass, playerLevel, 1);
+
+                playerClass = (string)element.Element("Class3").Attribute("class");
+                playerLevel = (int)element.Element("Class3").Attribute("level");
+                character.PlayerClass3 = new PlayerClass(playerClass, playerLevel, 2);
+
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Appearance
+                //-------------------------------------------------------------------------------------------------------
                 element = root.Element("Appearance");
                 character.Gender     = (string)element.Element("Gender").Attribute("value");
                 character.Age        = (string)element.Element("Age").Attribute("value");
@@ -120,7 +140,9 @@ namespace MyCharacterSheet.Persistence
                 character.EyeColour  = (string)element.Element("EyeColour").Attribute("value");
                 character.Marks      = (string)element.Element("Marks").Attribute("value");
 
-                //Parse Personality
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Personality
+                //-------------------------------------------------------------------------------------------------------
                 element = root.Element("Personality");
                 character.Trait1                = (string)element.Element("Trait1").Attribute("value");
                 character.Trait2                = (string)element.Element("Trait2").Attribute("value");
@@ -130,7 +152,9 @@ namespace MyCharacterSheet.Persistence
                 character.PersonalityBackground = (string)element.Element("Background").Attribute("value");
                 character.PersonalityNotes      = (string)element.Element("Notes").Attribute("value");
 
-                //Parse Wealth
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Wealth
+                //-------------------------------------------------------------------------------------------------------
                 element = root.Element("Wealth");
                 character.CP = (int)element.Element("Copper").Attribute("value");
                 character.SP = (int)element.Element("Silver").Attribute("value");
@@ -138,43 +162,56 @@ namespace MyCharacterSheet.Persistence
                 character.GP = (int)element.Element("Gold").Attribute("value");
                 character.PP = (int)element.Element("Platinum").Attribute("value");
 
-                //Parse Armor Class
+                //-------------------------------------------------------------------------------------------------------
+                // Parse class resource
+                //-------------------------------------------------------------------------------------------------------
+                element = root.Element("ClassResource");
+                character.ClassResource = (string)element.Element("Type").Attribute("value");
+                character.Pool = (int)element.Element("Pool").Attribute("value");
+                character.Spent = (int)element.Element("Spent").Attribute("value");
+
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Armor Class
+                //-------------------------------------------------------------------------------------------------------
+                character.ArmorClass = new ArmorClass();
+
                 element = root.Element("ArmorClass");
-                armorWorn = (string)element.Element("ArmorWorn").Attribute("value");
-                armorType = (string)element.Element("ArmorType").Attribute("value");
-                armorAC   = (int)   element.Element("ArmorAC").Attribute("value");
-                stealth   = (string)element.Element("Stealth").Attribute("value");
-                shield    = (string)element.Element("Shield").Attribute("value");
-                shieldAC  = (int)   element.Element("ShieldAC").Attribute("value");
-                miscAC    = (int)   element.Element("MiscAC").Attribute("value");
-                magicAC   = (int)   element.Element("MagicAC").Attribute("value");
+                character.ArmorClass.ArmorWorn      = (string)element.Element("ArmorWorn").Attribute("value");
+                character.ArmorClass.ArmorType      = (string)element.Element("ArmorType").Attribute("value");
+                character.ArmorClass.ArmorAC        = (int)   element.Element("ArmorAC").Attribute("value");
+                character.ArmorClass.ArmorStrength  = (int)   element.Element("Strength").Attribute("value");
+                character.ArmorClass.ArmorWeight    = (int)   element.Element("ArmorWeight").Attribute("value");
+                character.ArmorClass.ArmorStealth   = (string)element.Element("Stealth").Attribute("value");
+                character.ArmorClass.ShieldType     = (string)element.Element("Shield").Attribute("value");
+                character.ArmorClass.ShieldAC       = (int)   element.Element("ShieldAC").Attribute("value");
+                character.ArmorClass.ShieldWeight   = (int)   element.Element("ShieldWeight").Attribute("value");
+                character.ArmorClass.MiscAC         = (int)   element.Element("MiscAC").Attribute("value");
+                character.ArmorClass.MagicAC        = (int)   element.Element("MagicAC").Attribute("value");
 
-                character.ArmorClass = new ArmorClass(armorWorn, armorType, armorAC, stealth, shield, shieldAC, miscAC, magicAC);
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Hit Points
+                //-------------------------------------------------------------------------------------------------------
+                character.HitPoints = new HitPoints();
 
-                //Parse Hit Points
-                element    = root.Element("HitPoints");
-                maxHP      = (int)   element.Element("MaxHP").Attribute("value");
-                currentHP  = (int)   element.Element("CurrentHP").Attribute("value");
-                tempHP     = (int)   element.Element("TemporaryHP").Attribute("value");
-                conditions = (string)element.Element("Conditions").Attribute("value");
+                element = root.Element("HitPoints");
+                character.HitPoints.MaxHP       = (int)   element.Element("MaxHP").Attribute("value");
+                character.HitPoints.HP          = (int)   element.Element("CurrentHP").Attribute("value");
+                character.HitPoints.TempHP      = (int)   element.Element("TemporaryHP").Attribute("value");
+                character.HitPoints.Conditions  = (string)element.Element("Conditions").Attribute("value");
 
                 element = element.Element("HitDice");
-                d6       = (int)element.Element("D6").Attribute("total");
-                d8       = (int)element.Element("D8").Attribute("total");
-                d10      = (int)element.Element("D10").Attribute("total");
-                d12      = (int)element.Element("D12").Attribute("total");
-                spentD6  = (int)element.Element("D6").Attribute("spent");
-                spentD8  = (int)element.Element("D8").Attribute("spent");
-                spentD10 = (int)element.Element("D10").Attribute("spent");
-                spentD12 = (int)element.Element("D12").Attribute("spent");
+                character.HitPoints.D6          = (int)element.Element("D6").Attribute("total");
+                character.HitPoints.D8          = (int)element.Element("D8").Attribute("total");
+                character.HitPoints.D10         = (int)element.Element("D10").Attribute("total");
+                character.HitPoints.D12         = (int)element.Element("D12").Attribute("total");
+                character.HitPoints.SpentD6     = (int)element.Element("D6").Attribute("spent");
+                character.HitPoints.SpentD8     = (int)element.Element("D8").Attribute("spent");
+                character.HitPoints.SpentD10    = (int)element.Element("D10").Attribute("spent");
+                character.HitPoints.SpentD12    = (int)element.Element("D12").Attribute("spent");
 
-                element = root.Element("HitPoints").Element("DeathSaves");
-                success = (int)element.Element("Success").Attribute("value");
-                failure = (int)element.Element("Failure").Attribute("value");
-
-                character.HitPoints = new HitPoints(currentHP, maxHP, tempHP, conditions, success, failure, d6, d8, d10, d12, spentD6, spentD8, spentD10, spentD12);
-
-                //Parse Weapons
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Weapons
+                //-------------------------------------------------------------------------------------------------------
                 var weapons = root.Element("Weapons").Elements("Weapon");
 
                 foreach (XElement elem in weapons)
@@ -187,12 +224,16 @@ namespace MyCharacterSheet.Persistence
                     builder.Append((string)elem.Attribute("misc"));    builder.Append(Constants.DELIMITER);
                     builder.Append((string)elem.Attribute("dmgType")); builder.Append(Constants.DELIMITER);
                     builder.Append((string)elem.Attribute("range"));   builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("notes"));
+                    builder.Append((string)elem.Attribute("notes"));   builder.Append(Constants.DELIMITER);
+                    builder.Append((string)elem.Attribute("weight"));  builder.Append(Constants.DELIMITER);
+                    builder.Append( (string)elem.Attribute("id"));
 
-                    character.oWeapons.Add(builder.ToString());
+                    character.oWeapons.Add(new Weapon(builder.ToString()));
                 }
 
-                //Parse Ammo
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Ammo
+                //-------------------------------------------------------------------------------------------------------
                 var ammunitions = root.Element("Ammunitions").Elements("Ammunition");
 
                 foreach (XElement elem in ammunitions)
@@ -200,15 +241,18 @@ namespace MyCharacterSheet.Persistence
                     StringBuilder builder = new StringBuilder();
 
                     builder.Append((string)elem.Attribute("name"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("ammount")); builder.Append(Constants.DELIMITER);
+                    builder.Append((string)elem.Attribute("amount")); builder.Append(Constants.DELIMITER);
                     builder.Append((string)elem.Attribute("miscDmg")); builder.Append(Constants.DELIMITER);
                     builder.Append((string)elem.Attribute("dmgType")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("used"));
+                    builder.Append((string)elem.Attribute("used"));    builder.Append(Constants.DELIMITER);
+                    builder.Append((string)elem.Attribute("id"));
 
-                    character.oAmmo.Add(builder.ToString());
+                    character.oAmmo.Add(new Ammunition(builder.ToString()));
                 }
 
-                //Parse Inventory
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Inventory
+                //-------------------------------------------------------------------------------------------------------
                 var inventory = root.Element("Inventory").Elements("Item");
 
                 foreach (XElement elem in inventory)
@@ -216,13 +260,17 @@ namespace MyCharacterSheet.Persistence
                     StringBuilder builder = new StringBuilder();
 
                     builder.Append((string)elem.Attribute("name"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("ammount")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("wgt"));
+                    builder.Append((string)elem.Attribute("amount"));  builder.Append(Constants.DELIMITER);
+                    builder.Append((string)elem.Attribute("wgt"));     builder.Append(Constants.DELIMITER);
+                    builder.Append((string)elem.Attribute("note"));    builder.Append(Constants.DELIMITER);
+                    builder.Append((string)elem.Attribute("id"));
 
-                    character.oInventory.Add(builder.ToString());
+                    character.oInventory.Add(new Inventory(builder.ToString()));
                 }
 
-                //Parse Abilities
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Abilities
+                //-------------------------------------------------------------------------------------------------------
                 var abilities = root.Element("Abilities").Elements("Ability");
 
                 foreach (XElement elem in abilities)
@@ -234,53 +282,44 @@ namespace MyCharacterSheet.Persistence
                     builder.Append((string)elem.Attribute("uses"));     builder.Append(Constants.DELIMITER);
                     builder.Append((string)elem.Attribute("recovery")); builder.Append(Constants.DELIMITER);
                     builder.Append((string)elem.Attribute("action"));   builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("notes"));
+                    builder.Append((string)elem.Attribute("notes"));    builder.Append(Constants.DELIMITER);
+                    builder.Append((string)elem.Attribute("id"));
 
-                    character.oAbility.Add(builder.ToString());
+                    character.oAbility.Add(new Ability(builder.ToString()));
                 }
 
-                //Parse Notes
-                var notes = root.Element("Notes").Elements("Note");
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Spellcasting
+                //-------------------------------------------------------------------------------------------------------
+                character.Spellcasting = new Spellcasting();
 
-                foreach (XElement elem in notes)
-                {
-                    StringBuilder builder = new StringBuilder();
-
-                    builder.Append((string)elem.Attribute("value"));
-
-                    character.oNotes.Add(builder.ToString());
-                }
-
-                //Parse Spellcasting
                 element = root.Element("Spellcasting");
-                level      = (int)element.Element("Level").Attribute("value");
+                character.Spellcasting.Level = (int)element.Element("Level").Attribute("value");
 
+                // Spell slots
                 element = element.Element("SpellSlots");
-                totalPact  = (int)element.Element("Pact").Attribute("total");
-                totalOne   = (int)element.Element("One").Attribute("total");
-                totalTwo   = (int)element.Element("Two").Attribute("total");
-                totalThree = (int)element.Element("Three").Attribute("total");
-                totalFour  = (int)element.Element("Four").Attribute("total");
-                totalFive  = (int)element.Element("Five").Attribute("total");
-                totalSix   = (int)element.Element("Six").Attribute("total");
-                totalSeven = (int)element.Element("Seven").Attribute("total");
-                totalEight = (int)element.Element("Eight").Attribute("total");
-                totalNine  = (int)element.Element("Nine").Attribute("total");
-                usedPact   = (int)element.Element("Pact").Attribute("used");
-                usedOne    = (int)element.Element("One").Attribute("used");
-                usedTwo    = (int)element.Element("Two").Attribute("used");
-                usedThree  = (int)element.Element("Three").Attribute("used");
-                usedFour   = (int)element.Element("Four").Attribute("used");
-                usedFive   = (int)element.Element("Five").Attribute("used");
-                usedSix    = (int)element.Element("Six").Attribute("used");
-                usedSeven  = (int)element.Element("Seven").Attribute("used");
-                usedEight  = (int)element.Element("Eight").Attribute("used");
-                usedNine   = (int)element.Element("Nine").Attribute("used");
+                character.Spellcasting.PactTotal    = (int)element.Element("Pact").Attribute("total");
+                character.Spellcasting.OneTotal     = (int)element.Element("One").Attribute("total");
+                character.Spellcasting.TwoTotal     = (int)element.Element("Two").Attribute("total");
+                character.Spellcasting.ThreeTotal   = (int)element.Element("Three").Attribute("total");
+                character.Spellcasting.FourTotal    = (int)element.Element("Four").Attribute("total");
+                character.Spellcasting.FiveTotal    = (int)element.Element("Five").Attribute("total");
+                character.Spellcasting.SixTotal     = (int)element.Element("Six").Attribute("total");
+                character.Spellcasting.SevenTotal   = (int)element.Element("Seven").Attribute("total");
+                character.Spellcasting.EightTotal   = (int)element.Element("Eight").Attribute("total");
+                character.Spellcasting.NineTotal    = (int)element.Element("Nine").Attribute("total");
+                character.Spellcasting.PactUsed     = (int)element.Element("Pact").Attribute("used");
+                character.Spellcasting.OneUsed      = (int)element.Element("One").Attribute("used");
+                character.Spellcasting.TwoUsed      = (int)element.Element("Two").Attribute("used");
+                character.Spellcasting.ThreeUsed    = (int)element.Element("Three").Attribute("used");
+                character.Spellcasting.FourUsed     = (int)element.Element("Four").Attribute("used");
+                character.Spellcasting.FiveUsed     = (int)element.Element("Five").Attribute("used");
+                character.Spellcasting.SixUsed      = (int)element.Element("Six").Attribute("used");
+                character.Spellcasting.SevenUsed    = (int)element.Element("Seven").Attribute("used");
+                character.Spellcasting.EightUsed    = (int)element.Element("Eight").Attribute("used");
+                character.Spellcasting.NineUsed     = (int)element.Element("Nine").Attribute("used");
 
-                character.Spellcasting = new Spellcasting(level, totalPact, totalOne, totalTwo, totalThree, totalFour, totalFive, totalSix, totalSeven, 
-                                                          totalEight, totalNine, usedPact, usedOne, usedTwo, usedThree, usedFour, usedFive, usedSix, 
-                                                          usedSeven, usedEight, usedNine);
-
+                // Spell class
                 var classes = root.Element("Spellcasting").Element("SpellClasses").Elements("SpellClass");
 
                 foreach (XElement elem in classes)
@@ -291,11 +330,13 @@ namespace MyCharacterSheet.Persistence
                     builder.Append((string)elem.Attribute("ability"));  builder.Append(Constants.DELIMITER);
                     builder.Append((string)elem.Attribute("cantrips")); builder.Append(Constants.DELIMITER);
                     builder.Append((string)elem.Attribute("known"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("prepared"));
+                    builder.Append((string)elem.Attribute("prepared")); builder.Append(Constants.DELIMITER);
+                    builder.Append((string)elem.Attribute("id"));
 
-                    character.Spellcasting.spellClass.Add(builder.ToString());
+                    character.Spellcasting.oMagic.Add(new Magic(builder.ToString()));
                 }
 
+                // Spell list
                 var spells = root.Element("Spellcasting").Element("SpellList").Elements("Spell");
 
                 foreach (XElement elem in spells)
@@ -315,44 +356,54 @@ namespace MyCharacterSheet.Persistence
                     builder.Append((string)elem.Attribute("save"));        builder.Append(Constants.DELIMITER);
                     builder.Append((string)elem.Attribute("damage"));      builder.Append(Constants.DELIMITER);
                     builder.Append((string)elem.Attribute("description")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("prepared"));
+                    builder.Append((string)elem.Attribute("prepared"));    builder.Append(Constants.DELIMITER);
+                    builder.Append((string)elem.Attribute("id"));
 
-                    character.Spellcasting.spellList.Add(builder.ToString());
+                    character.Spellcasting.oSpells.Add(new Spell(builder.ToString()));
                 }
 
-                //Parse Companion
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Companion
+                //-------------------------------------------------------------------------------------------------------
+                character.Companion = new Companion();
+
                 element = root.Element("Companion");
-                name         = (string)element.Element("Name").Attribute("value");
-                ac           = (int)   element.Element("AC").Attribute("value");
-                hitDice      = (string)element.Element("HitDice").Attribute("value");
-                hp           = (int)   element.Element("HP").Attribute("value");
-                currHP       = (int)   element.Element("CurrentHP").Attribute("value");
-                speed        = (string)element.Element("Speed").Attribute("value");
-                strength     = (int)   element.Element("Strength").Attribute("value");
-                dexterity    = (int)   element.Element("Dexterity").Attribute("value");
-                constitution = (int)   element.Element("Constitution").Attribute("value");
-                intelligence = (int)   element.Element("Intelligence").Attribute("value");
-                wisdom       = (int)   element.Element("Wisdom").Attribute("value");
-                charisma     = (int)   element.Element("Charisma").Attribute("value");
-                perception   = (int)   element.Element("Perception").Attribute("value");
-                senses       = (string)element.Element("Senses").Attribute("value");
-                attack       = new Pair(      (string)element.Element("Attack").Attribute("one"),   (string)element.Element("Attack").Attribute("two"));
-                type         = new Pair(      (string)element.Element("Type").Attribute("one"),     (string)element.Element("Type").Attribute("two"));
-                atkBonus     = new Pair(      (string)element.Element("AtkBonus").Attribute("one"), (string)element.Element("AtkBonus").Attribute("two"));
-                damage       = new Pair(      (string)element.Element("Damage").Attribute("one"),   (string)element.Element("Damage").Attribute("two"));
-                dmgBonus     = new PresetPair((string)element.Element("DmgType").Attribute("one"),  (string)element.Element("DmgType").Attribute("two"));
-                reach        = new Pair(      (string)element.Element("Reach").Attribute("one"),    (string)element.Element("Reach").Attribute("two"));
-                note         = new Pair(      (string)element.Element("Notes").Attribute("one"),    (string)element.Element("Notes").Attribute("two"));
+                character.Companion.Name         =                (string)element.Element("Name").Attribute("value");
+                character.Companion.AC           =                (int)   element.Element("AC").Attribute("value");
+                character.Companion.HitDice      =                (string)element.Element("HitDice").Attribute("value");
+                character.Companion.HP           =                (int)   element.Element("HP").Attribute("value");
+                character.Companion.CurrentHP    =                (int)   element.Element("CurrentHP").Attribute("value");
+                character.Companion.Speed        =                (string)element.Element("Speed").Attribute("value");
+                character.Companion.Strength     =                (int)   element.Element("Strength").Attribute("value");
+                character.Companion.Dexterity    =                (int)   element.Element("Dexterity").Attribute("value");
+                character.Companion.Constitution =                (int)   element.Element("Constitution").Attribute("value");
+                character.Companion.Intelligence =                (int)   element.Element("Intelligence").Attribute("value");
+                character.Companion.Wisdom       =                (int)   element.Element("Wisdom").Attribute("value");
+                character.Companion.Charisma     =                (int)   element.Element("Charisma").Attribute("value");
+                character.Companion.Perception   =                (int)   element.Element("Perception").Attribute("value");
+                character.Companion.Senses       =                (string)element.Element("Senses").Attribute("value");
+                character.Companion.Attack       = new Pair(      (string)element.Element("Attack").Attribute("one"),   (string)element.Element("Attack").Attribute("two"));
+                character.Companion.Type         = new Pair(      (string)element.Element("Type").Attribute("one"),     (string)element.Element("Type").Attribute("two"));
+                character.Companion.AtkBonus     = new Pair(      (string)element.Element("AtkBonus").Attribute("one"), (string)element.Element("AtkBonus").Attribute("two"));
+                character.Companion.Damage       = new Pair(      (string)element.Element("Damage").Attribute("one"),   (string)element.Element("Damage").Attribute("two"));
+                character.Companion.DmgType      = new PresetPair((string)element.Element("DmgType").Attribute("one"),  (string)element.Element("DmgType").Attribute("two"));
+                character.Companion.Reach        = new Pair(      (string)element.Element("Reach").Attribute("one"),    (string)element.Element("Reach").Attribute("two"));
+                character.Companion.Notes        = new Pair(      (string)element.Element("Notes").Attribute("one"),    (string)element.Element("Notes").Attribute("two"));
 
-                character.Companion = new Companion(name, ac, hitDice, hp, currHP, speed, strength, dexterity, constitution, intelligence, wisdom, charisma,
-                                                    perception, senses, attack, type, atkBonus, damage, dmgBonus, reach, note);
+                //-------------------------------------------------------------------------------------------------------
+                // Parse Campain Notes
+                //-------------------------------------------------------------------------------------------------------
+                string value, id, names;
 
-                //Parse Campain Notes
                 var campainNotes = root.Element("CampainNotes").Elements("Note");
 
                 foreach (XElement elem in campainNotes)
                 {
-                    Program.Character.oDocuments.Add(new Document((string)elem.Attribute("id"), (string)elem.Attribute("name"), elem.Value));
+                    id = (string)elem.Attribute("id");
+                    names = (string)elem.Attribute("name");
+                    value = elem.Value;
+
+                    Program.Character.oDocuments.Add(new Document(new Guid(id), names, value));
                 }
             }
             catch (Exception ex)
@@ -377,7 +428,7 @@ namespace MyCharacterSheet.Persistence
             character.Background = "";
             character.Bond = "";
             character.Charisma = 1;
-            character.Class = "";
+            character.ClassResource = "None";
             character.Constitution = 1;
             character.CP = 0;
             character.Dexterity = 1;
@@ -393,18 +444,20 @@ namespace MyCharacterSheet.Persistence
             character.InitiativeBonus = 0;
             character.Intelligence = 1;
             character.Language = "";
-            character.Level = 1;
             character.Marks = "";
             character.Movement = "";
+            character.MovementCondition = "";
             character.Name = "";
             character.PassivePerceptionBonus = 0;
             character.PersonalityBackground = "";
             character.PersonalityNotes = "";
+            character.Pool = 0;
             character.PP = 0;
             character.Race = "";
             character.Shields = "";
             character.SkinColour = "";
             character.SP = 0;
+            character.Spent = 0;
             character.Strength = 1;
             character.Tools = "";
             character.Trait1 = "";
@@ -442,10 +495,14 @@ namespace MyCharacterSheet.Persistence
             character.oSkills.Add(new Performance(false, false));
             character.oSkills.Add(new Persuasion(false, false));
 
-            character.ArmorClass = new ArmorClass("", "None", 0, "", "", 0, 0, 0);
-            character.HitPoints = new HitPoints(0, 0, 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            character.Spellcasting = new Spellcasting(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            character.Companion = new Companion("", 0, "", 0, 0, "", 0, 0, 0, 0, 0, 0, 0, "", new Pair(), new Pair(), new Pair(), new Pair(), new PresetPair(), new Pair(), new Pair());
+            character.PlayerClass1 = new PlayerClass(0);
+            character.PlayerClass2 = new PlayerClass(1);
+            character.PlayerClass3 = new PlayerClass(2);
+
+            character.ArmorClass = new ArmorClass();
+            character.HitPoints = new HitPoints();
+            character.Spellcasting = new Spellcasting();
+            character.Companion = new Companion();
 
             Settings.Default();
         }

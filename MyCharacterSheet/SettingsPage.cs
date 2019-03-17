@@ -29,6 +29,8 @@ namespace MyCharacterSheet
             Autosave          = Settings.AutosaveEnable;
             Interval          = Settings.AutosaveInterval;
             AnimalCompanion   = Settings.HideAnimalCompanion;
+            CoinWeight        = Settings.UseCoinWeight;
+            Encumbrance       = Settings.UseEncumbrance;
 
             trkAutosave.Enabled = Autosave;
             oAutosaveInterval.Enabled = Autosave;
@@ -46,6 +48,8 @@ namespace MyCharacterSheet
             Settings.AutosaveEnable      = Autosave;
             Settings.AutosaveInterval    = Interval;
             Settings.HideAnimalCompanion = AnimalCompanion;
+            Settings.UseCoinWeight          = CoinWeight;
+            Settings.UseEncumbrance         = Encumbrance;
         }
 
         /// =========================================
@@ -86,6 +90,18 @@ namespace MyCharacterSheet
             set;
         }
 
+        private bool CoinWeight
+        {
+            get;
+            set;
+        }
+
+        private bool Encumbrance
+        {
+            get;
+            set;
+        }
+
         private bool Autosave
         {
             get;
@@ -116,12 +132,15 @@ namespace MyCharacterSheet
             Drawing = true;
 
             chkMute.Checked = Mute;
-
             chkTab.Checked = RememberTab;
 
             chkAutosave.Checked = Autosave;
             trkAutosave.Value = Constants.AutosaveIndex(Interval);
             oAutosaveInterval.Text = FormatAutosvaeLabel();
+
+            chkCoinWeight.Checked = CoinWeight;
+            chkEncumbrance.Checked = Encumbrance;
+
             chkAnimalCompanion.Checked = AnimalCompanion;
 
             Drawing = false;
@@ -138,7 +157,7 @@ namespace MyCharacterSheet
                     Close();
                     break;
                 case Keys.Return:
-                    btnOK_Click(new object(), EventArgs.Empty);
+                    btnOK_Click(null, EventArgs.Empty);
                     break;
             }
         }
@@ -202,6 +221,32 @@ namespace MyCharacterSheet
             }
 
             AnimalCompanion = chkAnimalCompanion.Checked;
+        }
+
+        /// =========================================
+        /// chkCoinWeight_CheckedChanged()
+        /// =========================================
+        private void chkCoinWeight_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!Drawing)
+            {
+                Sounds.ButtonClick();
+            }
+
+            CoinWeight = chkCoinWeight.Checked;
+        }
+
+        /// =========================================
+        /// chkEncumbrance_CheckedChanged()
+        /// =========================================
+        private void chkEncumbrance_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!Drawing)
+            {
+                Sounds.ButtonClick();
+            }
+
+            Encumbrance = chkEncumbrance.Checked;
         }
 
         /// =========================================

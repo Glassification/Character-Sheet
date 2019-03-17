@@ -33,8 +33,12 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.oCampainFocus = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.oDocumentList = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.oDocumentList = new System.Windows.Forms.ListBox();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAddDocument = new System.Windows.Forms.Button();
+            this.btnAddSeparator = new System.Windows.Forms.Button();
             this.oTextBoxContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,16 +55,18 @@
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oFontDialog = new System.Windows.Forms.FontDialog();
             this.oColourDialog = new System.Windows.Forms.ColorDialog();
-            this.oDeleteDocumentContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.oEditDocumentContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oNewDocumentContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oDeleteContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.oTextBoxContextMenu.SuspendLayout();
-            this.oDeleteDocumentContextMenu.SuspendLayout();
-            this.oNewDocumentContextMenu.SuspendLayout();
+            this.oEditDocumentContextMenu.SuspendLayout();
+            this.oDeleteContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // oCampainTextBox
@@ -89,8 +95,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85F));
             this.tableLayoutPanel1.Controls.Add(this.oCampainFocus, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.oDocumentList, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -130,30 +136,6 @@
             this.label2.Text = "Campain Notes";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // oDocumentList
-            // 
-            this.oDocumentList.AllowDrop = true;
-            this.oDocumentList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.oDocumentList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.oDocumentList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.oDocumentList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.oDocumentList.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.oDocumentList.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.oDocumentList.FormattingEnabled = true;
-            this.oDocumentList.ItemHeight = 24;
-            this.oDocumentList.Location = new System.Drawing.Point(0, 50);
-            this.oDocumentList.Margin = new System.Windows.Forms.Padding(0);
-            this.oDocumentList.Name = "oDocumentList";
-            this.oDocumentList.Size = new System.Drawing.Size(194, 670);
-            this.oDocumentList.TabIndex = 4;
-            this.oDocumentList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.oDocumentList_DrawItem);
-            this.oDocumentList.SelectedIndexChanged += new System.EventHandler(this.oDocumentList_SelectedIndexChanged);
-            this.oDocumentList.DragDrop += new System.Windows.Forms.DragEventHandler(this.oDocumentList_DragDrop);
-            this.oDocumentList.DragOver += new System.Windows.Forms.DragEventHandler(this.oDocumentList_DragOver);
-            this.oDocumentList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.oDocumentList_MouseDown);
-            this.oDocumentList.MouseLeave += new System.EventHandler(this.oDocumentList_MouseLeave);
-            this.oDocumentList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.oDocumentList_MouseMove);
-            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
@@ -172,6 +154,93 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 2.5F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1103, 670);
             this.tableLayoutPanel2.TabIndex = 5;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.oDocumentList, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 50);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.671642F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 94.32836F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(194, 670);
+            this.tableLayoutPanel3.TabIndex = 6;
+            // 
+            // oDocumentList
+            // 
+            this.oDocumentList.AllowDrop = true;
+            this.oDocumentList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.oDocumentList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.oDocumentList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.oDocumentList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.oDocumentList.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.oDocumentList.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.oDocumentList.FormattingEnabled = true;
+            this.oDocumentList.HorizontalScrollbar = true;
+            this.oDocumentList.ItemHeight = 24;
+            this.oDocumentList.Location = new System.Drawing.Point(0, 38);
+            this.oDocumentList.Margin = new System.Windows.Forms.Padding(0);
+            this.oDocumentList.Name = "oDocumentList";
+            this.oDocumentList.Size = new System.Drawing.Size(194, 632);
+            this.oDocumentList.TabIndex = 4;
+            this.oDocumentList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.oDocumentList_DrawItem);
+            this.oDocumentList.SelectedIndexChanged += new System.EventHandler(this.oDocumentList_SelectedIndexChanged);
+            this.oDocumentList.DragDrop += new System.Windows.Forms.DragEventHandler(this.oDocumentList_DragDrop);
+            this.oDocumentList.DragOver += new System.Windows.Forms.DragEventHandler(this.oDocumentList_DragOver);
+            this.oDocumentList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.oDocumentList_MouseDown);
+            this.oDocumentList.MouseLeave += new System.EventHandler(this.oDocumentList_MouseLeave);
+            this.oDocumentList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.oDocumentList_MouseMove);
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Controls.Add(this.btnAddDocument, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnAddSeparator, 1, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(194, 38);
+            this.tableLayoutPanel4.TabIndex = 5;
+            // 
+            // btnAddDocument
+            // 
+            this.btnAddDocument.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(54)))), ((int)(((byte)(92)))));
+            this.btnAddDocument.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddDocument.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnAddDocument.ForeColor = System.Drawing.Color.White;
+            this.btnAddDocument.Location = new System.Drawing.Point(0, 0);
+            this.btnAddDocument.Margin = new System.Windows.Forms.Padding(0);
+            this.btnAddDocument.Name = "btnAddDocument";
+            this.btnAddDocument.Size = new System.Drawing.Size(97, 38);
+            this.btnAddDocument.TabIndex = 0;
+            this.btnAddDocument.Text = "+Document";
+            this.btnAddDocument.UseVisualStyleBackColor = false;
+            this.btnAddDocument.Click += new System.EventHandler(this.btnAddDocument_Click);
+            // 
+            // btnAddSeparator
+            // 
+            this.btnAddSeparator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(54)))), ((int)(((byte)(92)))));
+            this.btnAddSeparator.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddSeparator.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnAddSeparator.ForeColor = System.Drawing.Color.White;
+            this.btnAddSeparator.Location = new System.Drawing.Point(97, 0);
+            this.btnAddSeparator.Margin = new System.Windows.Forms.Padding(0);
+            this.btnAddSeparator.Name = "btnAddSeparator";
+            this.btnAddSeparator.Size = new System.Drawing.Size(97, 38);
+            this.btnAddSeparator.TabIndex = 1;
+            this.btnAddSeparator.Text = "+Separator";
+            this.btnAddSeparator.UseVisualStyleBackColor = false;
+            this.btnAddSeparator.Click += new System.EventHandler(this.btnAddSeparator_Click);
             // 
             // oTextBoxContextMenu
             // 
@@ -304,15 +373,15 @@
             this.redoToolStripMenuItem.MouseEnter += new System.EventHandler(this.redoToolStripMenuItem_MouseEnter);
             this.redoToolStripMenuItem.MouseLeave += new System.EventHandler(this.redoToolStripMenuItem_MouseLeave);
             // 
-            // oDeleteDocumentContextMenu
+            // oEditDocumentContextMenu
             // 
-            this.oDeleteDocumentContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.oDeleteDocumentContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.oEditDocumentContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.oEditDocumentContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.renameToolStripMenuItem,
             this.deleteToolStripMenuItem});
-            this.oDeleteDocumentContextMenu.Name = "oDeleteDocumentContextMenu";
-            this.oDeleteDocumentContextMenu.ShowImageMargin = false;
-            this.oDeleteDocumentContextMenu.Size = new System.Drawing.Size(108, 52);
+            this.oEditDocumentContextMenu.Name = "oDeleteDocumentContextMenu";
+            this.oEditDocumentContextMenu.ShowImageMargin = false;
+            this.oEditDocumentContextMenu.Size = new System.Drawing.Size(108, 52);
             // 
             // renameToolStripMenuItem
             // 
@@ -332,23 +401,23 @@
             this.deleteToolStripMenuItem.MouseEnter += new System.EventHandler(this.deleteToolStripMenuItem_MouseEnter);
             this.deleteToolStripMenuItem.MouseLeave += new System.EventHandler(this.deleteToolStripMenuItem_MouseLeave);
             // 
-            // oNewDocumentContextMenu
+            // oDeleteContextMenu
             // 
-            this.oNewDocumentContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.oNewDocumentContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripMenuItem});
-            this.oNewDocumentContextMenu.Name = "oNewDocumentContextMenu";
-            this.oNewDocumentContextMenu.ShowImageMargin = false;
-            this.oNewDocumentContextMenu.Size = new System.Drawing.Size(84, 28);
+            this.oDeleteContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.oDeleteContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteToolStripMenuItem1});
+            this.oDeleteContextMenu.Name = "oDeleteContextMenu";
+            this.oDeleteContextMenu.ShowImageMargin = false;
+            this.oDeleteContextMenu.Size = new System.Drawing.Size(98, 28);
             // 
-            // newToolStripMenuItem
+            // deleteToolStripMenuItem1
             // 
-            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
-            this.newToolStripMenuItem.Text = "New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
-            this.newToolStripMenuItem.MouseEnter += new System.EventHandler(this.newToolStripMenuItem_MouseEnter);
-            this.newToolStripMenuItem.MouseLeave += new System.EventHandler(this.newToolStripMenuItem_MouseLeave);
+            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
+            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(185, 24);
+            this.deleteToolStripMenuItem1.Text = "Delete";
+            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
+            this.deleteToolStripMenuItem1.MouseEnter += new System.EventHandler(this.deleteToolStripMenuItem1_MouseEnter);
+            this.deleteToolStripMenuItem1.MouseLeave += new System.EventHandler(this.deleteToolStripMenuItem1_MouseLeave);
             // 
             // CampainPage
             // 
@@ -360,9 +429,11 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
             this.oTextBoxContextMenu.ResumeLayout(false);
-            this.oDeleteDocumentContextMenu.ResumeLayout(false);
-            this.oNewDocumentContextMenu.ResumeLayout(false);
+            this.oEditDocumentContextMenu.ResumeLayout(false);
+            this.oDeleteContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -391,10 +462,14 @@
         private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
         private System.Windows.Forms.ListBox oDocumentList;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.ContextMenuStrip oDeleteDocumentContextMenu;
+        private System.Windows.Forms.ContextMenuStrip oEditDocumentContextMenu;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip oNewDocumentContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem renameToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Button btnAddDocument;
+        private System.Windows.Forms.Button btnAddSeparator;
+        private System.Windows.Forms.ContextMenuStrip oDeleteContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem1;
     }
 }

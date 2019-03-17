@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using MyCharacterSheet.Lists;
 using MyCharacterSheet.Utility;
+using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
@@ -39,9 +41,8 @@ namespace MyCharacterSheet
 
             //Set initial state
             FillLabelList();
-            fillSizes();
-            fillComboBoxes();
-            formatContextMenus();
+            FillSizes();
+            FormatContextMenus();
         }
 
         #endregion
@@ -49,9 +50,9 @@ namespace MyCharacterSheet
         #region Methods
 
         /// =========================================
-        /// fillSizes()
+        /// FillSizes()
         /// =========================================
-        private void fillSizes()
+        private void FillSizes()
         {
             foreach (Label l in oTertiaryLabels)
             {
@@ -66,29 +67,21 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// formatContextMenus()
+        /// FormatContextMenus()
         /// =========================================
-        private void formatContextMenus()
+        private void FormatContextMenus()
         {
-            oSpellClassContextMenu.BackColor = Constants.DarkGrey;
+            oSpellClassContextMenu.BackColor = DarkGrey;
             oSpellClassContextMenu.ForeColor = Color.White;
 
-            oSpellListContextMenu.BackColor = Constants.DarkGrey;
+            oAddClassContextMenu.BackColor = DarkGrey;
+            oAddClassContextMenu.ForeColor = Color.White;
+
+            oSpellListContextMenu.BackColor = DarkGrey;
             oSpellListContextMenu.ForeColor = Color.White;
-        }
 
-        /// =========================================
-        /// fillComboBoxes()
-        /// =========================================
-        private void fillComboBoxes()
-        {
-            DataGridViewComboBoxColumn abilityDropDown;
-
-            //fill ability dropdown list
-            abilityDropDown = oMagicGridView.Columns[MagicAbility.Index] as DataGridViewComboBoxColumn;
-            abilityDropDown.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
-            for (int i = 0; i < Constants.AbilitiesLength(); i++)
-                abilityDropDown.Items.Add(Constants.Ability(i));
+            oAddSpellContextMenu.BackColor = DarkGrey;
+            oAddSpellContextMenu.ForeColor = Color.White;
         }
 
         /// =========================================
@@ -98,19 +91,22 @@ namespace MyCharacterSheet
         {
             if (Settings.HideAnimalCompanion)
             {
-                AnimalCompanion = oTertiaryTableLayoutPanel.Controls[RowIndex];
-                oTertiaryTableLayoutPanel.Controls.RemoveAt(RowIndex);
-                oTertiaryTableLayoutPanel.RowStyles.RemoveAt(RowIndex);
+                // New sheet is loaded with companion already hidden
+                if (oTertiaryTableLayoutPanel.Controls.Count > 2)
+                {
+                    AnimalCompanion = oTertiaryTableLayoutPanel.Controls[RowIndex];
+                    oTertiaryTableLayoutPanel.Controls.RemoveAt(RowIndex);
+                    oTertiaryTableLayoutPanel.RowStyles.RemoveAt(RowIndex);
 
-                oTertiaryTableLayoutPanel.RowStyles[0].Height = CLASS_HEIGHT;
-                oTertiaryTableLayoutPanel.RowStyles[1].Height = SPELL_HEIGHT + ANIMAL_HEIGHT;
-                oTertiaryTableLayoutPanel.RowCount--;
+                    oTertiaryTableLayoutPanel.RowStyles[0].Height = CLASS_HEIGHT;
+                    oTertiaryTableLayoutPanel.RowStyles[1].Height = SPELL_HEIGHT + ANIMAL_HEIGHT;
+                    oTertiaryTableLayoutPanel.RowCount--;
 
-                //The last row switches to 2 after starting at 1 for some reason.
-                //This whole thing doesn't make sense.
-                if (RowIndex == 1)
-                    RowIndex = 2;
-
+                    //The last row switches to 2 after starting at 1 for some reason.
+                    //This whole thing doesn't make sense.
+                    if (RowIndex == 1)
+                        RowIndex = 2;
+                }
             }
             else if (oTertiaryTableLayoutPanel.RowCount == 2)
             {
@@ -125,20 +121,34 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// ResizeText()
+        /// ResizeLabels()
         /// =========================================
-        public void ResizeText(float mod, float ratio)
+        public void ResizeLabels()
         {
+            float ratio = Program.MainForm.Ratio;
+
             for (int i = 0; i < oTertiaryLabels.Count; i++)
             {
-                oTertiaryLabels[i].Font = new Font(oTertiaryLabels[i].Font.FontFamily, oTertiaryLabelSizes[i] * (ratio == 1 ? ratio : (ratio / mod)), oTertiaryLabels[i].Font.Style);
+                oTertiaryLabels[i].Font = new Font(oTertiaryLabels[i].Font.FontFamily, oTertiaryLabelSizes[i] * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oTertiaryLabels[i].Font.Style);
+
+                ScaleFont(oTertiaryLabels[i]);
             }
+        }
 
-            oMagicGridView.ColumnHeadersDefaultCellStyle.Font = new Font(oMagicGridView.ColumnHeadersDefaultCellStyle.Font.FontFamily, MagicHeaderSize * (ratio == 1 ? ratio : (ratio / mod)), oMagicGridView.ColumnHeadersDefaultCellStyle.Font.Style);
-            oSpellListDataView.ColumnHeadersDefaultCellStyle.Font = new Font(oSpellListDataView.ColumnHeadersDefaultCellStyle.Font.FontFamily, SpellHeaderSize * (ratio == 1 ? ratio : (ratio / mod)), oSpellListDataView.ColumnHeadersDefaultCellStyle.Font.Style);
+        /// =========================================
+        /// ResizeText()
+        /// =========================================
+        public void ResizeText()
+        {
+            float ratio = Program.MainForm.Ratio;
 
-            oMagicGridView.DefaultCellStyle.Font = new Font(oMagicGridView.DefaultCellStyle.Font.FontFamily, MagicRowSize * (ratio == 1 ? ratio : (ratio / mod)), oMagicGridView.Font.Style);
-            oSpellListDataView.DefaultCellStyle.Font = new Font(oSpellListDataView.DefaultCellStyle.Font.FontFamily, SpellRowSize * (ratio == 1 ? ratio : (ratio / mod)), oSpellListDataView.Font.Style);
+            ResizeLabels();
+
+            oMagicGridView.ColumnHeadersDefaultCellStyle.Font = new Font(oMagicGridView.ColumnHeadersDefaultCellStyle.Font.FontFamily, MagicHeaderSize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oMagicGridView.ColumnHeadersDefaultCellStyle.Font.Style);
+            oSpellListDataView.ColumnHeadersDefaultCellStyle.Font = new Font(oSpellListDataView.ColumnHeadersDefaultCellStyle.Font.FontFamily, SpellHeaderSize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oSpellListDataView.ColumnHeadersDefaultCellStyle.Font.Style);
+
+            oMagicGridView.DefaultCellStyle.Font = new Font(oMagicGridView.DefaultCellStyle.Font.FontFamily, MagicRowSize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oMagicGridView.Font.Style);
+            oSpellListDataView.DefaultCellStyle.Font = new Font(oSpellListDataView.DefaultCellStyle.Font.FontFamily, SpellRowSize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oSpellListDataView.Font.Style);
         }
 
         /// =========================================
@@ -146,43 +156,23 @@ namespace MyCharacterSheet
         /// =========================================
         public void FillSpellclass()
         {
-            string[] tokens;
             oMagicGridView.Rows.Clear();
 
-            foreach (string magic in Program.Character.Spellcasting.spellClass)
+            foreach (Magic magic in Program.Character.Spellcasting.oMagic)
             {
                 int index = oMagicGridView.Rows.Add();
                 DataGridViewRow row = oMagicGridView.Rows[index];
-                tokens = magic.Split(Constants.DELIMITER);
 
-                row.Cells[SpellClass.Index].Value = tokens[0];
-                row.Cells[MagicAbility.Index].Value = tokens[1];
-                row.Cells[SpellAttackBonus.Index].Value = Program.Character.GetBonus(tokens[1]);
-                row.Cells[SpellSaveDC.Index].Value = Program.Character.GetDC(tokens[1]);
-                row.Cells[Cantrips.Index].Value = tokens[2];
-                row.Cells[Spells.Index].Value = tokens[3];
-                row.Cells[Prepared.Index].Value = tokens[4];
+                row.Cells[SpellClass.Index].Value = magic.Class;
+                row.Cells[MagicAbility.Index].Value = magic.Ability;
+                row.Cells[SpellAttackBonus.Index].Value = Program.Character.GetBonus(magic.Ability);
+                row.Cells[SpellSaveDC.Index].Value = Program.Character.GetDC(magic.Ability);
+                row.Cells[Cantrips.Index].Value = magic.Cantrips;
+                row.Cells[Spells.Index].Value = magic.Spells;
+                row.Cells[Prepared.Index].Value = magic.Prepared;
+
+                row.Tag = magic.ID;
             }
-        }
-
-        /// =========================================
-        /// WriteSpellclass()
-        /// =========================================
-        public void WriteSpellclass(List<string> list)
-        {
-            string str;
-
-            foreach (DataGridViewRow row in oMagicGridView.Rows)
-            {
-                str = (string)row.Cells[SpellClass.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[MagicAbility.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Cantrips.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Spells.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Prepared.Index].Value;
-
-                list.Add(str);
-            }
-            list.RemoveAt(list.Count - 1);
         }
 
         /// =========================================
@@ -190,63 +180,30 @@ namespace MyCharacterSheet
         /// =========================================
         public void FillSpellList()
         {
-            string[] tokens;
             oSpellListDataView.Rows.Clear();
 
-            foreach (string spell in Program.Character.Spellcasting.spellList)
+            foreach (Spell spell in Program.Character.Spellcasting.oSpells)
             {
                 int index = oSpellListDataView.Rows.Add();
                 DataGridViewRow row = oSpellListDataView.Rows[index];
-                tokens = spell.Split(Constants.DELIMITER);
 
-                row.Cells[oPrepared.Index].Value = Convert.ToBoolean(tokens[13]);
-                row.Cells[oName.Index].Value = tokens[0];
-                row.Cells[oLevel.Index].Value = tokens[1];
-                row.Cells[oPage.Index].Value = tokens[2];
-                row.Cells[oSchool.Index].Value = tokens[3];
-                row.Cells[oRitual.Index].Value = tokens[4];
-                row.Cells[oComp.Index].Value = tokens[5];
-                row.Cells[oConcen.Index].Value = tokens[6];
-                row.Cells[oRange.Index].Value = tokens[7];
-                row.Cells[oDuration.Index].Value = tokens[8];
-                row.Cells[oArea.Index].Value = tokens[9];
-                row.Cells[oSave.Index].Value = tokens[10];
-                row.Cells[oDamage.Index].Value = tokens[11];
-                row.Cells[oDescription.Index].Value = tokens[12];
+                row.Cells[oName.Index].Value = spell.Name;
+                row.Cells[oLevel.Index].Value = spell.Level;
+                row.Cells[oPage.Index].Value = spell.Page;
+                row.Cells[oSchool.Index].Value = spell.School;
+                row.Cells[oRitual.Index].Value = spell.Ritual;
+                row.Cells[oComp.Index].Value = spell.Components;
+                row.Cells[oConcen.Index].Value = spell.Concentration;
+                row.Cells[oRange.Index].Value = spell.Range;
+                row.Cells[oDuration.Index].Value = spell.Duration;
+                row.Cells[oArea.Index].Value = spell.Area;
+                row.Cells[oSave.Index].Value = spell.Save;
+                row.Cells[oDamage.Index].Value = spell.Damage;
+                row.Cells[oDescription.Index].Value = spell.Description;
+                row.Cells[oPrepared.Index].Value = spell.Prepared;
+
+                row.Tag = spell.ID;
             }
-        }
-
-        /// =========================================
-        /// WriteSpellList()
-        /// =========================================
-        public void WriteSpellList(List<string> list)
-        {
-            string str = "";
-            int count = 1;
-
-            foreach (DataGridViewRow row in oSpellListDataView.Rows)
-            {
-                if (count < oSpellListDataView.Rows.Count)
-                {
-                    str = (string)row.Cells[oName.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oLevel.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oPage.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oSchool.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oRitual.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oComp.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oConcen.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oRange.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oDuration.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oArea.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oSave.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oDamage.Index].Value + Constants.DELIMITER +
-                          (string)row.Cells[oDescription.Index].Value + Constants.DELIMITER +
-                                  Convert.ToBoolean(row.Cells[oPrepared.Index].Value);
-                }
-                count++;
-                list.Add(str);
-            }
-            list.RemoveAt(list.Count - 1);
         }
 
         /// =========================================
@@ -432,6 +389,8 @@ namespace MyCharacterSheet
                 oCompanionNote1.Text = Program.Character.Companion.Notes.First;
                 oCompanionNote2.Text = Program.Character.Companion.Notes.Second;
 
+                ResizeLabels();
+
                 Drawing = false;
             }
         }
@@ -456,25 +415,32 @@ namespace MyCharacterSheet
         #region SpellClass Events
 
         /// =========================================
-        /// oMagicGridView_CellEnter()
+        /// oMagicGridView_Sorted()
         /// =========================================
-        private void oMagicGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
+        private void oMagicGridView_Sorted(object sender, EventArgs e)
         {
-            Program.Typing = true;
+            int index;
+            string rowID;
+            Magic item;
 
-            if (e.ColumnIndex == MagicAbility.Index)
+            // Sort each item
+            for (int i = 0; i < oMagicGridView.Rows.Count; i++)
             {
-                oMagicGridView.CurrentCell = oMagicGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                oMagicGridView.BeginEdit(true);
-            }
-        }
+                rowID = oMagicGridView.Rows[i].Tag as string;
 
-        /// =========================================
-        /// oMagicGridView_CellLeave()
-        /// =========================================
-        private void oMagicGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            Program.Typing = false;
+                // Check if already in correct position 
+                if (!rowID.Equals(Program.Character.Spellcasting.oMagic[i].ID))
+                {
+                    index = Program.Character.Spellcasting.GetMagicIndex(rowID);
+                    item = Program.Character.Spellcasting.oMagic[index];
+
+                    Program.Character.Spellcasting.oMagic.RemoveAt(index);
+                    Program.Character.Spellcasting.oMagic.Insert(index, Program.Character.Spellcasting.oMagic[i]);
+
+                    Program.Character.Spellcasting.oMagic.RemoveAt(i);
+                    Program.Character.Spellcasting.oMagic.Insert(i, item);
+                }
+            }
         }
 
         /// =========================================
@@ -500,7 +466,52 @@ namespace MyCharacterSheet
         private void oSpellClassDeleteRow_Click(object sender, EventArgs e)
         {
             Program.Modified = true;
+
+            Program.Character.Spellcasting.RemoveMagicItem(oMagicGridView.Rows[Row].Tag as string);
             oMagicGridView.Rows.RemoveAt(Row);
+        }
+
+        /// =========================================
+        /// editClassToolStripMenuItem_Click()
+        /// =========================================
+        private void editClassToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.Modified = true;
+
+            Program.MainForm.oTablePage.ShowPane(Tables.Magics, Program.Character.Spellcasting.oMagic[Row]);
+            FillSpellclass();
+        }
+
+        /// =========================================
+        /// editClassToolStripMenuItem_MouseEnter()
+        /// =========================================
+        private void editClassToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            editClassToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// editClassToolStripMenuItem_MouseLeave()
+        /// =========================================
+        private void editClassToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            editClassToolStripMenuItem.ForeColor = Color.White;
+        }
+
+        /// =========================================
+        /// oSpellClassDeleteRow_MouseEnter()
+        /// =========================================
+        private void oSpellClassDeleteRow_MouseEnter(object sender, EventArgs e)
+        {
+            oSpellClassDeleteRow.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// oSpellClassDeleteRow_MouseLeave()
+        /// =========================================
+        private void oSpellClassDeleteRow_MouseLeave(object sender, EventArgs e)
+        {
+            oSpellClassDeleteRow.ForeColor = Color.White;
         }
 
         /// =========================================
@@ -508,28 +519,12 @@ namespace MyCharacterSheet
         /// =========================================
         private void oMagicGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oMagicGridView.RowCount - 1)
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oMagicGridView.RowCount)
             {
                 Rectangle rect = oMagicGridView.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
                 Row = e.RowIndex;
-                oSpellClassContextMenu.Show(oMagicGridView, new Point(rect.X + e.X + Constants.OFFSET, rect.Y + e.Y + Constants.OFFSET));
+                oSpellClassContextMenu.Show(oMagicGridView, new Point(rect.X + e.X + OFFSET, rect.Y + e.Y + OFFSET));
             }
-        }
-
-        /// =========================================
-        /// oSpellClassContextMenu_MouseEnter()
-        /// =========================================
-        private void oSpellClassContextMenu_MouseEnter(object sender, EventArgs e)
-        {
-            oSpellClassContextMenu.ForeColor = Color.Black;
-        }
-
-        /// =========================================
-        /// oSpellClassContextMenu_MouseLeave()
-        /// =========================================
-        private void oSpellClassContextMenu_MouseLeave(object sender, EventArgs e)
-        {
-            oSpellClassContextMenu.ForeColor = Color.White;
         }
 
         /// =========================================
@@ -553,14 +548,23 @@ namespace MyCharacterSheet
         {
             rowIndexFromMouseDown = oMagicGridView.HitTest(e.X, e.Y).RowIndex;
 
-            if (rowIndexFromMouseDown != -1)
+            switch (e.Button)
             {
-                Size dragSize = SystemInformation.DragSize;
-                dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
-            }
-            else
-            {
-                dragBoxFromMouseDown = Rectangle.Empty;
+                case MouseButtons.Left:
+                    if (rowIndexFromMouseDown != -1)
+                    {
+                        Size dragSize = SystemInformation.DragSize;
+                        dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
+                    }
+                    else
+                    {
+                        dragBoxFromMouseDown = Rectangle.Empty;
+                    }
+                    break;
+                case MouseButtons.Right:
+                    if (rowIndexFromMouseDown == -1)
+                        oAddClassContextMenu.Show(oMagicGridView, new Point(e.X + OFFSET, e.Y + OFFSET));
+                    break;
             }
         }
 
@@ -577,6 +581,8 @@ namespace MyCharacterSheet
         /// =========================================
         private void oMagicGridView_DragDrop(object sender, DragEventArgs e)
         {
+            Magic item;
+
             if (oMagicGridView.Rows.Count > 1)
             {
                 Point clientPoint = oMagicGridView.PointToClient(new Point(e.X, e.Y));
@@ -589,16 +595,47 @@ namespace MyCharacterSheet
                     DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
-                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oMagicGridView.Rows.Count - 1)
-                        rowIndexOfItemUnderMouseToDrop = oMagicGridView.Rows.Count - 2;
+                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oMagicGridView.Rows.Count)
+                        rowIndexOfItemUnderMouseToDrop = oMagicGridView.Rows.Count - 1;
 
                     if (rowIndexFromMouseDown != rowIndexOfItemUnderMouseToDrop)
                         Program.Modified = true;
 
+                    // Move list item
                     oMagicGridView.Rows.RemoveAt(rowIndexFromMouseDown);
                     oMagicGridView.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
+
+                    // Move data item
+                    item = Program.Character.Spellcasting.oMagic[rowIndexFromMouseDown];
+                    Program.Character.Spellcasting.oMagic.RemoveAt(rowIndexFromMouseDown);
+                    Program.Character.Spellcasting.oMagic.Insert(rowIndexOfItemUnderMouseToDrop, item);
                 }
             }
+        }
+
+        /// =========================================
+        /// addClassToolStripMenuItem_Click()
+        /// =========================================
+        private void addClassToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.MainForm.oTablePage.ShowPane(Tables.Magics);
+            FillSpellclass();
+        }
+
+        /// =========================================
+        /// addClassToolStripMenuItem_MouseEnter()
+        /// =========================================
+        private void addClassToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            addClassToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// addClassToolStripMenuItem_MouseLeave()
+        /// =========================================
+        private void addClassToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            addClassToolStripMenuItem.ForeColor = Color.White;
         }
 
         #endregion
@@ -960,19 +997,32 @@ namespace MyCharacterSheet
         #region SpellList Events
 
         /// =========================================
-        /// oSpellListDataView_CellEnter()
+        /// oSpellListDataView_Sorted()
         /// =========================================
-        private void oSpellListDataView_CellEnter(object sender, DataGridViewCellEventArgs e)
+        private void oSpellListDataView_Sorted(object sender, EventArgs e)
         {
-            Program.Typing = true;
-        }
+            int index;
+            string rowID;
+            Spell item;
 
-        /// =========================================
-        /// oSpellListDataView_CellLeave()
-        /// =========================================
-        private void oSpellListDataView_CellLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            Program.Typing = false;
+            // Sort each item
+            for (int i = 0; i < oSpellListDataView.Rows.Count; i++)
+            {
+                rowID = oSpellListDataView.Rows[i].Tag as string;
+
+                // Check if already in correct position 
+                if (!rowID.Equals(Program.Character.Spellcasting.oSpells[i].ID))
+                {
+                    index = Program.Character.Spellcasting.GetSpellIndex(rowID);
+                    item = Program.Character.Spellcasting.oSpells[index];
+
+                    Program.Character.Spellcasting.oSpells.RemoveAt(index);
+                    Program.Character.Spellcasting.oSpells.Insert(index, Program.Character.Spellcasting.oSpells[i]);
+
+                    Program.Character.Spellcasting.oSpells.RemoveAt(i);
+                    Program.Character.Spellcasting.oSpells.Insert(i, item);
+                }
+            }
         }
 
         /// =========================================
@@ -980,11 +1030,11 @@ namespace MyCharacterSheet
         /// =========================================
         private void oSpellListDataView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oSpellListDataView.RowCount - 1)
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oSpellListDataView.RowCount)
             {
                 Rectangle rect = oSpellListDataView.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
                 Row = e.RowIndex;
-                oSpellListContextMenu.Show(oSpellListDataView, new Point(rect.X + e.X + Constants.OFFSET, rect.Y + e.Y + Constants.OFFSET));
+                oSpellListContextMenu.Show(oSpellListDataView, new Point(rect.X + e.X + OFFSET, rect.Y + e.Y + OFFSET));
             }
         }
 
@@ -994,23 +1044,52 @@ namespace MyCharacterSheet
         private void oSpellListDeleteRow_Click(object sender, EventArgs e)
         {
             Program.Modified = true;
+
+            Program.Character.Spellcasting.RemoveSpellItem(oSpellListDataView.Rows[Row].Tag as string);
             oSpellListDataView.Rows.RemoveAt(Row);
         }
 
         /// =========================================
-        /// oSpellListContextMenu_MouseEnter()
+        /// editSpellToolStripMenuItem_Click()
         /// =========================================
-        private void oSpellListContextMenu_MouseEnter(object sender, EventArgs e)
+        private void editSpellToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            oSpellListContextMenu.ForeColor = Color.Black;
+            Program.Modified = true;
+
+            Program.MainForm.oTablePage.ShowPane(Tables.Spells, Program.Character.Spellcasting.oSpells[Row]);
+            FillSpellList();
         }
 
         /// =========================================
-        /// oSpellListContextMenu_MouseLeave()
+        /// editSpellToolStripMenuItem_MouseEnter()
         /// =========================================
-        private void oSpellListContextMenu_MouseLeave(object sender, EventArgs e)
+        private void editSpellToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
-            oSpellListContextMenu.ForeColor = Color.White;
+            editSpellToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// editSpellToolStripMenuItem_MouseLeave()
+        /// =========================================
+        private void editSpellToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            editSpellToolStripMenuItem.ForeColor = Color.White;
+        }
+
+        /// =========================================
+        /// oSpellListDeleteRow_MouseEnter()
+        /// =========================================
+        private void oSpellListDeleteRow_MouseEnter(object sender, EventArgs e)
+        {
+            oSpellListDeleteRow.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// oSpellListDeleteRow_MouseLeave()
+        /// =========================================
+        private void oSpellListDeleteRow_MouseLeave(object sender, EventArgs e)
+        {
+            oSpellListDeleteRow.ForeColor = Color.White;
         }
 
         /// =========================================
@@ -1034,14 +1113,23 @@ namespace MyCharacterSheet
         {
             rowIndexFromMouseDown = oSpellListDataView.HitTest(e.X, e.Y).RowIndex;
 
-            if (rowIndexFromMouseDown != -1)
+            switch (e.Button)
             {
-                Size dragSize = SystemInformation.DragSize;
-                dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
-            }
-            else
-            {
-                dragBoxFromMouseDown = Rectangle.Empty;
+                case MouseButtons.Left:
+                    if (rowIndexFromMouseDown != -1)
+                    {
+                        Size dragSize = SystemInformation.DragSize;
+                        dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
+                    }
+                    else
+                    {
+                        dragBoxFromMouseDown = Rectangle.Empty;
+                    }
+                    break;
+                case MouseButtons.Right:
+                    if (rowIndexFromMouseDown == -1)
+                        oAddSpellContextMenu.Show(oSpellListDataView, new Point(e.X + OFFSET, e.Y + OFFSET));
+                    break;
             }
         }
 
@@ -1058,6 +1146,8 @@ namespace MyCharacterSheet
         /// =========================================
         private void oSpellListDataView_DragDrop(object sender, DragEventArgs e)
         {
+            Spell item;
+
             if (oSpellListDataView.Rows.Count > 1)
             {
                 Point clientPoint = oSpellListDataView.PointToClient(new Point(e.X, e.Y));
@@ -1070,26 +1160,50 @@ namespace MyCharacterSheet
                     DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
-                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oSpellListDataView.Rows.Count - 1)
-                        rowIndexOfItemUnderMouseToDrop = oSpellListDataView.Rows.Count - 2;
+                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oSpellListDataView.Rows.Count)
+                        rowIndexOfItemUnderMouseToDrop = oSpellListDataView.Rows.Count - 1;
 
                     if (rowIndexFromMouseDown != rowIndexOfItemUnderMouseToDrop)
                         Program.Modified = true;
 
+                    // Move list item
                     oSpellListDataView.Rows.RemoveAt(rowIndexFromMouseDown);
                     oSpellListDataView.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
+
+                    // Move data item
+                    item = Program.Character.Spellcasting.oSpells[rowIndexFromMouseDown];
+                    Program.Character.Spellcasting.oSpells.RemoveAt(rowIndexFromMouseDown);
+                    Program.Character.Spellcasting.oSpells.Insert(rowIndexOfItemUnderMouseToDrop, item);
                 }
             }
         }
 
+        /// =========================================
+        /// addSpellToolStripMenuItem_Click()
+        /// =========================================
+        private void addSpellToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.MainForm.oTablePage.ShowPane(Tables.Spells);
+            FillSpellList();
+        }
+
+        /// =========================================
+        /// addSpellToolStripMenuItem_MouseEnter()
+        /// =========================================
+        private void addSpellToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            addSpellToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// addSpellToolStripMenuItem_MouseLeave()
+        /// =========================================
+        private void addSpellToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            addSpellToolStripMenuItem.ForeColor = Color.White;
+        }
+
         #endregion
 
-        private void oSpellListDataView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex == 0 && e.RowIndex >= 0)
-            {
-                //Console.WriteLine(oSpellListDataView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
-            }
-        }
     }
 }

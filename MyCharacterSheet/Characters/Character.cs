@@ -4,24 +4,36 @@ using MyCharacterSheet.SkillsNamespace;
 using System.ComponentModel;
 using MyCharacterSheet.Persistence;
 using MyCharacterSheet.Utility;
+using static MyCharacterSheet.Utility.Constants;
+using MyCharacterSheet.Lists;
+using System;
+using MyCharacterSheet.TypeConverters;
 
 namespace MyCharacterSheet.Characters
 {
+    /// <summary>
+    /// Represents all of the information for a player character.
+    /// </summary>
     public class Character
     {
+
+        #region Constants
+
+        private const int MOVE_REDUCTION = 10;
+
+        #endregion
 
         #region Members
 
         public List<SavingThrows> oSavingThrows = new List<SavingThrows>();
         public List<Skills>       oSkills       = new List<Skills>();
-        public List<string>       oWeapons      = new List<string>();
-        public List<string>       oAmmo         = new List<string>();
-        public List<string>       oInventory    = new List<string>();
-        public List<string>       oAbility      = new List<string>();
-        public List<string>       oNotes        = new List<string>();
+        public List<Weapon>       oWeapons      = new List<Weapon>();
+        public List<Ammunition>   oAmmo         = new List<Ammunition>();
+        public List<Inventory>    oInventory    = new List<Inventory>();
+        public List<Ability>      oAbility      = new List<Ability>();
         public List<Document>     oDocuments    = new List<Document>();
 
-        private int iLevel;
+        private enum ClassIndex { First, Second, Third};
 
         #endregion
 
@@ -44,27 +56,29 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         public string GetBonus(string ability)
         {
-            string bonus = "+";
+            string bonus;
+            int value;
 
             switch (ability)
             {
                 case "STR":
-                    bonus += (Constants.Bonus(Strength) + ProficiencyBonus) + "";
+                    value = Constants.Bonus(Strength) + ProficiencyBonus;
+                    bonus = (value >= 0 ? "+" : "") + value;
                     break;
                 case "DEX":
-                    bonus += (Constants.Bonus(Dexterity) + ProficiencyBonus) + "";
+                    bonus = (Constants.Bonus(Dexterity) + ProficiencyBonus) + "";
                     break;
                 case "CON":
-                    bonus += (Constants.Bonus(Constitution) + ProficiencyBonus) + "";
+                    bonus = (Constants.Bonus(Constitution) + ProficiencyBonus) + "";
                     break;
                 case "INT":
-                    bonus += (Constants.Bonus(Intelligence) + ProficiencyBonus) + "";
+                    bonus = (Constants.Bonus(Intelligence) + ProficiencyBonus) + "";
                     break;
                 case "WIS":
-                    bonus += (Constants.Bonus(Wisdom) + ProficiencyBonus) + "";
+                    bonus = (Constants.Bonus(Wisdom) + ProficiencyBonus) + "";
                     break;
                 case "CHA":
-                    bonus += (Constants.Bonus(Charisma) + ProficiencyBonus) + "";
+                    bonus = (Constants.Bonus(Charisma) + ProficiencyBonus) + "";
                     break;
                 case "NONE":
                 default:
@@ -112,6 +126,238 @@ namespace MyCharacterSheet.Characters
         }
 
         /// =========================================
+        /// GetMovement()
+        /// =========================================
+        public string GetMovement()
+        {
+            int move;
+            string str;
+
+            // TODO - fix if/else logic
+            if (int.TryParse(Movement, out move))
+            {
+                if (Settings.UseEncumbrance)
+                {
+                    if (CarryWeight > Light && CarryWeight <= Medium)
+                    {
+                        move -= MOVE_REDUCTION;
+                        MovementCondition = "Encumbered";
+                    }
+                    else if (CarryWeight > Medium)
+                    {
+                        move -= MOVE_REDUCTION * 2;
+                        MovementCondition = "Heavily Encumbered";
+                    }
+
+                }
+                else if (ArmorClass.ArmorStrength > Strength)
+                {
+                    move -= MOVE_REDUCTION;
+                    MovementCondition = "Encumbered";
+                }
+                else
+                {
+                    MovementCondition = "";
+                }
+                str = move.ToString();
+            }
+            else
+            {
+                str = Movement;
+            }
+
+            return str;
+        }
+
+        // =========================================
+        /// GetWeaponIndex()
+        /// =========================================
+        public int GetWeaponIndex(string id)
+        {
+            bool end = false;
+            int index = -1;
+
+            for (int i = 0; i < oWeapons.Count && !end; i++)
+            {
+                if (oWeapons[i].ID.Equals(id))
+                {
+                    index = i;
+                    end = true;
+                }
+            }
+
+            return index;
+        }
+
+        /// =========================================
+        /// RemoveWeaponItem()
+        /// =========================================
+        public void RemoveWeaponItem(string id)
+        {
+            bool end = false;
+
+            for (int i = 0; i < oWeapons.Count && !end; i++)
+            {
+                if (oWeapons[i].ID.Equals(id))
+                {
+                    oWeapons.RemoveAt(i);
+                    end = true;
+                }
+            }
+        }
+
+        /// =========================================
+        /// GetAmmoIndex()
+        /// =========================================
+        public int GetAmmoIndex(string id)
+        {
+            bool end = false;
+            int index = -1;
+
+            for (int i = 0; i < oAmmo.Count && !end; i++)
+            {
+                if (oAmmo[i].ID.Equals(id))
+                {
+                    index = i;
+                    end = true;
+                }
+            }
+
+            return index;
+        }
+
+        /// =========================================
+        /// RemoveAmmoItem()
+        /// =========================================
+        public void RemoveAmmoItem(string id)
+        {
+            bool end = false;
+
+            for (int i = 0; i < oAmmo.Count && !end; i++)
+            {
+                if (oAmmo[i].ID.Equals(id))
+                {
+                    oAmmo.RemoveAt(i);
+                    end = true;
+                }
+            }
+        }
+
+        /// =========================================
+        /// IncrementAmmoQuantity()
+        /// =========================================
+        public void IncrementAmmoQuantity(string id)
+        {
+            bool end = false;
+            int used;
+
+            for (int i = 0; i < oAmmo.Count && !end; i++)
+            {
+                if (oAmmo[i].ID.Equals(id))
+                {
+                    used = int.Parse(oAmmo[i].Used);
+                    used++;
+                    oAmmo[i].Used = used.ToString();
+                    end = true;
+                }
+            }
+        }
+
+        /// =========================================
+        /// DecrementAmmoQuantity()
+        /// =========================================
+        public void DecrementAmmoQuantity(string id)
+        {
+            bool end = false;
+            int used;
+
+            for (int i = 0; i < oAmmo.Count && !end; i++)
+            {
+                if (oAmmo[i].ID.Equals(id))
+                {
+                    used = int.Parse(oAmmo[i].Used);
+                    used--;
+                    oAmmo[i].Used = used.ToString();
+                    end = true;
+                }
+            }
+        }
+
+        /// =========================================
+        /// GetInventoryIndex()
+        /// =========================================
+        public int GetInventoryIndex(string id)
+        {
+            bool end = false;
+            int index = -1;
+
+            for (int i = 0; i < oInventory.Count && !end; i++)
+            {
+                if (oInventory[i].ID.Equals(id))
+                {
+                    index = i;
+                    end = true;
+                }
+            }
+
+            return index;
+        }
+
+        /// =========================================
+        /// RemoveInventoryItem()
+        /// =========================================
+        public void RemoveInventoryItem(string id)
+        {
+            bool end = false;
+
+            for (int i = 0; i < oInventory.Count && !end; i++)
+            {
+                if (oInventory[i].ID.Equals(id))
+                {
+                    oInventory.RemoveAt(i);
+                    end = true;
+                }
+            }
+        }
+
+        /// =========================================
+        /// GetAbilityIndex()
+        /// =========================================
+        public int GetAbilityIndex(string id)
+        {
+            bool end = false;
+            int index = -1;
+
+            for (int i = 0; i < oAbility.Count && !end; i++)
+            {
+                if (oAbility[i].ID.Equals(id))
+                {
+                    index = i;
+                    end = true;
+                }
+            }
+
+            return index;
+        }
+
+        /// =========================================
+        /// RemoveAbilityItem()
+        /// =========================================
+        public void RemoveAbilityItem(string id)
+        {
+            bool end = false;
+
+            for (int i = 0; i < oAbility.Count && !end; i++)
+            {
+                if (oAbility[i].ID.Equals(id))
+                {
+                    oAbility.RemoveAt(i);
+                    end = true;
+                }
+            }
+        }
+
+        /// =========================================
         /// LoadCharacterSheet()
         /// =========================================
         public void LoadCharacterSheet()
@@ -150,7 +396,7 @@ namespace MyCharacterSheet.Characters
             copy.Background             = Background;
             copy.Bond                   = Bond;
             copy.Charisma               = Charisma;
-            copy.Class                  = Class;
+            copy.ClassResource          = ClassResource;
             copy.Constitution           = Constitution;
             copy.CP                     = CP;
             copy.Dexterity              = Dexterity;
@@ -166,18 +412,20 @@ namespace MyCharacterSheet.Characters
             copy.InitiativeBonus        = InitiativeBonus;
             copy.Intelligence           = Intelligence;
             copy.Language               = Language;
-            copy.Level                  = Level;
             copy.Marks                  = Marks;
             copy.Movement               = Movement;
+            copy.MovementCondition      = MovementCondition;
             copy.Name                   = Name;
             copy.PassivePerceptionBonus = PassivePerceptionBonus;
             copy.PersonalityBackground  = PersonalityBackground;
             copy.PersonalityNotes       = PersonalityNotes;
+            copy.Pool                   = Pool;
             copy.PP                     = PP;
             copy.Race                   = Race;
             copy.Shields                = Shields;
             copy.SkinColour             = SkinColour;
             copy.SP                     = SP;
+            copy.Spent                  = Spent;
             copy.Strength               = Strength;
             copy.Tools                  = Tools;
             copy.Trait1                 = Trait1;
@@ -187,12 +435,15 @@ namespace MyCharacterSheet.Characters
             copy.Weight                 = Weight;
             copy.Wisdom                 = Wisdom;
 
-            copy.ArmorClass = new ArmorClass(ArmorClass.ArmorWorn, ArmorClass.ArmorType, ArmorClass.ArmorAC, ArmorClass.ArmorStealth, ArmorClass.ShieldType, 
-                                             ArmorClass.ShieldAC, ArmorClass.MiscAC, ArmorClass.MagicAC);
+            copy.PlayerClass1 = new PlayerClass(PlayerClass1.ClassName, PlayerClass1.ClassLevel, (int)ClassIndex.First);
+            copy.PlayerClass2 = new PlayerClass(PlayerClass2.ClassName, PlayerClass2.ClassLevel, (int)ClassIndex.Second);
+            copy.PlayerClass3 = new PlayerClass(PlayerClass3.ClassName, PlayerClass3.ClassLevel, (int)ClassIndex.Third);
 
-            copy.HitPoints = new HitPoints(HitPoints.HP, HitPoints.MaxHP, HitPoints.TempHP, HitPoints.Conditions, HitPoints.DeathSaveSuccess, HitPoints.DeathSaveFailure, 
-                                           HitPoints.D6, HitPoints.D8, HitPoints.D10, HitPoints.D12, HitPoints.SpentD6, HitPoints.SpentD8, HitPoints.SpentD10, 
-                                           HitPoints.SpentD12);
+            copy.ArmorClass = new ArmorClass(ArmorClass.ArmorWorn, ArmorClass.ArmorType, ArmorClass.ArmorAC, ArmorClass.ArmorStealth, ArmorClass.ArmorWeight, ArmorClass.ShieldType, 
+                                             ArmorClass.ShieldAC, ArmorClass.ShieldWeight, ArmorClass.MiscAC, ArmorClass.MagicAC, ArmorClass.ArmorStrength);
+
+            copy.HitPoints = new HitPoints(HitPoints.HP, HitPoints.MaxHP, HitPoints.TempHP, HitPoints.Conditions, HitPoints.D6, HitPoints.D8, HitPoints.D10, 
+                                           HitPoints.D12, HitPoints.SpentD6, HitPoints.SpentD8, HitPoints.SpentD10, HitPoints.SpentD12);
 
             copy.Spellcasting = new Spellcasting(Spellcasting.Level, Spellcasting.PactTotal, Spellcasting.OneTotal, Spellcasting.TwoTotal, Spellcasting.ThreeTotal, 
                                                  Spellcasting.FourTotal, Spellcasting.FiveTotal, Spellcasting.SixTotal, Spellcasting.SevenTotal, Spellcasting.EightTotal, 
@@ -204,6 +455,14 @@ namespace MyCharacterSheet.Characters
                                            Companion.Dexterity, Companion.Constitution, Companion.Intelligence, Companion.Wisdom, Companion.Charisma, Companion.Perception,
                                            Companion.Senses, Companion.Attack.Copy(), Companion.Type.Copy(), Companion.AtkBonus.Copy(), Companion.Damage.Copy(), 
                                            Companion.DmgType.Copy(), Companion.Reach.Copy(), Companion.Notes.Copy());
+
+            copy.oWeapons   = new List<Weapon>(oWeapons);
+            copy.oAmmo      = new List<Ammunition>(oAmmo);
+            copy.oInventory = new List<Inventory>(oInventory);
+            copy.oAbility   = new List<Ability>(oAbility);
+
+            copy.Spellcasting.oMagic    = new List<Magic>(Spellcasting.oMagic);
+            copy.Spellcasting.oSpells   = new List<Spell>(Spellcasting.oSpells);
         }
 
         /// =========================================
@@ -238,10 +497,81 @@ namespace MyCharacterSheet.Characters
             oAmmo.Clear();
             oInventory.Clear();
             oAbility.Clear();
-            oNotes.Clear();
-            Spellcasting.spellClass.Clear();
-            Spellcasting.spellList.Clear();
+            Spellcasting.oMagic.Clear();
+            Spellcasting.oSpells.Clear();
             oDocuments.Clear();
+        }
+
+        /// =========================================
+        /// ValidTotalLevel()
+        /// =========================================
+        public bool ValidTotalLevel(int value, int index)
+        {
+            bool isValid = false;
+            int total;
+
+            if (!Program.Loading)
+            {
+                switch ((ClassIndex)index)
+                {
+                    case ClassIndex.First:
+                        total = value + PlayerClass2.ClassLevel + PlayerClass3.ClassLevel;
+                        break;
+                    case ClassIndex.Second:
+                        total = PlayerClass1.ClassLevel + value + PlayerClass3.ClassLevel;
+                        break;
+                    case ClassIndex.Third:
+                        total = PlayerClass1.ClassLevel + PlayerClass2.ClassLevel + value;
+                        break;
+                    default:
+                        total = 0;
+                        break;
+                }
+
+                if (total <= MAX_LEVEL)
+                {
+                    isValid = true;
+                }
+            }
+            else
+            {
+                isValid = true;
+            }
+
+            return isValid;
+        }
+
+        // =========================================
+        /// ValidName()
+        /// =========================================
+        public bool ValidName(string value, int index)
+        {
+            bool isValid;
+
+            if (!Program.Loading)
+            {
+                switch ((ClassIndex)index)
+                {
+                    case ClassIndex.First:
+                        isValid = (!value.Equals(PlayerClass2.ClassName) && !value.Equals(PlayerClass3.ClassName)) || value.Equals("");
+                        break;
+                    case ClassIndex.Second:
+                        isValid = (!value.Equals(PlayerClass1.ClassName) && !value.Equals(PlayerClass3.ClassName)) || value.Equals("");
+                        break;
+                    case ClassIndex.Third:
+                        isValid = (!value.Equals(PlayerClass1.ClassName) && !value.Equals(PlayerClass2.ClassName)) || value.Equals("");
+                        break;
+                    default:
+                        isValid = false;
+                        break;
+                }
+            }
+            else
+            {
+                isValid = true;
+            }
+
+            return isValid;
         }
 
         #endregion
@@ -306,9 +636,31 @@ namespace MyCharacterSheet.Characters
         [Browsable(true)]
         [ReadOnly(false)]
         [Category("Character Details")]
-        [DisplayName("Class")]
-        [Description("Class broadly describes a character’s vocation, what special talents he or she possesses, and the tactics he or she is most likely to employ.")]
-        public string Class
+        [DisplayName("First Class")]
+        [Description("Each character needs a class name and level.")]
+        public PlayerClass PlayerClass1
+        {
+            get;
+            set;
+        }
+
+        [Browsable(true)]
+        [ReadOnly(false)]
+        [Category("Character Details")]
+        [DisplayName("Second Class")]
+        [Description("Each character needs a class name and level.")]
+        public PlayerClass PlayerClass2
+        {
+            get;
+            set;
+        }
+
+        [Browsable(true)]
+        [ReadOnly(false)]
+        [Category("Character Details")]
+        [DisplayName("Third Class")]
+        [Description("Each character needs a class name and level.")]
+        public PlayerClass PlayerClass3
         {
             get;
             set;
@@ -319,6 +671,7 @@ namespace MyCharacterSheet.Characters
         [Category("Character Details")]
         [DisplayName("Race")]
         [Description("Race contributes to a character’s identity in an important way, by establishing a general appearance and the natural talents gained from culture and ancestry.")]
+        [TypeConverter(typeof(PlayerRaceConverter))]
         public string Race
         {
             get;
@@ -356,27 +709,6 @@ namespace MyCharacterSheet.Characters
         {
             get;
             set;
-        }
-
-        [Browsable(true)]
-        [ReadOnly(false)]
-        [Category("Character Details")]
-        [DisplayName("Level")]
-        [Description("Typically, a character starts at 1st level and advances in level by adventuring and gaining experience points (XP).")]
-        public int Level
-        {
-            get
-            {
-                return iLevel;
-            }
-            set
-            {
-                if (value <= Constants.MAX_LEVEL && value > 0)
-                {
-                    iLevel = value;
-                    ProficiencyBonus = Constants.Proficiency(iLevel);
-                }
-            }
         }
 
         [Browsable(true)]
@@ -429,6 +761,28 @@ namespace MyCharacterSheet.Characters
         [DisplayName("Initiative Bonus")]
         [Description("Extra bonus to initiative.")]
         public int InitiativeBonus
+        {
+            get;
+            set;
+        }
+
+        [Browsable(true)]
+        [ReadOnly(false)]
+        [Category("Character Details")]
+        [DisplayName("Class Resource")]
+        [Description("Class specific resource pool.")]
+        public string ClassResource
+        {
+            get;
+            set;
+        }
+
+        [Browsable(true)]
+        [ReadOnly(false)]
+        [Category("Character Details")]
+        [DisplayName("Resource Pool")]
+        [Description("Total points available to use.")]
+        public int Pool
         {
             get;
             set;
@@ -591,7 +945,7 @@ namespace MyCharacterSheet.Characters
         [Browsable(true)]
         [ReadOnly(false)]
         [Category("Character Personality")]
-        [DisplayName("Trait 1")]
+        [DisplayName("First Trait")]
         [Description("They should be self-descriptions that are specific about what makes a character stand out.")]
         public string Trait1
         {
@@ -602,7 +956,7 @@ namespace MyCharacterSheet.Characters
         [Browsable(true)]
         [ReadOnly(false)]
         [Category("Character Personality")]
-        [DisplayName("Trait 2")]
+        [DisplayName("Second Trait")]
         [Description("They should be self-descriptions that are specific about what makes a character stand out.")]
         public string Trait2
         {
@@ -715,6 +1069,83 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(false)]
         [ReadOnly(true)]
+        public double CarryWeight
+        {
+            get
+            {
+                double wgt = 0.0;
+                int totalCoins;
+
+                // Inventory weight
+                foreach (Inventory item in oInventory)
+                {
+                    wgt += int.Parse(item.Amount) * double.Parse(item.Weight);
+                }
+
+                // Weapon weight
+                foreach (Weapon weapon in oWeapons)
+                {
+                    wgt += double.Parse(weapon.Weight);
+                }
+
+                // Armor/Shield weight
+                wgt += ArmorClass.ArmorWeight;
+                wgt += ArmorClass.ShieldWeight;
+
+                // Coin weight
+                if (!Settings.UseCoinWeight)
+                {
+                    totalCoins = CP + SP + EP + GP + PP;
+
+                    wgt += totalCoins / COIN_GROUP;
+                }
+
+                return wgt;
+            }
+        }
+
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public string MovementCondition
+        {
+            get;
+            set;
+        }
+
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public int Level
+        {
+            get
+            {
+                return PlayerClass1.ClassLevel + PlayerClass2.ClassLevel + PlayerClass3.ClassLevel;
+            }
+        }
+
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public string Class
+        {
+            get
+            {
+                string str = PlayerClass1.ClassName;
+
+                //check class1 exists
+                if (!str.Equals("") && !PlayerClass2.ClassName.Equals(""))
+                    str += ", ";
+                str += PlayerClass2.ClassName;
+
+                //check class2 exists
+                if (!str.Equals("") && (!PlayerClass1.ClassName.Equals("") || !PlayerClass2.ClassName.Equals("")) && !PlayerClass3.ClassName.Equals(""))
+                    str += ", ";
+                str += PlayerClass3.ClassName;
+
+                return str;
+            }
+        }
+
+        [Browsable(false)]
+        [ReadOnly(true)]
         public int Initiative
         {
             get
@@ -729,13 +1160,23 @@ namespace MyCharacterSheet.Characters
         {
             get
             {
-                return 10 + oSkills[12].Bonus + PassivePerceptionBonus;
+                return 10 + oSkills[(int)MainPage.Skills.Perception].Bonus + PassivePerceptionBonus;
             }
         }
 
         [Browsable(false)]
         [ReadOnly(true)]
         public int ProficiencyBonus
+        {
+            get
+            {
+                return Constants.Proficiency(Level);
+            }
+        }
+
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public int Spent
         {
             get;
             set;

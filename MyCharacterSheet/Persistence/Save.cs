@@ -1,24 +1,16 @@
 ﻿using MyCharacterSheet.Characters;
 using MyCharacterSheet.Utility;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Xml.Linq;
 
 namespace MyCharacterSheet.Persistence
 {
+    /// <summary>
+    /// Provides static methods for saving a character sheet in xml.
+    /// </summary>
     public static class Save
     {
-
-        #region Members
-
-        private static List<string[]> weapons     = new List<string[]>();
-        private static List<string[]> ammunitions = new List<string[]>();
-        private static List<string[]> inventory   = new List<string[]>();
-        private static List<string[]> abilities   = new List<string[]>();
-        private static List<string[]> classes     = new List<string[]>();
-        private static List<string[]> spells      = new List<string[]>();
-
-        #endregion
 
         #region Methods
 
@@ -27,22 +19,15 @@ namespace MyCharacterSheet.Persistence
         /// =========================================
         public static void SaveCharacterSheetXML(Character character)
         {
-            clearLists();
-
-            splitList(weapons,      character.oWeapons);
-            splitList(ammunitions,  character.oAmmo);
-            splitList(inventory,    character.oInventory);
-            splitList(abilities,    character.oAbility);
-            splitList(classes,      character.Spellcasting.spellClass);
-            splitList(spells,       character.Spellcasting.spellList);
-
             XDocument xml = new XDocument(
                 new XElement("Character",
                     new XElement("Settings",
                         new XElement("Mute",            new XAttribute("remember", Settings.RememberMute),                new XAttribute("value",    Settings.MuteState)),
                         new XElement("Tab",             new XAttribute("remember", Settings.RememberLastTab),             new XAttribute("last",     Settings.LastTab)),
                         new XElement("AutoSave",        new XAttribute("enabled",  Settings.AutosaveEnable),              new XAttribute("interval", Settings.AutosaveInterval)),
-                        new XElement("AnimalCompanion", new XAttribute("hidden",   Settings.HideAnimalCompanion))
+                        new XElement("AnimalCompanion", new XAttribute("hidden",   Settings.HideAnimalCompanion)),
+                        new XElement("CoinWeight",      new XAttribute("ignore",   Settings.UseCoinWeight)),
+                        new XElement("Encumbrance",     new XAttribute("use",      Settings.UseEncumbrance))
                         ),
                     new XElement("Attributes",
                         new XElement("Strength",     new XAttribute("value", character.Strength)),
@@ -93,10 +78,11 @@ namespace MyCharacterSheet.Persistence
                         new XElement("Race",            new XAttribute("value", character.Race)),
                         new XElement("Background",      new XAttribute("value", character.Background)),
                         new XElement("Alignment",       new XAttribute("value", character.Alignment)),
-                        new XElement("Level",           new XAttribute("value", character.Level)),
+                        new XElement("Class1",          new XAttribute("class", character.PlayerClass1.ClassName), new XAttribute("level", character.PlayerClass1.ClassLevel)),
+                        new XElement("Class2",          new XAttribute("class", character.PlayerClass2.ClassName), new XAttribute("level", character.PlayerClass2.ClassLevel)),
+                        new XElement("Class3",          new XAttribute("class", character.PlayerClass3.ClassName), new XAttribute("level", character.PlayerClass3.ClassLevel)),
                         new XElement("Experience",      new XAttribute("value", character.EXP)),
                         new XElement("Language",        new XAttribute("value", character.Language)),
-                        new XElement("Class",           new XAttribute("value", character.Class)),
                         new XElement("InitiativeBonus", new XAttribute("value", character.InitiativeBonus)),
                         new XElement("PerceptionBonus", new XAttribute("value", character.PassivePerceptionBonus)),
                         new XElement("Movement",        new XAttribute("value", character.Movement)),
@@ -128,15 +114,23 @@ namespace MyCharacterSheet.Persistence
                         new XElement("Gold",     new XAttribute("value", character.GP)),
                         new XElement("Platinum", new XAttribute("value", character.PP))
                         ),
+                    new XElement("ClassResource",
+                        new XElement("Type", new XAttribute("value", character.ClassResource)),
+                        new XElement("Pool", new XAttribute("value", character.Pool)),
+                        new XElement("Spent", new XAttribute("value", character.Spent))
+                        ),
                     new XElement("ArmorClass",
-                        new XElement("ArmorWorn", new XAttribute("value", character.ArmorClass.ArmorWorn)),
-                        new XElement("ArmorType", new XAttribute("value", character.ArmorClass.ArmorType)),
-                        new XElement("ArmorAC",   new XAttribute("value", character.ArmorClass.ArmorAC)),
-                        new XElement("Stealth",   new XAttribute("value", character.ArmorClass.ArmorStealth)),
-                        new XElement("Shield",    new XAttribute("value", character.ArmorClass.ShieldType)),
-                        new XElement("ShieldAC",  new XAttribute("value", character.ArmorClass.ShieldAC)),
-                        new XElement("MiscAC",    new XAttribute("value", character.ArmorClass.MiscAC)),
-                        new XElement("MagicAC",   new XAttribute("value", character.ArmorClass.MagicAC))
+                        new XElement("ArmorWorn",    new XAttribute("value", character.ArmorClass.ArmorWorn)),
+                        new XElement("ArmorType",    new XAttribute("value", character.ArmorClass.ArmorType)),
+                        new XElement("ArmorAC",      new XAttribute("value", character.ArmorClass.ArmorAC)),
+                        new XElement("Strength",     new XAttribute("value", character.ArmorClass.ArmorStrength)),
+                        new XElement("ArmorWeight",  new XAttribute("value", character.ArmorClass.ArmorWeight)),
+                        new XElement("Stealth",      new XAttribute("value", character.ArmorClass.ArmorStealth)),
+                        new XElement("Shield",       new XAttribute("value", character.ArmorClass.ShieldType)),
+                        new XElement("ShieldAC",     new XAttribute("value", character.ArmorClass.ShieldAC)),
+                        new XElement("ShieldWeight", new XAttribute("value", character.ArmorClass.ShieldWeight)),
+                        new XElement("MiscAC",       new XAttribute("value", character.ArmorClass.MiscAC)),
+                        new XElement("MagicAC",      new XAttribute("value", character.ArmorClass.MagicAC))
                         ),
                     new XElement("HitPoints",
                         new XElement("MaxHP",       new XAttribute("value", character.HitPoints.MaxHP)),
@@ -148,73 +142,71 @@ namespace MyCharacterSheet.Persistence
                             new XElement("D8",  new XAttribute("total", character.HitPoints.D8),  new XAttribute("spent", character.HitPoints.SpentD8)),
                             new XElement("D10", new XAttribute("total", character.HitPoints.D10), new XAttribute("spent", character.HitPoints.SpentD10)),
                             new XElement("D12", new XAttribute("total", character.HitPoints.D12), new XAttribute("spent", character.HitPoints.SpentD12))
-                            ),
-                        new XElement("DeathSaves",
-                            new XElement("Success", new XAttribute("value", character.HitPoints.DeathSaveSuccess)),
-                            new XElement("Failure", new XAttribute("value", character.HitPoints.DeathSaveFailure))
                             )
                         ),
                     new XElement("Weapons",
-                        from weapon in weapons
+                        from weapon in character.oWeapons
                         select
                             new XElement("Weapon", 
-                                new XAttribute("name",    weapon[0]),
-                                new XAttribute("ability", weapon[1]),
-                                new XAttribute("dmg",     weapon[2]),
-                                new XAttribute("misc",    weapon[3]),
-                                new XAttribute("dmgType", weapon[4]),
-                                new XAttribute("range",   weapon[5]),
-                                new XAttribute("notes",   weapon[6])
+                                new XAttribute("name",    weapon.Name),
+                                new XAttribute("ability", weapon.Ability),
+                                new XAttribute("dmg",     weapon.Damage),
+                                new XAttribute("misc",    weapon.Misc),
+                                new XAttribute("dmgType", weapon.Type),
+                                new XAttribute("range",   weapon.Range),
+                                new XAttribute("notes",   weapon.Notes),
+                                new XAttribute("weight",  weapon.Weight),
+                                new XAttribute("id",      weapon.ID)
                                 )
                         ),
                     new XElement("Ammunitions",
-                        from ammo in ammunitions
+                        from ammo in character.oAmmo
                         select
                             new XElement("Ammunition",
-                                new XAttribute("name",    ammo[0]),
-                                new XAttribute("ammount", ammo[1]),
-                                new XAttribute("miscDmg", ammo[2]),
-                                new XAttribute("dmgType", ammo[3]),
-                                new XAttribute("used",    ammo[4])
+                                new XAttribute("name",    ammo.Name),
+                                new XAttribute("amount",  ammo.Quantity),
+                                new XAttribute("miscDmg", ammo.Bonus),
+                                new XAttribute("dmgType", ammo.Type),
+                                new XAttribute("used",    ammo.Used),
+                                new XAttribute("id",      ammo.ID)
                             )
                         ),
                     new XElement("Inventory",
-                        from item in inventory
+                        from item in character.oInventory
                         select
                             new XElement("Item",
-                                new XAttribute("name",    item[0]),
-                                new XAttribute("ammount", item[1]),
-                                new XAttribute("wgt",     item[2])
+                                new XAttribute("name",   item.Name),
+                                new XAttribute("amount", item.Amount),
+                                new XAttribute("wgt",    item.Weight),
+                                new XAttribute("note",   item.Note),
+                                new XAttribute("id",     item.ID)
                             )
                         ),
                     new XElement("Abilities",
-                        from ability in abilities
+                        from ability in character.oAbility
                         select
                             new XElement("Ability",
-                                new XAttribute("name",     ability[0]),
-                                new XAttribute("level",    ability[1]),
-                                new XAttribute("uses",     ability[2]),
-                                new XAttribute("recovery", ability[3]),
-                                new XAttribute("action",   ability[4]),
-                                new XAttribute("notes",    ability[5])
+                                new XAttribute("name",     ability.Name),
+                                new XAttribute("level",    ability.Level),
+                                new XAttribute("uses",     ability.Uses),
+                                new XAttribute("recovery", ability.Recovery),
+                                new XAttribute("action",   ability.Action),
+                                new XAttribute("notes",    ability.Note),
+                                new XAttribute("id",       ability.ID)
                             )
-                        ),
-                    new XElement("Notes",
-                        from note in character.oNotes
-                        select
-                            new XElement("Note", new XAttribute("value", note))
                         ),
                     new XElement("Spellcasting",
                         new XElement("Level", new XAttribute("value", character.Spellcasting.Level)),
                         new XElement("SpellClasses",
-                            from spellClass in classes
+                            from magic in character.Spellcasting.oMagic
                             select
                                 new XElement("SpellClass",
-                                    new XAttribute("class",    spellClass[0]),
-                                    new XAttribute("ability",  spellClass[1]),
-                                    new XAttribute("cantrips", spellClass[2]),
-                                    new XAttribute("known",    spellClass[3]),
-                                    new XAttribute("prepared", spellClass[4])
+                                    new XAttribute("class",     magic.Class),
+                                    new XAttribute("ability",   magic.Ability),
+                                    new XAttribute("cantrips",  magic.Cantrips),
+                                    new XAttribute("known",     magic.Spells),
+                                    new XAttribute("prepared",  magic.Prepared),
+                                    new XAttribute("id",        magic.ID)
                                 )
                             ),
                         new XElement("SpellSlots",
@@ -230,23 +222,24 @@ namespace MyCharacterSheet.Persistence
                             new XElement("Nine",  new XAttribute("total", character.Spellcasting.NineTotal),  new XAttribute("used", character.Spellcasting.NineUsed))
                             ),
                         new XElement("SpellList",
-                            from spell in spells
+                            from spell in character.Spellcasting.oSpells
                             select
                                 new XElement("Spell",
-                                    new XAttribute("name",        spell[0]),
-                                    new XAttribute("level",       spell[1]),
-                                    new XAttribute("page",        spell[2]),
-                                    new XAttribute("school",      spell[3]),
-                                    new XAttribute("ritual",      spell[4]),
-                                    new XAttribute("comp",        spell[5]),
-                                    new XAttribute("concen",      spell[6]),
-                                    new XAttribute("range",       spell[7]),
-                                    new XAttribute("duration",    spell[8]),
-                                    new XAttribute("area",        spell[9]),
-                                    new XAttribute("save",        spell[10]),
-                                    new XAttribute("damage",      spell[11]),
-                                    new XAttribute("description", spell[12]),
-                                    new XAttribute("prepared",    spell[13])
+                                    new XAttribute("name",        spell.Name),
+                                    new XAttribute("level",       spell.Level),
+                                    new XAttribute("page",        spell.Page),
+                                    new XAttribute("school",      spell.School),
+                                    new XAttribute("ritual",      spell.Ritual),
+                                    new XAttribute("comp",        spell.Components),
+                                    new XAttribute("concen",      spell.Concentration),
+                                    new XAttribute("range",       spell.Range),
+                                    new XAttribute("duration",    spell.Duration),
+                                    new XAttribute("area",        spell.Area),
+                                    new XAttribute("save",        spell.Save),
+                                    new XAttribute("damage",      spell.Damage),
+                                    new XAttribute("description", spell.Description),
+                                    new XAttribute("prepared",    spell.Prepared),
+                                    new XAttribute("id",          spell.ID)
                                 )
                             )
                         ),
@@ -284,33 +277,6 @@ namespace MyCharacterSheet.Persistence
                 );
 
             xml.Save(Program.FileLocation);
-        }
-
-        /// =========================================
-        /// splitList()
-        /// =========================================
-        private static void splitList(List<string[]> list, List<string> characterList)
-        {
-            string[] tokens;
-
-            foreach (string str in characterList)
-            {
-                tokens = str.Split(Constants.DELIMITER);
-                list.Add(tokens);
-            }
-        }
-
-        /// =========================================
-        /// clearLists()
-        /// =========================================
-        private static void clearLists()
-        {
-            weapons.Clear();
-            ammunitions.Clear();
-            inventory.Clear();
-            abilities.Clear();
-            classes.Clear();
-            spells.Clear();
         }
 
         #endregion

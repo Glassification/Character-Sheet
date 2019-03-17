@@ -9,12 +9,6 @@ namespace MyCharacterSheet
     public partial class DivideLootPage : Form
     {
 
-        #region Constants
-
-        public const int CURRENCIES = 5;
-
-        #endregion
-
         #region Members
 
         private List<Player>   players = new List<Player>();
@@ -40,14 +34,14 @@ namespace MyCharacterSheet
         /// =========================================
         public void ShowPane()
         {
-            defaultValues();
-            ShowDialog();
+            DefaultValues();
+            Show();
         }
 
         /// =========================================
-        /// defaultValues()
+        /// DefaultValues()
         /// =========================================
-        private void defaultValues()
+        private void DefaultValues()
         {
             oPlayerInput.Text = "0";
             oCopperInput.Text = "0";
@@ -58,9 +52,9 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// fillList()
+        /// FillList()
         /// =========================================
-        private void fillList()
+        private void FillList()
         {
             foreach (Player player in players)
             {
@@ -78,9 +72,9 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// parsePlayers()
+        /// ParsePlayers()
         /// =========================================
-        private void parsePlayers()
+        private void ParsePlayers()
         {
             int numPlayers;
 
@@ -91,9 +85,9 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// parseLoot()
+        /// ParseLoot()
         /// =========================================
-        private Player parseLoot()
+        private Player ParseLoot()
         {
             int cp, sp, ep, gp, pp;
             Player loot;
@@ -110,16 +104,16 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// distribute()
+        /// Distribute()
         /// =========================================
-        private void distribute(Player loot)
+        private void Distribute(Player loot)
         {
             bool end = false;
             double maxValue = loot.Total/players.Count;
 
             if (players.Count > 0)
             {
-                for (int i = 0; i < CURRENCIES; i++)
+                for (int i = 0; i < Player.CURRENCIES; i++)
                 {
                     while (loot.currency[i] > 0)
                     {
@@ -151,7 +145,7 @@ namespace MyCharacterSheet
         private void btnReset_Click(object sender, EventArgs e)
         {
             Sounds.ButtonClick();
-            defaultValues();
+            DefaultValues();
             oDivideLootGrid.Rows.Clear();
         }
 
@@ -165,12 +159,12 @@ namespace MyCharacterSheet
             Sounds.ButtonClick();
             oDivideLootGrid.Rows.Clear();
 
-            parsePlayers();
-            loot = parseLoot();
+            ParsePlayers();
+            loot = ParseLoot();
 
-            distribute(loot);
+            Distribute(loot);
 
-            fillList();
+            FillList();
         }
 
         /// =========================================
@@ -326,6 +320,15 @@ namespace MyCharacterSheet
             {
                 Close();
             }
+        }
+
+        /// =========================================
+        /// DivideLootPage_FormClosing()
+        /// =========================================
+        private void DivideLootPage_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            Hide();
         }
 
         #endregion

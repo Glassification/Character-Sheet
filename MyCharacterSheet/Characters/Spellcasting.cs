@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyCharacterSheet.Lists;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -7,12 +8,62 @@ namespace MyCharacterSheet.Characters
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class Spellcasting : ExpandableObjectConverter
     {
-        public List<string> spellList = new List<string>();
-        public List<string> spellClass = new List<string>();
 
-        public Spellcasting(int level, int totalPact, int totalOne, int totalTwo, int totalThree, int totalFour, int totalFive, int toalSix, int totalSeven, 
-                            int totalEight, int totalNine, int usedPact, int usedOne, int usedTwo, int usedThree, int usedFour, int usedFive, int usedSix, 
-                            int usedSeven, int usedEight, int usedNine)
+        #region Members
+
+        public List<Spell> oSpells = new List<Spell>();
+        public List<Magic> oMagic = new List<Magic>();
+
+        #endregion
+
+        #region Constructor
+
+        public Spellcasting()
+        {
+            Level = 0;
+            PactTotal = 0;
+            OneTotal = 0;
+            TwoTotal = 0;
+            ThreeTotal = 0;
+            FourTotal = 0;
+            FiveTotal = 0;
+            SixTotal = 0;
+            SevenTotal = 0;
+            EightTotal = 0;
+            NineTotal = 0;
+            PactUsed = 0;
+            OneUsed = 0;
+            TwoUsed = 0;
+            ThreeUsed = 0;
+            FourUsed = 0;
+            FiveUsed = 0;
+            SixUsed = 0;
+            SevenUsed = 0;
+            EightUsed = 0;
+            NineUsed = 0;
+        }
+
+        public Spellcasting(int level, 
+                            int totalPact, 
+                            int totalOne, 
+                            int totalTwo, 
+                            int totalThree, 
+                            int totalFour, 
+                            int totalFive, 
+                            int toalSix, 
+                            int totalSeven,            
+                            int totalEight, 
+                            int totalNine, 
+                            int usedPact, 
+                            int usedOne, 
+                            int usedTwo, 
+                            int usedThree, 
+                            int usedFour, 
+                            int usedFive, 
+                            int usedSix,           
+                            int usedSeven, 
+                            int usedEight, 
+                            int usedNine)
         {
             Level = level;
             PactTotal = totalPact;
@@ -37,6 +88,10 @@ namespace MyCharacterSheet.Characters
             NineUsed = usedNine;
         }
 
+        #endregion
+
+        #region Methods
+
         /// =========================================
         /// ResetSpellSlots()
         /// =========================================
@@ -53,6 +108,82 @@ namespace MyCharacterSheet.Characters
             EightUsed = 0;
             NineUsed = 0;
         }
+
+        // =========================================
+        /// GetSpellIndex()
+        /// =========================================
+        public int GetSpellIndex(string id)
+        {
+            bool end = false;
+            int index = -1;
+
+            for (int i = 0; i < oSpells.Count && !end; i++)
+            {
+                if (oSpells[i].ID.Equals(id))
+                {
+                    index = i;
+                    end = true;
+                }
+            }
+
+            return index;
+        }
+
+        /// =========================================
+        /// RemoveSpellItem()
+        /// =========================================
+        public void RemoveSpellItem(string id)
+        {
+            bool end = false;
+
+            for (int i = 0; i < oSpells.Count && !end; i++)
+            {
+                if (oSpells[i].ID.Equals(id))
+                {
+                    oSpells.RemoveAt(i);
+                    end = true;
+                }
+            }
+        }
+
+        // =========================================
+        /// GetMagicIndex()
+        /// =========================================
+        public int GetMagicIndex(string id)
+        {
+            bool end = false;
+            int index = -1;
+
+            for (int i = 0; i < oMagic.Count && !end; i++)
+            {
+                if (oMagic[i].ID.Equals(id))
+                {
+                    index = i;
+                    end = true;
+                }
+            }
+
+            return index;
+        }
+
+        // =========================================
+        /// RemoveMagicItem()
+        /// =========================================
+        public void RemoveMagicItem(string id)
+        {
+            bool end = false;
+
+            for (int i = 0; i < oMagic.Count && !end; i++)
+            {
+                if (oMagic[i].ID.Equals(id))
+                {
+                    oMagic.RemoveAt(i);
+                    end = true;
+                }
+            }
+        }
+
+        #endregion
 
         #region Detail Accessors
 
@@ -73,8 +204,8 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(true)]
         [ReadOnly(false)]
-        [Category("Total Spell Slots")]
-        [DisplayName("Total Pact")]
+        [Category("Spell Slots")]
+        [DisplayName("Pact")]
         [Description("Available pact spell slots.")]
         public int PactTotal
         {
@@ -84,8 +215,8 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(true)]
         [ReadOnly(false)]
-        [Category("Total Spell Slots")]
-        [DisplayName("Total 1st")]
+        [Category("Spell Slots")]
+        [DisplayName("1st")]
         [Description("Available 1st level spell slots.")]
         public int OneTotal
         {
@@ -95,8 +226,8 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(true)]
         [ReadOnly(false)]
-        [Category("Total Spell Slots")]
-        [DisplayName("Total 2nd")]
+        [Category("Spell Slots")]
+        [DisplayName("2nd")]
         [Description("Available 2nd level spell slots.")]
         public int TwoTotal
         {
@@ -106,8 +237,8 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(true)]
         [ReadOnly(false)]
-        [Category("Total Spell Slots")]
-        [DisplayName("Total 3rd")]
+        [Category("Spell Slots")]
+        [DisplayName("3rd")]
         [Description("Available 3rd level spell slots.")]
         public int ThreeTotal
         {
@@ -117,8 +248,8 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(true)]
         [ReadOnly(false)]
-        [Category("Total Spell Slots")]
-        [DisplayName("Total 4th")]
+        [Category("Spell Slots")]
+        [DisplayName("4th")]
         [Description("Available 4th level spell slots.")]
         public int FourTotal
         {
@@ -128,8 +259,8 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(true)]
         [ReadOnly(false)]
-        [Category("Total Spell Slots")]
-        [DisplayName("Total 5th")]
+        [Category("Spell Slots")]
+        [DisplayName("5th")]
         [Description("Available 5th level spell slots.")]
         public int FiveTotal
         {
@@ -139,8 +270,8 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(true)]
         [ReadOnly(false)]
-        [Category("Total Spell Slots")]
-        [DisplayName("Total 6th")]
+        [Category("Spell Slots")]
+        [DisplayName("6th")]
         [Description("Available 6th level spell slots.")]
         public int SixTotal
         {
@@ -150,8 +281,8 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(true)]
         [ReadOnly(false)]
-        [Category("Total Spell Slots")]
-        [DisplayName("Total 7th")]
+        [Category("Spell Slots")]
+        [DisplayName("7th")]
         [Description("Available 7th level spell slots.")]
         public int SevenTotal
         {
@@ -161,8 +292,8 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(true)]
         [ReadOnly(false)]
-        [Category("Total Spell Slots")]
-        [DisplayName("Total 8th")]
+        [Category("Spell Slots")]
+        [DisplayName("8th")]
         [Description("Available 8th level spell slots.")]
         public int EightTotal
         {
@@ -172,8 +303,8 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(true)]
         [ReadOnly(false)]
-        [Category("Total Spell Slots")]
-        [DisplayName("Total 9th")]
+        [Category("Spell Slots")]
+        [DisplayName("9th")]
         [Description("Available 9th level spell slots.")]
         public int NineTotal
         {
@@ -185,110 +316,81 @@ namespace MyCharacterSheet.Characters
 
         #region Used Accessors
 
-        [Browsable(true)]
-        [ReadOnly(false)]
-        [Category("Used Spells")]
-        [DisplayName("Used Pact")]
-        [Description("Spent Pact level spells.")]
+        [Browsable(false)]
+        [ReadOnly(true)]
         public int PactUsed
         {
             get;
             set;
         }
 
-        [Browsable(true)]
-        [ReadOnly(false)]
-        [Category("Used Spells")]
-        [DisplayName("Used 1st")]
-        [Description("Spent 1st level spells.")]
+        [Browsable(false)]
+        [ReadOnly(true)]
         public int OneUsed
         {
             get;
             set;
         }
 
-        [Browsable(true)]
-        [ReadOnly(false)]
-        [Category("Used Spells")]
-        [DisplayName("Used 2nd")]
-        [Description("Spent 2nd level spells.")]
+        [Browsable(false)]
+        [ReadOnly(true)]
         public int TwoUsed
         {
             get;
             set;
         }
 
-        [Browsable(true)]
-        [ReadOnly(false)]
-        [Category("Used Spells")]
-        [DisplayName("Used 3rd")]
-        [Description("Spent 3rd level spells.")]
+        [Browsable(false)]
+        [ReadOnly(true)]
         public int ThreeUsed
         {
             get;
             set;
         }
 
-        [Browsable(true)]
-        [ReadOnly(false)]
-        [Category("Used Spells")]
-        [DisplayName("Used 4th")]
-        [Description("Spent 4th level spells.")]
+        [Browsable(false)]
+        [ReadOnly(true)]
         public int FourUsed
         {
             get;
             set;
         }
 
-        [Browsable(true)]
-        [ReadOnly(false)]
-        [Category("Used Spells")]
-        [DisplayName("Used 5th")]
-        [Description("Spent 5th level spells.")]
+        [Browsable(false)]
+        [ReadOnly(true)]
         public int FiveUsed
         {
             get;
             set;
         }
 
-        [Browsable(true)]
-        [ReadOnly(false)]
-        [Category("Used Spells")]
-        [DisplayName("Used 6th")]
-        [Description("Spent 6th level spells.")]
+        [Browsable(false)]
+        [ReadOnly(true)]
         public int SixUsed
         {
             get;
             set;
         }
 
-        [Browsable(true)]
-        [ReadOnly(false)]
-        [Category("Used Spells")]
-        [DisplayName("Used 7th")]
-        [Description("Spent 7th level spells.")]
+        [Browsable(false)]
+        [ReadOnly(true)]
         public int SevenUsed
         {
             get;
             set;
         }
 
-        [Browsable(true)]
-        [ReadOnly(false)]
-        [Category("Used Spells")]
-        [DisplayName("Used 8th")]
-        [Description("Spent 8th level spells.")]
+        [Browsable(false)]
+        [ReadOnly(true)]
         public int EightUsed
         {
             get;
             set;
         }
 
-        [Browsable(true)]
-        [ReadOnly(false)]
+        [Browsable(false)]
+        [ReadOnly(true)]
         [Category("Used Spells")]
-        [DisplayName("Used 9th")]
-        [Description("Spent 9th level spells.")]
         public int NineUsed
         {
             get;

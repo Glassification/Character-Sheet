@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyCharacterSheet.Characters
+namespace MyCharacterSheet.Lists
 {
+    /// <summary>
+    /// Represents the rtf data of a text document.
+    /// </summary>
     public class Document
     {
-        public Document(string id, string name, string rtf)
+        public Document(Guid id, string name, string rtf)
         {
             ID = id;
             Name = name;
@@ -20,7 +23,7 @@ namespace MyCharacterSheet.Characters
             return Name;
         }
 
-        public string ID
+        public Guid ID
         {
             get;
             private set;

@@ -6,6 +6,12 @@ namespace MyCharacterSheet
     public partial class InputMessageBox : Form
     {
 
+        #region Constants
+
+        private const int MAX_NAME_LENGTH = 21;
+
+        #endregion
+
         #region Constructor
 
         /// =========================================

@@ -1,10 +1,15 @@
 ﻿using MyCharacterSheet.Characters;
+using MyCharacterSheet.Utility;
 using System;
 using System.Globalization;
 using System.Windows.Forms;
+using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
+    ///<summary>
+    /// Provides constants and static methods for the entry point of the application.
+    /// </summary>
     static class Program
     {
 
@@ -18,12 +23,15 @@ namespace MyCharacterSheet
         {
             Character = new Character();
             Loading = true;
-            Mute = false;
+            Mute = true;
             Typing = false;
+            LastTable = Tables.Abilities;
+
+            //SpellParser.ParseSpellCSV();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainPage());
+            Application.Run(MainForm = new MainPage());
         }
 
         /// =========================================
@@ -44,6 +52,12 @@ namespace MyCharacterSheet
         #region Accessors
 
         public static Character Character
+        {
+            get;
+            private set;
+        }
+
+        public static MainPage MainForm
         {
             get;
             private set;
@@ -74,6 +88,12 @@ namespace MyCharacterSheet
         }
 
         public static bool Typing
+        {
+            get;
+            set;
+        }
+
+        public static Tables LastTable
         {
             get;
             set;

@@ -1,8 +1,10 @@
-﻿using MyCharacterSheet.Utility;
+﻿using MyCharacterSheet.Lists;
+using MyCharacterSheet.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
@@ -30,8 +32,9 @@ namespace MyCharacterSheet
             
             //Set initial state
             FillLabelList();
-            fillSizes();
-            formatContextMenus();
+            FillSizes();
+            FormatContextMenus();
+            FormatInputBoxes();
 
             //Format datagrid
             oAbilitiesGridView.Columns[Names.Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -44,9 +47,9 @@ namespace MyCharacterSheet
         #region Methods
 
         /// =========================================
-        /// fillSizes()
+        /// FillSizes()
         /// =========================================
-        private void fillSizes()
+        private void FillSizes()
         {
             foreach (Label l in oSecondaryLabels)
             {
@@ -55,45 +58,101 @@ namespace MyCharacterSheet
 
             AbilityHeaderSize = oAbilitiesGridView.ColumnHeadersDefaultCellStyle.Font.Size;
             InventoryHeaderSize = oInventoryGrid.ColumnHeadersDefaultCellStyle.Font.Size;
-            NotesHeaderSize = oNotesGridView.ColumnHeadersDefaultCellStyle.Font.Size;
 
             AbilityRowSize = oAbilitiesGridView.DefaultCellStyle.Font.Size;
             InventoryRowSize = oInventoryGrid.DefaultCellStyle.Font.Size;
-            NotesRowSize = oNotesGridView.DefaultCellStyle.Font.Size;
+
+            CurrencySize = oInputGP.Font.Size;
         }
 
         /// =========================================
-        /// formatContextMenus()
+        /// FormatCurrencyInput()
         /// =========================================
-        private void formatContextMenus()
+        public void FormatInputBoxes()
         {
-            oAbilitiesContextMenu.BackColor = Constants.DarkGrey;
+            oInputCP.Width = oPanelCP.Width;
+            oInputSP.Width = oPanelSP.Width;
+            oInputEP.Width = oPanelEP.Width;
+            oInputGP.Width = oPanelGP.Width;
+            oInputPP.Width = oPanelPP.Width;
+
+            oInputCP.Location = new Point(0, (oPanelCP.Height / 2) - (oInputCP.Height / 2));
+            oInputSP.Location = new Point(0, (oPanelSP.Height / 2) - (oInputSP.Height / 2));
+            oInputEP.Location = new Point(0, (oPanelEP.Height / 2) - (oInputEP.Height / 2));
+            oInputGP.Location = new Point(0, (oPanelGP.Height / 2) - (oInputGP.Height / 2));
+            oInputPP.Location = new Point(0, (oPanelPP.Height / 2) - (oInputPP.Height / 2));
+        }
+
+        /// =========================================
+        /// FormatContextMenus()
+        /// =========================================
+        private void FormatContextMenus()
+        {
+            oAbilitiesContextMenu.BackColor = DarkGrey;
             oAbilitiesContextMenu.ForeColor = Color.White;
 
-            oNotesContextMenu.BackColor = Constants.DarkGrey;
-            oNotesContextMenu.ForeColor = Color.White;
+            oAddAbilityContextMenu.BackColor = DarkGrey;
+            oAddAbilityContextMenu.ForeColor = Color.White;
 
-            oInventoryContextMenu.BackColor = Constants.DarkGrey;
+            oInventoryContextMenu.BackColor = DarkGrey;
             oInventoryContextMenu.ForeColor = Color.White;
+
+            oAddInventoryContextMenu.BackColor = DarkGrey;
+            oAddInventoryContextMenu.ForeColor = Color.White;
+        }
+
+        /// =========================================
+        /// ResizeLabels()
+        /// =========================================
+        public void ResizeLabels()
+        {
+            float ratio = Program.MainForm.Ratio;
+
+            for (int i = 0; i < oSecondaryLabels.Count; i++)
+            {
+                oSecondaryLabels[i].Font = new Font(oSecondaryLabels[i].Font.FontFamily, oSecondaryLabelSizes[i] * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oSecondaryLabels[i].Font.Style);
+
+                ScaleFont(oSecondaryLabels[i]);
+            }
         }
 
         /// =========================================
         /// ResizeText()
         /// =========================================
-        public void ResizeText(float mod, float ratio)
+        public void ResizeText()
         {
-            for (int i = 0; i < oSecondaryLabels.Count; i++)
+            float ratio = Program.MainForm.Ratio;
+
+            FormatInputBoxes();
+            ResizeLabels();
+
+            //Resize Currency Input
+            oInputCP.Font = new Font(oInputCP.Font.FontFamily, CurrencySize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oInputCP.Font.Style);
+            oInputSP.Font = new Font(oInputCP.Font.FontFamily, CurrencySize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oInputCP.Font.Style);
+            oInputEP.Font = new Font(oInputCP.Font.FontFamily, CurrencySize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oInputCP.Font.Style);
+            oInputGP.Font = new Font(oInputCP.Font.FontFamily, CurrencySize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oInputCP.Font.Style);
+            oInputPP.Font = new Font(oInputCP.Font.FontFamily, CurrencySize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oInputCP.Font.Style);
+
+            oAbilitiesGridView.ColumnHeadersDefaultCellStyle.Font = new Font(oAbilitiesGridView.ColumnHeadersDefaultCellStyle.Font.FontFamily, AbilityHeaderSize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)),   oAbilitiesGridView.ColumnHeadersDefaultCellStyle.Font.Style);
+            oInventoryGrid.ColumnHeadersDefaultCellStyle.Font     = new Font(oInventoryGrid.ColumnHeadersDefaultCellStyle.Font.FontFamily,     InventoryHeaderSize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oInventoryGrid.ColumnHeadersDefaultCellStyle.Font.Style);
+
+            oAbilitiesGridView.DefaultCellStyle.Font = new Font(oAbilitiesGridView.DefaultCellStyle.Font.FontFamily, AbilityRowSize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)),   oAbilitiesGridView.Font.Style);
+            oInventoryGrid.DefaultCellStyle.Font     = new Font(oInventoryGrid.DefaultCellStyle.Font.FontFamily,     InventoryRowSize * (ratio == 1 ? ratio : (ratio / SIZE_MOD)), oInventoryGrid.Font.Style);
+        }
+
+        /// =========================================
+        /// TrimLeadingZero()
+        /// =========================================
+        private string TrimLeadingZero(string text)
+        {
+            text = text.TrimStart(new char[] { '0' });
+
+            if (text.Equals(""))
             {
-                oSecondaryLabels[i].Font = new Font(oSecondaryLabels[i].Font.FontFamily, oSecondaryLabelSizes[i] * (ratio == 1 ? ratio : (ratio / mod)), oSecondaryLabels[i].Font.Style);
+                text = "0";
             }
 
-            oAbilitiesGridView.ColumnHeadersDefaultCellStyle.Font = new Font(oAbilitiesGridView.ColumnHeadersDefaultCellStyle.Font.FontFamily, AbilityHeaderSize * (ratio == 1 ? ratio : (ratio / mod)),   oAbilitiesGridView.ColumnHeadersDefaultCellStyle.Font.Style);
-            oInventoryGrid.ColumnHeadersDefaultCellStyle.Font     = new Font(oInventoryGrid.ColumnHeadersDefaultCellStyle.Font.FontFamily,     InventoryHeaderSize * (ratio == 1 ? ratio : (ratio / mod)), oInventoryGrid.ColumnHeadersDefaultCellStyle.Font.Style);
-            oNotesGridView.ColumnHeadersDefaultCellStyle.Font     = new Font(oNotesGridView.ColumnHeadersDefaultCellStyle.Font.FontFamily,     NotesHeaderSize * (ratio == 1 ? ratio : (ratio / mod)),     oNotesGridView.ColumnHeadersDefaultCellStyle.Font.Style);
-
-            oAbilitiesGridView.DefaultCellStyle.Font = new Font(oAbilitiesGridView.DefaultCellStyle.Font.FontFamily, AbilityRowSize * (ratio == 1 ? ratio : (ratio / mod)),   oAbilitiesGridView.Font.Style);
-            oInventoryGrid.DefaultCellStyle.Font     = new Font(oInventoryGrid.DefaultCellStyle.Font.FontFamily,     InventoryRowSize * (ratio == 1 ? ratio : (ratio / mod)), oInventoryGrid.Font.Style);
-            oNotesGridView.DefaultCellStyle.Font     = new Font(oNotesGridView.DefaultCellStyle.Font.FontFamily,     NotesRowSize * (ratio == 1 ? ratio : (ratio / mod)),     oNotesGridView.Font.Style);
+            return text;
         }
 
         /// =========================================
@@ -101,75 +160,22 @@ namespace MyCharacterSheet
         /// =========================================
         public void FillAbility()
         {
-            string[] tokens;
             oAbilitiesGridView.Rows.Clear();
 
-            foreach (string ability in Program.Character.oAbility)
+            foreach (Ability ability in Program.Character.oAbility)
             {
                 int index = oAbilitiesGridView.Rows.Add();
                 DataGridViewRow row = oAbilitiesGridView.Rows[index];
-                tokens = ability.Split(Constants.DELIMITER);
 
-                row.Cells[Names.Index].Value = tokens[0];
-                row.Cells[Level.Index].Value = tokens[1];
-                row.Cells[Uses.Index].Value = tokens[2];
-                row.Cells[Recovery.Index].Value = tokens[3];
-                row.Cells[ActionType.Index].Value = tokens[4];
-                row.Cells[Notes.Index].Value = tokens[5];
+                row.Cells[Names.Index].Value = ability.Name;
+                row.Cells[Level.Index].Value = ability.Level;
+                row.Cells[Uses.Index].Value = ability.Uses;
+                row.Cells[Recovery.Index].Value = ability.Recovery;
+                row.Cells[ActionType.Index].Value = ability.Action;
+                row.Cells[Notes.Index].Value = ability.Note;
+
+                row.Tag = ability.ID;
             }
-        }
-
-        /// =========================================
-        /// fillAbility()
-        /// =========================================
-        public void WriteAbility(List<string> list)
-        {
-            string str;
-
-            foreach (DataGridViewRow row in oAbilitiesGridView.Rows)
-            {
-                str = (string)row.Cells[Names.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Level.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Uses.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Recovery.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[ActionType.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Notes.Index].Value;
-
-                list.Add(str);
-            }
-            list.RemoveAt(list.Count - 1);
-        }
-
-        /// =========================================
-        /// FillNotes()
-        /// =========================================
-        public void FillNotes()
-        {
-            oNotesGridView.Rows.Clear();
-
-            foreach (string str in Program.Character.oNotes)
-            {
-                int index = oNotesGridView.Rows.Add();
-                DataGridViewRow row = oNotesGridView.Rows[index];
-
-                row.Cells[Note.Index].Value = str;
-            }
-        }
-
-        /// =========================================
-        /// WriteNotes()
-        /// =========================================
-        public void WriteNotes(List<string> list)
-        {
-            string str;
-
-            foreach (DataGridViewRow row in oNotesGridView.Rows)
-            {
-                str = row.Cells[Note.Index].Value + "";
-
-                list.Add(str);
-            }
-            list.RemoveAt(list.Count - 1);
         }
 
         /// =========================================
@@ -177,55 +183,39 @@ namespace MyCharacterSheet
         /// =========================================
         public void FillInventory()
         {
-            string[] tokens;
             oInventoryGrid.Rows.Clear();
 
-            foreach (string inventory in Program.Character.oInventory)
+            foreach (Inventory inventory in Program.Character.oInventory)
             {
                 int index = oInventoryGrid.Rows.Add();
                 DataGridViewRow row = oInventoryGrid.Rows[index];
-                tokens = inventory.Split(Constants.DELIMITER);
 
-                row.Cells[Equipment.Index].Value = tokens[0];
-                row.Cells[Qty.Index].Value = tokens[1];
-                row.Cells[Wgt.Index].Value = tokens[2];
+                row.Cells[Equipment.Index].Value = inventory.Name;
+                row.Cells[Qty.Index].Value = inventory.Amount;
+                row.Cells[Wgt.Index].Value = inventory.Weight;
+                row.Cells[oNote.Index].Value = inventory.Note;
+
+                row.Tag = inventory.ID;
             }
         }
 
         /// =========================================
-        /// WriteInventory()
+        /// FormatCarryWeight()
         /// =========================================
-        public void WriteInventory(List<string> list)
+        private void FormatCarryWeight()
         {
-            string str;
-
-            foreach (DataGridViewRow row in oInventoryGrid.Rows)
-            {
-                str = (string)row.Cells[Equipment.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Qty.Index].Value + Constants.DELIMITER +
-                      (string)row.Cells[Wgt.Index].Value;
-
-                list.Add(str);
-            }
-            list.RemoveAt(list.Count - 1);
-        }
-
-        /// =========================================
-        /// formatCarryWeight()
-        /// =========================================
-        private void formatCarryWeight()
-        {
+            double Weight = Program.Character.CarryWeight;
             //Light weight
             if (Weight <= Program.Character.Light)
             {
-                oWeightCarried.BackColor = Constants.LightGreen;
+                oWeightCarried.BackColor = LightGreen;
                 oWeightCarried.ForeColor = Color.Black;
             }
             //Medium weight
             else if (Weight > Program.Character.Light && Weight <= Program.Character.Medium)
             {
-                oWeightCarried.BackColor = Constants.LightYellow;
-                oWeightCarried.ForeColor = Constants.MediumRed;
+                oWeightCarried.BackColor = LightYellow;
+                oWeightCarried.ForeColor = MediumRed;
             }
             //Heavy weight
             else if (Weight > Program.Character.Medium && Weight <= Program.Character.Heavy)
@@ -265,14 +255,6 @@ namespace MyCharacterSheet
             return oInventoryGrid;
         }
 
-        /// =========================================
-        /// AbilityGridView()
-        /// =========================================
-        public Control NoteGridView()
-        {
-            return oNotesGridView;
-        }
-
         #endregion
 
         #region Accessors
@@ -281,29 +263,6 @@ namespace MyCharacterSheet
         {
             get;
             set;
-        }
-
-        public double Weight
-        {
-            get
-            {
-                double weight = 0, dVal;
-                int iVal;
-                bool wgt, qty;
-
-                foreach (DataGridViewRow row in oInventoryGrid.Rows)
-                {
-                    wgt = double.TryParse((string)row.Cells[Wgt.Index].Value, out dVal);
-                    qty = int.TryParse((string)row.Cells[Qty.Index].Value, out iVal);
-
-                    if (wgt && qty)
-                    {
-                        weight += (dVal * iVal);
-                    }
-                }
-
-                return weight;
-            }
         }
 
         private string WgtValue
@@ -342,19 +301,13 @@ namespace MyCharacterSheet
             set;
         }
 
-        private float NotesHeaderSize
-        {
-            get;
-            set;
-        }
-
-        private float NotesRowSize
-        {
-            get;
-            set;
-        }
-
         private bool Drawing
+        {
+            get;
+            set;
+        }
+
+        private float CurrencySize
         {
             get;
             set;
@@ -395,11 +348,20 @@ namespace MyCharacterSheet
                 oToolProficiency.Text = Program.Character.Tools;
                 oProficiencyBonus.Text = Program.Character.ProficiencyBonus + "";
 
-                formatCarryWeight();
-                oWeightCarried.Text = Weight + "";
+                FormatCarryWeight();
+                oWeightCarried.Text = Program.Character.CarryWeight + "";
                 oLightLimit.Text = Program.Character.Light + "";
                 oMediumLimit.Text = Program.Character.Medium + "";
                 oHeavyLimit.Text = Program.Character.Heavy + "";
+
+                oInputCP.Text = Program.Character.CP + "";
+                oInputSP.Text = Program.Character.SP + "";
+                oInputEP.Text = Program.Character.EP + "";
+                oInputGP.Text = Program.Character.GP + "";
+                oInputPP.Text = Program.Character.PP + "";
+                oGoldValue.Text = "¤ " + string.Format("{0:0.00}", Program.Character.TotalGold);
+
+                ResizeLabels();
 
                 Drawing = false;
             }
@@ -425,32 +387,27 @@ namespace MyCharacterSheet
         #region Ability Events
 
         /// =========================================
-        /// oAbilitiesGridView_CellEnter()
-        /// =========================================
-        private void oAbilitiesGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            Program.Typing = true;
-        }
-
-        /// =========================================
-        /// oAbilitiesGridView_CellLeave()
-        /// =========================================
-        private void oAbilitiesGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            Program.Typing = false;
-        }
-
-        /// =========================================
         /// oAbilitiesGridView_CellMouseClick()
         /// =========================================
         private void oAbilitiesGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oAbilitiesGridView.RowCount - 1)
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oAbilitiesGridView.RowCount)
             {
                 Rectangle rect = oAbilitiesGridView.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
                 Row = e.RowIndex;
-                oAbilitiesContextMenu.Show(oAbilitiesGridView, new Point(rect.X + e.X + Constants.OFFSET, rect.Y + e.Y + Constants.OFFSET));
+                oAbilitiesContextMenu.Show(oAbilitiesGridView, new Point(rect.X + e.X + OFFSET, rect.Y + e.Y + OFFSET));
             }
+        }
+
+        /// =========================================
+        /// editAbilityToolStripMenuItem_Click()
+        /// =========================================
+        private void editAbilityToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.Modified = true;
+
+            Program.MainForm.oTablePage.ShowPane(Tables.Abilities, Program.Character.oAbility[Row]);
+            FillAbility();
         }
 
         /// =========================================
@@ -459,18 +416,9 @@ namespace MyCharacterSheet
         private void oAbilityDeleteRow_Click(object sender, EventArgs e)
         {
             Program.Modified = true;
-            oAbilitiesGridView.Rows.RemoveAt(Row);
-        }
 
-        /// =========================================
-        /// oAbilitiesGridView_CellValueChanged()
-        /// =========================================
-        private void oAbilitiesGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (!Drawing)
-            {
-                Program.Modified = true;
-            }
+            Program.Character.RemoveAbilityItem(oAbilitiesGridView.Rows[Row].Tag as string);
+            oAbilitiesGridView.Rows.RemoveAt(Row);
         }
 
         /// =========================================
@@ -485,19 +433,35 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// oAbilitiesContextMenu_MouseEnter()
+        /// editAbilityToolStripMenuItem_MouseEnter()
         /// =========================================
-        private void oAbilitiesContextMenu_MouseEnter(object sender, EventArgs e)
+        private void editAbilityToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
-            oAbilitiesContextMenu.ForeColor = Color.Black;
+            editAbilityToolStripMenuItem.ForeColor = Color.Black;
         }
 
         /// =========================================
-        /// oAbilitiesContextMenu_MouseLeave()
+        /// editAbilityToolStripMenuItem_MouseLeave()
         /// =========================================
-        private void oAbilitiesContextMenu_MouseLeave(object sender, EventArgs e)
+        private void editAbilityToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
-            oAbilitiesContextMenu.ForeColor = Color.White;
+            editAbilityToolStripMenuItem.ForeColor = Color.White;
+        }
+
+        /// =========================================
+        /// oAbilityDeleteRow_MouseEnter()
+        /// =========================================
+        private void oAbilityDeleteRow_MouseEnter(object sender, EventArgs e)
+        {
+            oAbilityDeleteRow.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// oAbilityDeleteRow_MouseLeave()
+        /// =========================================
+        private void oAbilityDeleteRow_MouseLeave(object sender, EventArgs e)
+        {
+            oAbilityDeleteRow.ForeColor = Color.White;
         }
 
         /// =========================================
@@ -521,14 +485,23 @@ namespace MyCharacterSheet
         {
             rowIndexFromMouseDown = oAbilitiesGridView.HitTest(e.X, e.Y).RowIndex;
 
-            if (rowIndexFromMouseDown != -1)
+            switch (e.Button)
             {
-                Size dragSize = SystemInformation.DragSize;
-                dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
-            }
-            else
-            {
-                dragBoxFromMouseDown = Rectangle.Empty;
+                case MouseButtons.Left:
+                    if (rowIndexFromMouseDown != -1)
+                    {
+                        Size dragSize = SystemInformation.DragSize;
+                        dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
+                    }
+                    else
+                    {
+                        dragBoxFromMouseDown = Rectangle.Empty;
+                    }
+                    break;
+                case MouseButtons.Right:
+                    if (rowIndexFromMouseDown == -1)
+                        oAddAbilityContextMenu.Show(oAbilitiesGridView, new Point(e.X + OFFSET, e.Y + OFFSET));
+                    break;
             }
         }
 
@@ -545,6 +518,8 @@ namespace MyCharacterSheet
         /// =========================================
         private void oAbilitiesGridView_DragDrop(object sender, DragEventArgs e)
         {
+            Ability item;
+
             if (oAbilitiesGridView.Rows.Count > 1)
             {
                 Point clientPoint = oAbilitiesGridView.PointToClient(new Point(e.X, e.Y));
@@ -557,165 +532,76 @@ namespace MyCharacterSheet
                     DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
-                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oAbilitiesGridView.Rows.Count - 1)
-                        rowIndexOfItemUnderMouseToDrop = oAbilitiesGridView.Rows.Count - 2;
+                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oAbilitiesGridView.Rows.Count)
+                        rowIndexOfItemUnderMouseToDrop = oAbilitiesGridView.Rows.Count - 1;
 
                     if (rowIndexFromMouseDown != rowIndexOfItemUnderMouseToDrop)
                         Program.Modified = true;
 
+                    // Move list item
                     oAbilitiesGridView.Rows.RemoveAt(rowIndexFromMouseDown);
                     oAbilitiesGridView.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
+
+                    // Move data item
+                    item = Program.Character.oAbility[rowIndexFromMouseDown];
+                    Program.Character.oAbility.RemoveAt(rowIndexFromMouseDown);
+                    Program.Character.oAbility.Insert(rowIndexOfItemUnderMouseToDrop, item);
                 }
             }
         }
 
-        #endregion
-
-        #region Notes Events
-
         /// =========================================
-        /// oNotesGridView_CellEnter()
+        /// oAbilitiesGridView_Sorted()
         /// =========================================
-        private void oNotesGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
+        private void oAbilitiesGridView_Sorted(object sender, EventArgs e)
         {
-            Program.Typing = true;
-        }
+            int index;
+            string rowID;
+            Ability item;
 
-        /// =========================================
-        /// oNotesGridView_CellLeave()
-        /// =========================================
-        private void oNotesGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            Program.Typing = false;
-        }
-
-        /// =========================================
-        /// oNotesGridView_CellMouseClick()
-        /// =========================================
-        private void oNotesGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oNotesGridView.RowCount - 1)
+            // Sort each item
+            for (int i = 0; i < oAbilitiesGridView.Rows.Count; i++)
             {
-                Rectangle rect = oNotesGridView.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
-                Row = e.RowIndex;
-                oNotesContextMenu.Show(oNotesGridView, new Point(rect.X + e.X + Constants.OFFSET, rect.Y + e.Y + Constants.OFFSET));
-            }
-        }
+                rowID = oAbilitiesGridView.Rows[i].Tag as string;
 
-        /// =========================================
-        /// oNoteDeleteRow_Click()
-        /// =========================================
-        private void oNoteDeleteRow_Click(object sender, EventArgs e)
-        {
-            Program.Modified = true;
-            oNotesGridView.Rows.RemoveAt(Row);
-        }
-
-        /// =========================================
-        /// oNotesGridView_RowsAdded()
-        /// =========================================
-        private void oNotesGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
-        {
-            if (!Drawing)
-            {
-                Program.Modified = true;
-            }
-        }
-
-        /// =========================================
-        /// oNotesGridView_CellValueChanged()
-        /// =========================================
-        private void oNotesGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (!Drawing)
-            {
-                Program.Modified = true;
-            }
-        }
-
-        /// =========================================
-        /// oNotesContextMenu_MouseEnter()
-        /// =========================================
-        private void oNotesContextMenu_MouseEnter(object sender, EventArgs e)
-        {
-            oNotesContextMenu.ForeColor = Color.Black;
-        }
-
-        /// =========================================
-        /// oNotesContextMenu_MouseLeave()
-        /// =========================================
-        private void oNotesContextMenu_MouseLeave(object sender, EventArgs e)
-        {
-            oNotesContextMenu.ForeColor = Color.White;
-        }
-
-        /// =========================================
-        /// oNotesGridView_MouseMove()
-        /// =========================================
-        private void oNotesGridView_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (dragBoxFromMouseDown != Rectangle.Empty && !dragBoxFromMouseDown.Contains(e.X, e.Y))
+                // Check if already in correct position 
+                if (!rowID.Equals(Program.Character.oAbility[i].ID))
                 {
-                    DragDropEffects dropEffects = oNotesGridView.DoDragDrop(oNotesGridView.Rows[rowIndexFromMouseDown], DragDropEffects.Move);
+                    index = Program.Character.GetAbilityIndex(rowID);
+                    item = Program.Character.oAbility[index];
+
+                    Program.Character.oAbility.RemoveAt(index);
+                    Program.Character.oAbility.Insert(index, Program.Character.oAbility[i]);
+
+                    Program.Character.oAbility.RemoveAt(i);
+                    Program.Character.oAbility.Insert(i, item);
                 }
             }
         }
 
         /// =========================================
-        /// oNotesGridView_MouseDown()
+        /// addAbilityToolStripMenuItem_Click()
         /// =========================================
-        private void oNotesGridView_MouseDown(object sender, MouseEventArgs e)
+        private void addAbilityToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            rowIndexFromMouseDown = oNotesGridView.HitTest(e.X, e.Y).RowIndex;
-
-            if (rowIndexFromMouseDown != -1)
-            {
-                Size dragSize = SystemInformation.DragSize;
-                dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
-            }
-            else
-            {
-                dragBoxFromMouseDown = Rectangle.Empty;
-            }
+            Program.MainForm.oTablePage.ShowPane(Tables.Abilities);
+            FillAbility();
         }
 
         /// =========================================
-        /// oNotesGridView_DragOver()
+        /// addAbilityToolStripMenuItem_MouseEnter()
         /// =========================================
-        private void oNotesGridView_DragOver(object sender, DragEventArgs e)
+        private void addAbilityToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
-            e.Effect = DragDropEffects.Move;
+            addAbilityToolStripMenuItem.ForeColor = Color.Black;
         }
 
         /// =========================================
-        /// oNotesGridView_DragDrop()
+        /// addAbilityToolStripMenuItem_MouseLeave()
         /// =========================================
-        private void oNotesGridView_DragDrop(object sender, DragEventArgs e)
+        private void addAbilityToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
-            if (oNotesGridView.Rows.Count > 1)
-            {
-                Point clientPoint = oNotesGridView.PointToClient(new Point(e.X, e.Y));
-
-                rowIndexOfItemUnderMouseToDrop = oNotesGridView.HitTest(clientPoint.X, clientPoint.Y).RowIndex;
-
-                if (e.Effect == DragDropEffects.Move)
-                {
-
-                    DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
-
-                    //set as last row
-                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oNotesGridView.Rows.Count - 1)
-                        rowIndexOfItemUnderMouseToDrop = oNotesGridView.Rows.Count - 2;
-
-                    if (rowIndexFromMouseDown != rowIndexOfItemUnderMouseToDrop)
-                        Program.Modified = true;
-
-                    oNotesGridView.Rows.RemoveAt(rowIndexFromMouseDown);
-                    oNotesGridView.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
-                }
-            }
+            addAbilityToolStripMenuItem.ForeColor = Color.White;
         }
 
         #endregion
@@ -723,31 +609,15 @@ namespace MyCharacterSheet
         #region Inventory Events
 
         /// =========================================
-        /// oInventoryGrid_CellEnter()
-        /// =========================================
-        private void oInventoryGrid_CellEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            Program.Typing = true;
-        }
-
-        /// =========================================
-        /// oInventoryGrid_CellLeave()
-        /// =========================================
-        private void oInventoryGrid_CellLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            Program.Typing = false;
-        }
-
-        /// =========================================
         /// oInventoryGrid_CellMouseClick()
         /// =========================================
         private void oInventoryGrid_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oInventoryGrid.RowCount - 1)
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oInventoryGrid.RowCount)
             {
                 Rectangle rect = oInventoryGrid.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
                 Row = e.RowIndex;
-                oInventoryContextMenu.Show(oInventoryGrid, new Point(rect.X + e.X + Constants.OFFSET, rect.Y + e.Y + Constants.OFFSET));
+                oInventoryContextMenu.Show(oInventoryGrid, new Point(rect.X + e.X + OFFSET, rect.Y + e.Y + OFFSET));
             }
         }
 
@@ -757,55 +627,20 @@ namespace MyCharacterSheet
         private void oInventoryDeleteRow_Click(object sender, EventArgs e)
         {
             Program.Modified = true;
+
+            Program.Character.RemoveInventoryItem(oInventoryGrid.Rows[Row].Tag as string);
             oInventoryGrid.Rows.RemoveAt(Row);
         }
 
         /// =========================================
-        /// oInventoryGrid_CellValueChanged()
+        /// editItemToolStripMenuItem_Click()
         /// =========================================
-        private void oInventoryGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void editItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            double wgt;
-            int qty;
+            Program.Modified = true;
 
-            if (!Drawing)
-            {
-                Program.Modified = true;
-            }
-
-            if (!Program.Loading)
-            {
-                if (e.ColumnIndex == Wgt.Index)
-                {
-                    if (!double.TryParse(oInventoryGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value + "", out wgt))
-                    {
-                        oInventoryGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = WgtValue;
-                    }
-                }
-                else if (e.ColumnIndex == Qty.Index)
-                {
-                    if (!int.TryParse(oInventoryGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value + "", out qty))
-                    {
-                        oInventoryGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = QtyValue;
-                    }
-                }
-                Invalidate();
-            }
-        }
-
-        /// =========================================
-        /// oInventoryGrid_CellBeginEdit()
-        /// =========================================
-        private void oInventoryGrid_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            if (e.ColumnIndex == Wgt.Index)
-            {
-                WgtValue = oInventoryGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value + "";
-            }
-            else if (e.ColumnIndex == Qty.Index)
-            {
-                QtyValue = oInventoryGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value + "";
-            }
+            Program.MainForm.oTablePage.ShowPane(Tables.Inventory, Program.Character.oInventory[Row]);
+            FillInventory();
         }
 
         /// =========================================
@@ -820,19 +655,35 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// oInventoryContextMenu_MouseEnter()
+        /// editItemToolStripMenuItem_MouseEnter()
         /// =========================================
-        private void oInventoryContextMenu_MouseEnter(object sender, EventArgs e)
+        private void editItemToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
-            oInventoryContextMenu.ForeColor = Color.Black;
+            editItemToolStripMenuItem.ForeColor = Color.Black;
         }
 
         /// =========================================
-        /// oInventoryContextMenu_MouseLeave()
+        /// editItemToolStripMenuItem_MouseLeave()
         /// =========================================
-        private void oInventoryContextMenu_MouseLeave(object sender, EventArgs e)
+        private void editItemToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
-            oInventoryContextMenu.ForeColor = Color.White;
+            editItemToolStripMenuItem.ForeColor = Color.White;
+        }
+
+        /// =========================================
+        /// oInventoryDeleteRow_MouseEnter()
+        /// =========================================
+        private void oInventoryDeleteRow_MouseEnter(object sender, EventArgs e)
+        {
+            oInventoryDeleteRow.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// oInventoryDeleteRow_MouseLeave()
+        /// =========================================
+        private void oInventoryDeleteRow_MouseLeave(object sender, EventArgs e)
+        {
+            oInventoryDeleteRow.ForeColor = Color.White;
         }
 
         /// =========================================
@@ -856,14 +707,23 @@ namespace MyCharacterSheet
         {
             rowIndexFromMouseDown = oInventoryGrid.HitTest(e.X, e.Y).RowIndex;
 
-            if (rowIndexFromMouseDown != -1)
+            switch (e.Button)
             {
-                Size dragSize = SystemInformation.DragSize;
-                dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
-            }
-            else
-            {
-                dragBoxFromMouseDown = Rectangle.Empty;
+                case MouseButtons.Left:
+                    if (rowIndexFromMouseDown != -1)
+                    {
+                        Size dragSize = SystemInformation.DragSize;
+                        dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
+                    }
+                    else
+                    {
+                        dragBoxFromMouseDown = Rectangle.Empty;
+                    }
+                    break;
+                case MouseButtons.Right:
+                    if (rowIndexFromMouseDown == -1)
+                        oAddInventoryContextMenu.Show(oInventoryGrid, new Point(e.X + OFFSET, e.Y + OFFSET));
+                    break;
             }
         }
 
@@ -880,6 +740,8 @@ namespace MyCharacterSheet
         /// =========================================
         private void oInventoryGrid_DragDrop(object sender, DragEventArgs e)
         {
+            Inventory item;
+
             if (oInventoryGrid.Rows.Count > 1)
             {
                 Point clientPoint = oInventoryGrid.PointToClient(new Point(e.X, e.Y));
@@ -892,17 +754,457 @@ namespace MyCharacterSheet
                     DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
-                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oInventoryGrid.Rows.Count - 1)
-                        rowIndexOfItemUnderMouseToDrop = oInventoryGrid.Rows.Count - 2;
+                    if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oInventoryGrid.Rows.Count)
+                        rowIndexOfItemUnderMouseToDrop = oInventoryGrid.Rows.Count - 1;
 
                     if (rowIndexFromMouseDown != rowIndexOfItemUnderMouseToDrop)
                         Program.Modified = true;
 
+                    // Move list item
                     oInventoryGrid.Rows.RemoveAt(rowIndexFromMouseDown);
                     oInventoryGrid.Rows.Insert(rowIndexOfItemUnderMouseToDrop, rowToMove);
+
+                    // Move data item
+                    item = Program.Character.oInventory[rowIndexFromMouseDown];
+                    Program.Character.oInventory.RemoveAt(rowIndexFromMouseDown);
+                    Program.Character.oInventory.Insert(rowIndexOfItemUnderMouseToDrop, item);
                 }
             }
         }
+
+        /// =========================================
+        /// oInventoryGrid_Sorted()
+        /// =========================================
+        private void oInventoryGrid_Sorted(object sender, EventArgs e)
+        {
+            int index;
+            string rowID;
+            Inventory item;
+
+            // Sort each item
+            for (int i = 0; i < oInventoryGrid.Rows.Count; i++)
+            {
+                rowID = oInventoryGrid.Rows[i].Tag as string;
+
+                // Check if already in correct position 
+                if (!rowID.Equals(Program.Character.oInventory[i].ID))
+                {
+                    index = Program.Character.GetInventoryIndex(rowID);
+                    item = Program.Character.oInventory[index];
+
+                    Program.Character.oInventory.RemoveAt(index);
+                    Program.Character.oInventory.Insert(index, Program.Character.oInventory[i]);
+
+                    Program.Character.oInventory.RemoveAt(i);
+                    Program.Character.oInventory.Insert(i, item);
+                }
+            }
+        }
+
+        /// =========================================
+        /// addItemToolStripMenuItem_Click()
+        /// =========================================
+        private void addItemToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.MainForm.oTablePage.ShowPane(Tables.Inventory);
+            FillInventory();
+        }
+
+        /// =========================================
+        /// addItemToolStripMenuItem_MouseEnter()
+        /// =========================================
+        private void addItemToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            addItemToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// addItemToolStripMenuItem_MouseLeave()
+        /// =========================================
+        private void addItemToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            addItemToolStripMenuItem.ForeColor = Color.White;
+        }
+
+        #endregion
+
+        #region Wealth Events
+
+        /// =========================================
+        /// oPanelCP_Click()
+        /// =========================================
+        private void oPanelCP_Click(object sender, EventArgs e)
+        {
+            oInputCP.Select();
+            oInputCP.SelectionStart = oInputCP.Text.Length;
+            oInputCP.SelectionLength = 0;
+        }
+
+        /// =========================================
+        /// oPanelSP_Click()
+        /// =========================================
+        private void oPanelSP_Click(object sender, EventArgs e)
+        {
+            oInputSP.Select();
+            oInputSP.SelectionStart = oInputSP.Text.Length;
+            oInputSP.SelectionLength = 0;
+        }
+
+        /// =========================================
+        /// oPanelEP_Click()
+        /// =========================================
+        private void oPanelEP_Click(object sender, EventArgs e)
+        {
+            oInputEP.Select();
+            oInputEP.SelectionStart = oInputEP.Text.Length;
+            oInputEP.SelectionLength = 0;
+        }
+
+        /// =========================================
+        /// oPanelGP_Click()
+        /// =========================================
+        private void oPanelGP_Click(object sender, EventArgs e)
+        {
+            oInputGP.Select();
+            oInputGP.SelectionStart = oInputGP.Text.Length;
+            oInputGP.SelectionLength = 0;
+        }
+
+        /// =========================================
+        /// oPanelPP_Click()
+        /// =========================================
+        private void oPanelPP_Click(object sender, EventArgs e)
+        {
+            oInputPP.Select();
+            oInputPP.SelectionStart = oInputPP.Text.Length;
+            oInputPP.SelectionLength = 0;
+        }
+
+        /// =========================================
+        /// oInputCP_Enter()
+        /// =========================================
+        private void oInputCP_Enter(object sender, EventArgs e)
+        {
+            Program.Typing = true;
+        }
+
+        /// =========================================
+        /// oInputCP_Leave()
+        /// =========================================
+        private void oInputCP_Leave(object sender, EventArgs e)
+        {
+            int cp;
+
+            oInputCP.Text = TrimLeadingZero(oInputCP.Text);
+
+            if (int.TryParse(oInputCP.Text, out cp))
+            {
+                if (!Drawing)
+                {
+                    Program.Modified = true;
+                }
+
+                Program.Character.CP = cp;
+                oGoldValue.Text = Program.Character.TotalGold + "";
+            }
+            else
+            {
+                oInputCP.Text = Program.Character.CP + "";
+            }
+
+            Invalidate();
+            Program.Typing = false;
+        }
+
+        /// =========================================
+        /// oInputCP_KeyDown()
+        /// =========================================
+        private void oInputCP_KeyDown(object sender, KeyEventArgs e)
+        {
+            int cp;
+
+            if (e.KeyCode == Keys.Return)
+            {
+                e.SuppressKeyPress = true;
+                oInputCP.Text = TrimLeadingZero(oInputCP.Text);
+
+                if (int.TryParse(oInputCP.Text, out cp))
+                {
+                    if (!Drawing)
+                    {
+                        Program.Modified = true;
+                    }
+
+                    Program.Character.CP = cp;
+                    oGoldValue.Text = Program.Character.TotalGold + "";
+                }
+                else
+                {
+                    oInputCP.Text = Program.Character.CP + "";
+                }
+            }
+        }
+
+        /// =========================================
+        /// oInputSP_Enter()
+        /// =========================================
+        private void oInputSP_Enter(object sender, EventArgs e)
+        {
+            Program.Typing = true;
+        }
+
+        /// =========================================
+        /// oInputSP_Leave()
+        /// =========================================
+        private void oInputSP_Leave(object sender, EventArgs e)
+        {
+            int sp;
+
+            oInputSP.Text = TrimLeadingZero(oInputSP.Text);
+
+            if (int.TryParse(oInputSP.Text, out sp))
+            {
+                if (!Drawing)
+                {
+                    Program.Modified = true;
+                }
+
+                Program.Character.SP = sp;
+                oGoldValue.Text = Program.Character.TotalGold + "";
+            }
+            else
+            {
+                oInputSP.Text = Program.Character.SP + "";
+            }
+
+            Invalidate();
+            Program.Typing = false;
+        }
+
+        /// =========================================
+        /// oInputSP_KeyDown()
+        /// =========================================
+        private void oInputSP_KeyDown(object sender, KeyEventArgs e)
+        {
+            int sp;
+
+            if (e.KeyCode == Keys.Return)
+            {
+                e.SuppressKeyPress = true;
+                oInputSP.Text = TrimLeadingZero(oInputSP.Text);
+
+                if (int.TryParse(oInputSP.Text, out sp))
+                {
+                    if (!Drawing)
+                    {
+                        Program.Modified = true;
+                    }
+
+                    Program.Character.SP = sp;
+                    oGoldValue.Text = Program.Character.TotalGold + "";
+                }
+                else
+                {
+                    oInputSP.Text = Program.Character.SP + "";
+                }
+            }
+        }
+
+        /// =========================================
+        /// oInputEP_Enter()
+        /// =========================================
+        private void oInputEP_Enter(object sender, EventArgs e)
+        {
+            Program.Typing = true;
+        }
+
+        /// =========================================
+        /// oInputEP_Leave()
+        /// =========================================
+        private void oInputEP_Leave(object sender, EventArgs e)
+        {
+            int ep;
+
+            oInputEP.Text = TrimLeadingZero(oInputEP.Text);
+
+            if (int.TryParse(oInputEP.Text, out ep))
+            {
+                if (!Drawing)
+                {
+                    Program.Modified = true;
+                }
+
+                Program.Character.EP = ep;
+                oGoldValue.Text = Program.Character.TotalGold + "";
+            }
+            else
+            {
+                oInputEP.Text = Program.Character.EP + "";
+            }
+
+            Invalidate();
+            Program.Typing = false;
+        }
+
+        /// =========================================
+        /// oInputEP_KeyDown()
+        /// =========================================
+        private void oInputEP_KeyDown(object sender, KeyEventArgs e)
+        {
+            int ep;
+
+            if (e.KeyCode == Keys.Return)
+            {
+                e.SuppressKeyPress = true;
+                oInputEP.Text = TrimLeadingZero(oInputEP.Text);
+
+                if (int.TryParse(oInputEP.Text, out ep))
+                {
+                    if (!Drawing)
+                    {
+                        Program.Modified = true;
+                    }
+
+                    Program.Character.EP = ep;
+                    oGoldValue.Text = Program.Character.TotalGold + "";
+                }
+                else
+                {
+                    oInputEP.Text = Program.Character.EP + "";
+                }
+            }
+        }
+
+        /// =========================================
+        /// oInputGP_Enter()
+        /// =========================================
+        private void oInputGP_Enter(object sender, EventArgs e)
+        {
+            Program.Typing = true;
+        }
+
+        /// =========================================
+        /// oInputGP_Leave()
+        /// =========================================
+        private void oInputGP_Leave(object sender, EventArgs e)
+        {
+            int gp;
+
+            oInputGP.Text = TrimLeadingZero(oInputGP.Text);
+
+            if (int.TryParse(oInputGP.Text, out gp))
+            {
+                if (!Drawing)
+                {
+                    Program.Modified = true;
+                }
+
+                Program.Character.GP = gp;
+                oGoldValue.Text = Program.Character.TotalGold + "";
+            }
+            else
+            {
+                oInputGP.Text = Program.Character.GP + "";
+            }
+
+            Invalidate();
+            Program.Typing = false;
+        }
+
+        /// =========================================
+        /// oInputGP_KeyDown()
+        /// =========================================
+        private void oInputGP_KeyDown(object sender, KeyEventArgs e)
+        {
+            int gp;
+
+            if (e.KeyCode == Keys.Return)
+            {
+                e.SuppressKeyPress = true;
+                oInputGP.Text = TrimLeadingZero(oInputGP.Text);
+
+                if (int.TryParse(oInputGP.Text, out gp))
+                {
+                    if (!Drawing)
+                    {
+                        Program.Modified = true;
+                    }
+
+                    Program.Character.GP = gp;
+                    oGoldValue.Text = Program.Character.TotalGold + "";
+                }
+                else
+                {
+                    oInputGP.Text = Program.Character.GP + "";
+                }
+            }
+        }
+
+        /// =========================================
+        /// oInputPP_Enter()
+        /// =========================================
+        private void oInputPP_Enter(object sender, EventArgs e)
+        {
+            Program.Typing = true;
+        }
+
+        /// =========================================
+        /// oInputPP_Leave()
+        /// =========================================
+        private void oInputPP_Leave(object sender, EventArgs e)
+        {
+            int pp;
+
+            oInputPP.Text = TrimLeadingZero(oInputPP.Text);
+
+            if (int.TryParse(oInputPP.Text, out pp))
+            {
+                if (!Drawing)
+                {
+                    Program.Modified = true;
+                }
+
+                Program.Character.PP = pp;
+                oGoldValue.Text = Program.Character.TotalGold + "";
+            }
+            else
+            {
+                oInputPP.Text = Program.Character.PP + "";
+            }
+
+            Invalidate();
+            Program.Typing = false;
+        }
+
+        /// =========================================
+        /// oInputPP_KeyDown()
+        /// =========================================
+        private void oInputPP_KeyDown(object sender, KeyEventArgs e)
+        {
+            int pp;
+
+            if (e.KeyCode == Keys.Return)
+            {
+                e.SuppressKeyPress = true;
+                oInputPP.Text = TrimLeadingZero(oInputPP.Text);
+
+                if (int.TryParse(oInputPP.Text, out pp))
+                {
+                    if (!Drawing)
+                    {
+                        Program.Modified = true;
+                    }
+
+                    Program.Character.PP = pp;
+                    oGoldValue.Text = Program.Character.TotalGold + "";
+                }
+                else
+                {
+                    oInputPP.Text = Program.Character.PP + "";
+                }
+            }
+        }
+
 
         #endregion
 

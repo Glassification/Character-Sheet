@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace MyCharacterSheet.Utility
 {
-    class MouseDownFilter : IMessageFilter
+    class NativeMethods : IMessageFilter
     {
 
         #region Members
@@ -20,7 +20,7 @@ namespace MyCharacterSheet.Utility
 
         #region Constructor
 
-        public MouseDownFilter(Form f)
+        public NativeMethods(Form f)
         {
             form = f;
         }

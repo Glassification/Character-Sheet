@@ -20,14 +20,42 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// HitPoints()
         /// =========================================
-        public HitPoints(int hp, int maxHP, int tempHP, string conditions, int success, int failure, int d6, int d8, int d10, int d12, int spentD6, int spentD8, int spentD10, int spentD12)
+        public HitPoints()
+        {
+            iCurrentHP = 0;
+            iMaxHP = 0;
+            iTempHP = 0;
+            Conditions = new Conditions();
+            D6 = 0;
+            D8 = 0;
+            D10 = 0;
+            D12 = 0;
+            SpentD6 = 0;
+            SpentD8 = 0;
+            SpentD10 = 0;
+            SpentD12 = 0;
+        }
+
+        /// =========================================
+        /// HitPoints()
+        /// =========================================
+        public HitPoints(   int hp, 
+                            int maxHP, 
+                            int tempHP, 
+                            Conditions conditions, 
+                            int d6, 
+                            int d8, 
+                            int d10, 
+                            int d12, 
+                            int spentD6, 
+                            int spentD8, 
+                            int spentD10, 
+                            int spentD12)
         {
             iCurrentHP = hp;
             iMaxHP = maxHP;
             iTempHP = tempHP;
             Conditions = conditions;
-            DeathSaveSuccess = success;
-            DeathSaveFailure = failure;
             D6 = d6;
             D8 = d8;
             D10 = d10;
@@ -107,7 +135,7 @@ namespace MyCharacterSheet.Characters
         [Category("Hit Points")]
         [DisplayName("Conditions")]
         [Description("Effects that will affect a characters health.")]
-        public string Conditions
+        public Conditions Conditions
         {
             get;
             set;
@@ -160,22 +188,6 @@ namespace MyCharacterSheet.Characters
         #endregion
 
         #region Non-Browsable Accessors
-
-        [Browsable(false)]
-        [ReadOnly(true)]
-        public int DeathSaveSuccess
-        {
-            get;
-            set;
-        }
-
-        [Browsable(false)]
-        [ReadOnly(true)]
-        public int DeathSaveFailure
-        {
-            get;
-            set;
-        }
 
         [Browsable(false)]
         [ReadOnly(true)]

@@ -1,4 +1,4 @@
-﻿using MyCharacterSheet.Utility;
+﻿using static MyCharacterSheet.Utility.Constants;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,13 +11,14 @@ namespace MyCharacterSheet
 
         #region Constants
 
-        private const int MAX_DICE = 6;
+        private const int CONTEXT_OFFSET = 2;
 
         #endregion
 
         #region Members
 
-        private List<int>[] oDiceList = new List<int>[MAX_DICE];
+        private List<int>   oDiceList   = new List<int>();
+        private Random      oRandom     = new Random();
 
         #endregion
 
@@ -26,9 +27,8 @@ namespace MyCharacterSheet
         public DiceRollerPage()
         {
             InitializeComponent();
-            createLists();
-            formatInputBoxes();
-            formatContextMenu();
+            FormatContextMenus();
+            Reset();
         }
 
         #endregion
@@ -36,206 +36,111 @@ namespace MyCharacterSheet
         #region Methods
 
         /// =========================================
-        /// SaveCharacterSheetXML()
+        /// ShowPane()
         /// =========================================
         public void ShowPane()
         {
-            reset();
-            ShowDialog();
+            Show();
         }
 
         /// =========================================
-        /// createLists()
+        /// Reset()
         /// =========================================
-        private void createLists()
+        private void Reset()
         {
-            for (int i = 0; i < oDiceList.Length; i++)
+            oCustomDieValue.Value = 1;
+
+            oNumberD4.Value = 1;
+            oNumberD6.Value = 1;
+            oNumberD8.Value = 1;
+            oNumberD10.Value = 1;
+            oNumberD100.Value = 1;
+            oNumberD12.Value = 1;
+            oNumberD20.Value = 1;
+            oNumberDX.Value = 1;
+
+            oRadioButtonPlus4.Checked = true;
+            oRadioButtonPlus6.Checked = true;
+            oRadioButtonPlus8.Checked = true;
+            oRadioButtonPlus10.Checked = true;
+            oRadioButtonPlus100.Checked = true;
+            oRadioButtonPlus12.Checked = true;
+            oRadioButtonPlus20.Checked = true;
+            oRadioButtonPlusX.Checked = true;
+
+            oModifierD4.Value = 0;
+            oModifierD6.Value = 0;
+            oModifierD8.Value = 0;
+            oModifierD10.Value = 0;
+            oModifierD100.Value = 0;
+            oModifierD12.Value = 0;
+            oModifierD20.Value = 0;
+            oModifierDX.Value = 0;
+
+            oResults4.Text = "0";
+            oResults6.Text = "0";
+            oResults8.Text = "0";
+            oResults10.Text = "0";
+            oResults100.Text = "0";
+            oResults12.Text = "0";
+            oResults20.Text = "0";
+            oResultsX.Text = "0";
+
+            oHistoryGridView.Rows.Clear();
+
+            oDiceList.Clear();
+        }
+
+        /// =========================================
+        /// AddDiceHistory()
+        /// =========================================
+        private void AddDiceHistory(int modifier, int total, int number, int die, string sign)
+        {
+            int index = oHistoryGridView.Rows.Add();
+            DataGridViewRow row = oHistoryGridView.Rows[index];
+
+            row.Cells[oRoll.Index].Value = "(" + number + "d" + die + ")" + sign + modifier;
+            row.Cells[oDice.Index].Value = ListToString() + sign + modifier;
+            row.Cells[oTotal.Index].Value = total.ToString();
+        }
+
+        /// =========================================
+        /// ListToString()
+        /// =========================================
+        private string ListToString()
+        {
+            string str = "";
+
+            foreach (int die in oDiceList)
             {
-                oDiceList[i] = new List<int>();
-            }
-        }
-
-        /// =========================================
-        /// reset()
-        /// =========================================
-        private void reset()
-        {
-            oTotalRollValue.Text = "0";
-
-            chkD4.Checked = false;
-            chkD6.Checked = false;
-            chkD8.Checked = false;
-            chkD10.Checked = false;
-            chkD12.Checked = false;
-            chkD20.Checked = false;
-
-            oInputD4.Value = 0;
-            oInputD6.Value = 0;
-            oInputD8.Value = 0;
-            oInputD10.Value = 0;
-            oInputD12.Value = 0;
-            oInputD20.Value = 0;
-        }
-
-        /// =========================================
-        /// fillDiceList()
-        /// =========================================
-        private void fillDiceList(int diceNumber, int sides, int index, bool check)
-        {
-            if (check)
-            {
-                Random rand = new Random();
-
-                for (int i = 0; i < diceNumber; i++)
-                {
-                    oDiceList[index].Add(rand.Next(1, sides + 1));
-                }
-            }
-        }
-
-        /// =========================================
-        /// rollDice()
-        /// =========================================
-        private void rollDice()
-        {
-            oDiceList[0].Clear();
-            fillDiceList((int)oInputD4.Value, 4, 0, chkD4.Checked);
-
-            oDiceList[1].Clear();
-            fillDiceList((int)oInputD6.Value, 6, 1, chkD6.Checked);
-
-            oDiceList[2].Clear();
-            fillDiceList((int)oInputD8.Value, 8, 2, chkD8.Checked);
-
-            oDiceList[3].Clear();
-            fillDiceList((int)oInputD10.Value, 10, 3, chkD10.Checked);
-
-            oDiceList[4].Clear();
-            fillDiceList((int)oInputD12.Value, 12, 4, chkD12.Checked);
-
-            oDiceList[5].Clear();
-            fillDiceList((int)oInputD20.Value, 20, 5, chkD20.Checked);
-        }
-
-        /// =========================================
-        /// diceTotal()
-        /// =========================================
-        private int diceTotal()
-        {
-            int total = 0;
-
-            for (int i = 0; i < oDiceList.Length; i++)
-            {
-                foreach (int item in oDiceList[i])
-                {
-                    total += item;
-                }
+                str += die + ", ";
             }
 
-            return total;
-        }
-
-        /// =========================================
-        /// diceValueTotal()
-        /// =========================================
-        private string diceValueTotal()
-        {
-            string strValues = "";
-
-            for (int i = 0; i < oDiceList.Length; i++)
-            {
-                foreach (int item in oDiceList[i])
-                {
-                    strValues += item + "+";
-                }
-            }
-
-            strValues = strValues.TrimEnd(new char[] { '+' });
-
-            return strValues;
-        }
-
-        /// =========================================
-        /// fillDiceHistory()
-        /// =========================================
-        private void fillDiceHistory()
-        {
-            int index = oDiceHistoryGridView.Rows.Add();
-            DataGridViewRow row = oDiceHistoryGridView.Rows[index];
-
-            row.Cells[oRoll.Index].Value = index + 1;
-            row.Cells[oValues.Index].Value = diceValueTotal();
-            row.Cells[oTotal.Index].Value = diceTotal();
-
-            oDiceHistoryGridView.FirstDisplayedScrollingRowIndex = oDiceHistoryGridView.RowCount - 1;
-        }
-
-        /// =========================================
-        /// IsValid()
-        /// =========================================
-        private bool IsValid()
-        {
-            bool validCheck, validInput = true;
-
-            validCheck = chkD4.Checked || chkD6.Checked || chkD8.Checked || chkD10.Checked || chkD12.Checked || chkD20.Checked;
-
-            if      (chkD4.Checked && oInputD4.Value <= 0)   { validInput = false; }
-            else if (chkD6.Checked && oInputD6.Value <= 0)   { validInput = false; }
-            else if (chkD8.Checked && oInputD8.Value <= 0)   { validInput = false; }
-            else if (chkD10.Checked && oInputD10.Value <= 0) { validInput = false; }
-            else if (chkD12.Checked && oInputD12.Value <= 0) { validInput = false; }
-            else if (chkD20.Checked && oInputD20.Value <= 0) { validInput = false; }
-
-            return validCheck && validInput;
-        }
-
-        /// =========================================
-        /// formatInputBoxes()
-        /// =========================================
-        private void formatInputBoxes()
-        {
-            oInputD4.Width = oPanelD4.Width;
-            oInputD6.Width = oPanelD6.Width;
-            oInputD8.Width = oPanelD8.Width;
-            oInputD10.Width = oPanelD10.Width;
-            oInputD12.Width = oPanelD12.Width;
-            oInputD20.Width = oPanelD20.Width;
-
-            oInputD4.Location = new Point(0, (oPanelD4.Height / 2) - (oInputD4.Height / 2));
-            oInputD6.Location = new Point(0, (oPanelD6.Height / 2) - (oInputD6.Height / 2));
-            oInputD8.Location = new Point(0, (oPanelD8.Height / 2) - (oInputD8.Height / 2));
-            oInputD10.Location = new Point(0, (oPanelD10.Height / 2) - (oInputD10.Height / 2));
-            oInputD12.Location = new Point(0, (oPanelD12.Height / 2) - (oInputD12.Height / 2));
-            oInputD20.Location = new Point(0, (oPanelD20.Height / 2) - (oInputD20.Height / 2));
+            return str;
         }
 
         /// =========================================
         /// formatContextMenu()
         /// =========================================
-        private void formatContextMenu()
+        private void FormatContextMenus()
         {
-            oContextMenuStrip.BackColor = Constants.DarkGrey;
-            oContextMenuStrip.ForeColor = Color.White;
+            oHistoryContextMenu.BackColor = DarkGrey;
+            oHistoryContextMenu.ForeColor = Color.White;
+        }
+
+        #endregion
+
+        #region Accessors
+
+        private int Row
+        {
+            get;
+            set;
         }
 
         #endregion
 
         #region Events
-
-        /// =========================================
-        /// btnRollDice_Click()
-        /// =========================================
-        private void btnRollDice_Click(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-
-            if (IsValid())
-            {
-                rollDice();
-                fillDiceHistory();
-                oTotalRollValue.Text = diceTotal() + "";
-            }
-        }
 
         /// =========================================
         /// DiceRollerPage_KeyPress()
@@ -249,134 +154,281 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// chkD4_CheckedChanged()
+        /// DiceRollerPage_FormClosing()
         /// =========================================
-        private void chkD4_CheckedChanged(object sender, EventArgs e)
+        private void DiceRollerPage_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Sounds.ButtonClick();
+            e.Cancel = true;
+            Hide();
         }
 
         /// =========================================
-        /// chkD6_CheckedChanged()
+        /// btnReset_Click()
         /// =========================================
-        private void chkD6_CheckedChanged(object sender, EventArgs e)
+        private void btnReset_Click(object sender, EventArgs e)
         {
-            Sounds.ButtonClick();
+            Reset();
         }
 
         /// =========================================
-        /// chkD8_CheckedChanged()
+        /// btnRoll4_Click()
         /// =========================================
-        private void chkD8_CheckedChanged(object sender, EventArgs e)
+        private void btnRoll4_Click(object sender, EventArgs e)
         {
-            Sounds.ButtonClick();
-        }
+            int total = 0, val;
 
-        /// =========================================
-        /// chkD10_CheckedChanged()
-        /// =========================================
-        private void chkD10_CheckedChanged(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-        }
+            oDiceList.Clear();
 
-        /// =========================================
-        /// chkD12_CheckedChanged()
-        /// =========================================
-        private void chkD12_CheckedChanged(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-        }
-
-        /// =========================================
-        /// chkD20_CheckedChanged()
-        /// =========================================
-        private void chkD20_CheckedChanged(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-        }
-
-        /// =========================================
-        /// oInputD4_ValueChanged()
-        /// =========================================
-        private void oInputD4_ValueChanged(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-        }
-
-        /// =========================================
-        /// oInputD6_ValueChanged()
-        /// =========================================
-        private void oInputD6_ValueChanged(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-        }
-
-        /// =========================================
-        /// oInputD8_ValueChanged()
-        /// =========================================
-        private void oInputD8_ValueChanged(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-        }
-
-        /// =========================================
-        /// oInputD10_ValueChanged()
-        /// =========================================
-        private void oInputD10_ValueChanged(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-        }
-
-        /// =========================================
-        /// oInputD12_ValueChanged()
-        /// =========================================
-        private void oInputD12_ValueChanged(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-        }
-
-        /// =========================================
-        /// oInputD20_ValueChanged()
-        /// =========================================
-        private void oInputD20_ValueChanged(object sender, EventArgs e)
-        {
-            Sounds.ButtonClick();
-        }
-
-        /// =========================================
-        /// oDiceHistoryGridView_MouseDown()
-        /// =========================================
-        private void oDiceHistoryGridView_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
+            for (int i = 0; i < oNumberD4.Value; i++)
             {
-                oContextMenuStrip.Show(oDiceHistoryGridView, new Point(e.X + Constants.OFFSET, e.Y + Constants.OFFSET));
+                val = oRandom.Next(1, 5);
+                total += val;
+                oDiceList.Add(val);
+            }
+
+            if (oRadioButtonPlus4.Checked)
+                total += (int)oModifierD4.Value;
+            else
+                total -= (int)oModifierD4.Value;
+
+            total = Math.Max(1, total);
+
+            oResults4.Text = total.ToString();
+
+            AddDiceHistory((int)oModifierD4.Value, total, (int)oNumberD4.Value, 4, oRadioButtonPlus4.Checked ? "+" : "-");
+        }
+
+        /// =========================================
+        /// btnRoll6_Click()
+        /// =========================================
+        private void btnRoll6_Click(object sender, EventArgs e)
+        {
+            int total = 0, val;
+
+            oDiceList.Clear();
+
+            for (int i = 0; i < oNumberD6.Value; i++)
+            {
+                val = oRandom.Next(1, 7);
+                total += val;
+                oDiceList.Add(val);
+            }
+
+            if (oRadioButtonPlus6.Checked)
+                total += (int)oModifierD6.Value;
+            else
+                total -= (int)oModifierD6.Value;
+
+            total = Math.Max(1, total);
+
+            oResults6.Text = total.ToString();
+
+            AddDiceHistory((int)oModifierD6.Value, total, (int)oNumberD6.Value, 6, oRadioButtonPlus6.Checked ? "+" : "-");
+        }
+
+        /// =========================================
+        /// btnRoll8_Click()
+        /// =========================================
+        private void btnRoll8_Click(object sender, EventArgs e)
+        {
+            int total = 0, val;
+
+            oDiceList.Clear();
+
+            for (int i = 0; i < oNumberD8.Value; i++)
+            {
+                val = oRandom.Next(1, 9);
+                total += val;
+                oDiceList.Add(val);
+            }
+
+            if (oRadioButtonPlus8.Checked)
+                total += (int)oModifierD8.Value;
+            else
+                total -= (int)oModifierD8.Value;
+
+            total = Math.Max(1, total);
+
+            oResults8.Text = total.ToString();
+
+            AddDiceHistory((int)oModifierD8.Value, total, (int)oNumberD8.Value, 8, oRadioButtonPlus8.Checked ? "+" : "-");
+        }
+
+        /// =========================================
+        /// btnRoll10_Click()
+        /// =========================================
+        private void btnRoll10_Click(object sender, EventArgs e)
+        {
+            int total = 0, val;
+
+            oDiceList.Clear();
+
+            for (int i = 0; i < oNumberD10.Value; i++)
+            {
+                val = oRandom.Next(1, 11);
+                total += val;
+                oDiceList.Add(val);
+            }
+
+            if (oRadioButtonPlus10.Checked)
+                total += (int)oModifierD10.Value;
+            else
+                total -= (int)oModifierD10.Value;
+
+            total = Math.Max(1, total);
+
+            oResults10.Text = total.ToString();
+
+            AddDiceHistory((int)oModifierD10.Value, total, (int)oNumberD10.Value, 10, oRadioButtonPlus10.Checked ? "+" : "-");
+        }
+
+        /// =========================================
+        /// btnRoll100_Click()
+        /// =========================================
+        private void btnRoll100_Click(object sender, EventArgs e)
+        {
+            int total = 0, val;
+
+            oDiceList.Clear();
+
+            for (int i = 0; i < oNumberD100.Value; i++)
+            {
+                val = oRandom.Next(1, 101);
+                total += val;
+                oDiceList.Add(val);
+            }
+
+            if (oRadioButtonPlus100.Checked)
+                total += (int)oModifierD100.Value;
+            else
+                total -= (int)oModifierD100.Value;
+
+            total = Math.Max(1, total);
+
+            oResults100.Text = total.ToString();
+
+            AddDiceHistory((int)oModifierD100.Value, total, (int)oNumberD100.Value, 100, oRadioButtonPlus100.Checked ? "+" : "-");
+        }
+
+        /// =========================================
+        /// btnRoll12_Click()
+        /// =========================================
+        private void btnRoll12_Click(object sender, EventArgs e)
+        {
+            int total = 0, val;
+
+            oDiceList.Clear();
+
+            for (int i = 0; i < oNumberD12.Value; i++)
+            {
+                val = oRandom.Next(1, 13);
+                total += val;
+                oDiceList.Add(val);
+            }
+
+            if (oRadioButtonPlus12.Checked)
+                total += (int)oModifierD12.Value;
+            else
+                total -= (int)oModifierD12.Value;
+
+            total = Math.Max(1, total);
+
+            oResults12.Text = total.ToString();
+
+            AddDiceHistory((int)oModifierD12.Value, total, (int)oNumberD12.Value, 12, oRadioButtonPlus12.Checked ? "+" : "-");
+        }
+
+        /// =========================================
+        /// btnRoll20_Click()
+        /// =========================================
+        private void btnRoll20_Click(object sender, EventArgs e)
+        {
+            int total = 0, val;
+
+            oDiceList.Clear();
+
+            for (int i = 0; i < oNumberD20.Value; i++)
+            {
+                val = oRandom.Next(1, 21);
+                total += val;
+                oDiceList.Add(val);
+            }
+
+            if (oRadioButtonPlus20.Checked)
+                total += (int)oModifierD20.Value;
+            else
+                total -= (int)oModifierD20.Value;
+
+            total = Math.Max(1, total);
+
+            oResults20.Text = total.ToString();
+
+            AddDiceHistory((int)oModifierD20.Value, total, (int)oNumberD20.Value, 20, oRadioButtonPlus20.Checked ? "+" : "-");
+        }
+
+        /// =========================================
+        /// btnRollX_Click()
+        /// =========================================
+        private void btnRollX_Click(object sender, EventArgs e)
+        {
+            int total = 0, val;
+
+            oDiceList.Clear();
+
+            for (int i = 0; i < oNumberDX.Value; i++)
+            {
+                val = oRandom.Next(1, ((int)oCustomDieValue.Value) + 1);
+                total += val;
+                oDiceList.Add(val);
+            }
+
+            if (oRadioButtonPlusX.Checked)
+                total += (int)oModifierDX.Value;
+            else
+                total -= (int)oModifierDX.Value;
+
+            total = Math.Max(1, total);
+
+            oResultsX.Text = total.ToString();
+
+            AddDiceHistory((int)oModifierDX.Value, total, (int)oNumberDX.Value, (int)oCustomDieValue.Value, oRadioButtonPlusX.Checked ? "+" : "-");
+        }
+
+        /// =========================================
+        /// oHistoryGridView_CellMouseClick()
+        /// =========================================
+        private void oHistoryGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < oHistoryGridView.RowCount)
+            {
+                Rectangle rect = oHistoryGridView.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
+                Row = e.RowIndex;
+                oHistoryContextMenu.Show(oHistoryGridView, new Point(rect.X + e.X + CONTEXT_OFFSET, rect.Y + e.Y + CONTEXT_OFFSET));
             }
         }
 
         /// =========================================
-        /// oContextMenuStrip_MouseEnter()
+        /// removeToolStripMenuItem_Click()
         /// =========================================
-        private void oContextMenuStrip_MouseEnter(object sender, EventArgs e)
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            oContextMenuStrip.ForeColor = Color.Black;
+            oHistoryGridView.Rows.RemoveAt(Row);
         }
 
         /// =========================================
-        /// oContextMenuStrip_MouseLeave()
+        /// removeToolStripMenuItem_MouseEnter()
         /// =========================================
-        private void oContextMenuStrip_MouseLeave(object sender, EventArgs e)
+        private void removeToolStripMenuItem_MouseEnter(object sender, EventArgs e)
         {
-            oContextMenuStrip.ForeColor = Color.White;
+            removeToolStripMenuItem.ForeColor = Color.Black;
         }
 
         /// =========================================
-        /// oClearHistoryToolStripMenuItem_Click()
+        /// removeToolStripMenuItem_MouseLeave()
         /// =========================================
-        private void oClearHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        private void removeToolStripMenuItem_MouseLeave(object sender, EventArgs e)
         {
-            oDiceHistoryGridView.Rows.Clear();
+            removeToolStripMenuItem.ForeColor = Color.White;
         }
 
         #endregion

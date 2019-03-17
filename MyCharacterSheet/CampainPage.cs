@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Windows.Forms;
-using MyCharacterSheet.Characters;
 using System.Drawing;
 using MyCharacterSheet.Utility;
+using MyCharacterSheet.Lists;
+using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
     public partial class CampainPage : UserControl
     {
+
+        #region Constants
+
+        private const string LINE_SEPARATOR_KEY = "7MOm!GgMo)83>v8+i+qc:lk>";
+        private const string LINE_SEPARATOR     = "________________________";
+
+        #endregion
 
         #region Constructor
 
@@ -15,7 +23,7 @@ namespace MyCharacterSheet
         {
             InitializeComponent();
 
-            formatContextMenus();
+            FormatContextMenus();
 
             SelectIndex = 0;
             HoverIndex = -1;
@@ -26,6 +34,7 @@ namespace MyCharacterSheet
             OriginalHeight = oDocumentList.ItemHeight;
             OriginalListTextSize = oDocumentList.Font.Size;
             OriginalLabelSize = oCampainFocus.Font.Size;
+            OriginalButtonHeight = btnAddDocument.Font.Size;
         }
 
         #endregion
@@ -61,7 +70,7 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// CommitChanges()
+        /// WriteCampainNotes()
         /// =========================================
         public void WriteCampainNotes()
         {
@@ -71,6 +80,9 @@ namespace MyCharacterSheet
             }
             foreach (Document doc in oDocumentList.Items)
             {
+                if (doc.Name.Equals(LINE_SEPARATOR_KEY))
+                    doc.Rtf = "";
+
                 Program.Character.oDocuments.Add(doc);
             }
         }
@@ -78,13 +90,16 @@ namespace MyCharacterSheet
         /// =========================================
         /// ResizeText()
         /// =========================================
-        public void ResizeText(float mod, float ratio)
+        public void ResizeText()
         {
-            oDocumentList.ItemHeight = (int) (OriginalHeight * ratio);
-            oDocumentList.Font = new Font(oDocumentList.Font.FontFamily, OriginalListTextSize * ratio, oDocumentList.Font.Style);
+            oDocumentList.ItemHeight = (int) (OriginalHeight * Program.MainForm.Ratio);
+            oDocumentList.Font = new Font(oDocumentList.Font.FontFamily, OriginalListTextSize * Program.MainForm.Ratio, oDocumentList.Font.Style);
 
-            oCampainFocus.Font = new Font(oCampainFocus.Font.FontFamily, OriginalLabelSize * ratio, oCampainFocus.Font.Style);
-            label2.Font = new Font(label2.Font.FontFamily, OriginalLabelSize * ratio, label2.Font.Style);
+            oCampainFocus.Font = new Font(oCampainFocus.Font.FontFamily, OriginalLabelSize * Program.MainForm.Ratio, oCampainFocus.Font.Style);
+            label2.Font = new Font(label2.Font.FontFamily, OriginalLabelSize * Program.MainForm.Ratio, label2.Font.Style);
+
+            btnAddDocument.Font = new Font(btnAddDocument.Font.FontFamily, OriginalButtonHeight * Program.MainForm.Ratio, btnAddDocument.Font.Style);
+            btnAddSeparator.Font = new Font(btnAddSeparator.Font.FontFamily, OriginalButtonHeight * Program.MainForm.Ratio, btnAddSeparator.Font.Style);
         }
 
         /// =========================================
@@ -96,30 +111,30 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// formatContextMenu()
+        /// FormatContextMenus()
         /// =========================================
-        private void formatContextMenus()
+        private void FormatContextMenus()
         {
             oTextBoxContextMenu.ForeColor = Color.White;
-            oTextBoxContextMenu.BackColor = Constants.DarkGrey;
+            oTextBoxContextMenu.BackColor = DarkGrey;
 
-            oDeleteDocumentContextMenu.ForeColor = Color.White;
-            oDeleteDocumentContextMenu.BackColor = Constants.DarkGrey;
+            oDeleteContextMenu.ForeColor = Color.White;
+            oDeleteContextMenu.BackColor = DarkGrey;
 
-            oNewDocumentContextMenu.ForeColor = Color.White;
-            oNewDocumentContextMenu.BackColor = Constants.DarkGrey;
+            oEditDocumentContextMenu.ForeColor = Color.White;
+            oEditDocumentContextMenu.BackColor = DarkGrey;
 
             foreach (ToolStripMenuItem item in alignmentToolStripMenuItem.DropDownItems)
             {
                 item.ForeColor = Color.White;
-                item.BackColor = Constants.DarkGrey;
+                item.BackColor = DarkGrey;
             }
         }
 
         /// =========================================
-        /// textLocation()
+        /// TextLocation()
         /// =========================================
-        private PointF textLocation(Rectangle rect, SizeF size, string text)
+        private PointF TextLocation(Rectangle rect, SizeF size, string text)
         {
             //Centre the text
             PointF point;
@@ -134,6 +149,35 @@ namespace MyCharacterSheet
             point = new PointF(x, y);
 
             return point;
+        }
+
+        /// =========================================
+        /// DeleteDocument()
+        /// =========================================
+        private void DeleteDocument()
+        {
+            Deleting = true;
+
+            oDocumentList.Items.RemoveAt(DeleteIndex);
+
+            //Move selection to adjacent item
+            if (oDocumentList.Items.Count > 0 && DeleteIndex == SelectIndex)
+            {
+                if (DeleteIndex == 0)
+                    SelectIndex = DeleteIndex;
+                else
+                    SelectIndex = DeleteIndex - 1;
+
+                oDocumentList.SelectedIndex = SelectIndex;
+            }
+            //No items are left
+            else if (oDocumentList.Items.Count == 0)
+            {
+                ClearDocumentList();
+            }
+
+            Program.Modified = true;
+            Deleting = false;
         }
 
         #endregion
@@ -183,6 +227,12 @@ namespace MyCharacterSheet
         }
 
         private float OriginalListTextSize
+        {
+            get;
+            set;
+        }
+
+        private float OriginalButtonHeight
         {
             get;
             set;
@@ -528,16 +578,19 @@ namespace MyCharacterSheet
             {
                 newDoc = oDocumentList.Items[oDocumentList.SelectedIndex] as Document;
 
-                if (!Deleting && SelectIndex != -1)
+                if (!newDoc.Name.Equals(LINE_SEPARATOR_KEY))
                 {
-                    oldDoc = oDocumentList.Items[SelectIndex] as Document;
-                    oldDoc.Rtf = oCampainTextBox.Rtf;
+                    if (!Deleting && SelectIndex != -1)
+                    {
+                        oldDoc = oDocumentList.Items[SelectIndex] as Document;
+                        oldDoc.Rtf = oCampainTextBox.Rtf;
+                    }
+
+                    SelectIndex = oDocumentList.SelectedIndex;
+                    oCampainTextBox.Rtf = newDoc.Rtf;
+
+                    oDocumentList.Invalidate();
                 }
-
-                SelectIndex = oDocumentList.SelectedIndex;
-                oCampainTextBox.Rtf = newDoc.Rtf;
-
-                oDocumentList.Invalidate();
             }
 
             Changing = false;
@@ -548,7 +601,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void oDocumentList_DrawItem(object sender, DrawItemEventArgs e)
         {
-            Color fillColour = Constants.ControlGrey, textColour = Color.White, outlineColour = Color.Transparent;
+            Color fillColour = ControlGrey, textColour = Color.White, outlineColour = Color.Transparent;
             SizeF size;
             PointF point;
             string listItem;
@@ -557,18 +610,23 @@ namespace MyCharacterSheet
 
             if (e.Index != -1)
             {
-                //Highlight on hover
-                if (e.Index == HoverIndex)
-                {
-                    fillColour = Constants.HighlightBlue;
-                    outlineColour = Constants.OutlineBlue;
-                    textColour = Color.Black;
-                }
+                listItem = lb.Items[e.Index].ToString();
 
-                //Highlight selected item
-                if (e.Index == SelectIndex && e.Index != HoverIndex)
+                if (!listItem.Equals(LINE_SEPARATOR_KEY))
                 {
-                    fillColour = Constants.HighlightGrey;
+                    //Highlight on hover
+                    if (e.Index == HoverIndex)
+                    {
+                        fillColour = HighlightBlue;
+                        outlineColour = OutlineBlue;
+                        textColour = Color.Black;
+                    }
+
+                    //Blend selected item
+                    if (e.Index == SelectIndex && e.Index != HoverIndex)
+                    {
+                        fillColour = DarkGrey;
+                    }
                 }
 
                 //Manually draw each item
@@ -577,10 +635,11 @@ namespace MyCharacterSheet
                     using (Pen outline = new Pen(outlineColour))
                     {
                         e.DrawBackground();
+                        if (listItem.Equals(LINE_SEPARATOR_KEY))
+                            listItem = LINE_SEPARATOR;
 
-                        listItem = lb.Items[e.Index].ToString();
                         size = g.MeasureString(listItem, e.Font);
-                        point = textLocation(e.Bounds, size, listItem);
+                        point = TextLocation(e.Bounds, size, listItem);
 
                         g.FillRectangle(fill, e.Bounds);
                         g.DrawRectangle(outline, e.Bounds);
@@ -625,19 +684,18 @@ namespace MyCharacterSheet
             {
                 DeleteIndex = oDocumentList.IndexFromPoint(e.Location);
 
-                if (DeleteIndex == -1)
+                if (DeleteIndex != -1)
                 {
-                    oNewDocumentContextMenu.Show(oDocumentList, e.Location);
-                }
-                else
-                {
-                    oDeleteDocumentContextMenu.Show(oDocumentList, e.Location);
+                    if ((oDocumentList.Items[DeleteIndex] as Document).Name.Equals(LINE_SEPARATOR_KEY))
+                        oDeleteContextMenu.Show(oDocumentList, e.Location);
+                    else
+                        oEditDocumentContextMenu.Show(oDocumentList, e.Location);
                 }
             }
             //Drag and drop list
             else if (e.Button == MouseButtons.Left)
             {
-                oDocumentList_SelectedIndexChanged(new object(), EventArgs.Empty);
+                oDocumentList_SelectedIndexChanged(null, EventArgs.Empty);
 
                 if (oDocumentList.SelectedIndex != -1)
                 {
@@ -684,28 +742,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Deleting = true;
-
-            oDocumentList.Items.RemoveAt(DeleteIndex);
-
-            //Move selection to adjacent item
-            if (oDocumentList.Items.Count > 0 && DeleteIndex == SelectIndex)
-            {
-                if (DeleteIndex == 0)
-                    SelectIndex = DeleteIndex;
-                else
-                    SelectIndex = DeleteIndex - 1;
-
-                oDocumentList.SelectedIndex = SelectIndex;
-            }
-            //No items are left
-            else if (oDocumentList.Items.Count == 0)
-            {
-                ClearDocumentList();
-            }
-
-            Program.Modified = true;
-            Deleting = false;
+            DeleteDocument();
         }
 
         /// =========================================
@@ -720,16 +757,17 @@ namespace MyCharacterSheet
 
             if (name != null)
             {
-                oDocumentList.Items[DeleteIndex] = name;
+                (oDocumentList.Items[DeleteIndex] as Document).Name = name;
 
+                oDocumentList.Invalidate();
                 Program.Modified = true;
             }
         }
 
         /// =========================================
-        /// newToolStripMenuItem_Click()
+        /// btnAddDocument_Click()
         /// =========================================
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        private void btnAddDocument_Click(object sender, EventArgs e)
         {
             InputMessageBox inputMessageBox = new InputMessageBox();
             Document doc;
@@ -739,13 +777,21 @@ namespace MyCharacterSheet
 
             if (name != null)
             {
-                doc = new Document(Guid.NewGuid().ToString(), name, "");
+                doc = new Document(Guid.NewGuid(), name, "");
                 oDocumentList.Items.Add(doc);
 
                 oDocumentList.SelectedIndex = oDocumentList.Items.Count - 1;
 
                 Program.Modified = true;
             }
+        }
+
+        /// =========================================
+        /// btnAddSeparator_Click()
+        /// =========================================
+        private void btnAddSeparator_Click(object sender, EventArgs e)
+        {
+            oDocumentList.Items.Add(new Document(Guid.NewGuid(), LINE_SEPARATOR_KEY, ""));
         }
 
         #endregion
@@ -785,19 +831,27 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// newToolStripMenuItem_MouseEnter()
+        /// deleteToolStripMenuItem1_Click()
         /// =========================================
-        private void newToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            newToolStripMenuItem.ForeColor = Color.Black;
+            DeleteDocument();
         }
 
         /// =========================================
-        /// newToolStripMenuItem_MouseLeave()
+        /// deleteToolStripMenuItem1_MouseEnter()
         /// =========================================
-        private void newToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        private void deleteToolStripMenuItem1_MouseEnter(object sender, EventArgs e)
         {
-            newToolStripMenuItem.ForeColor = Color.White;
+            deleteToolStripMenuItem1.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// deleteToolStripMenuItem1_MouseLeave()
+        /// =========================================
+        private void deleteToolStripMenuItem1_MouseLeave(object sender, EventArgs e)
+        {
+            deleteToolStripMenuItem1.ForeColor = Color.White;
         }
 
         #endregion
