@@ -197,7 +197,6 @@ namespace MyCharacterSheet.Persistence
                 character.HitPoints.MaxHP       = (int)   element.Element("MaxHP").Attribute("value");
                 character.HitPoints.HP          = (int)   element.Element("CurrentHP").Attribute("value");
                 character.HitPoints.TempHP      = (int)   element.Element("TemporaryHP").Attribute("value");
-                //character.HitPoints.Conditions  = (string)element.Element("Conditions").Attribute("value");
 
                 element = element.Element("Conditions");
                 character.HitPoints.Conditions.Blinded          = (string)element.Element("Blinded").Attribute("value");
@@ -216,7 +215,7 @@ namespace MyCharacterSheet.Persistence
                 character.HitPoints.Conditions.Stunned          = (string)element.Element("Stunned").Attribute("value");
                 character.HitPoints.Conditions.Unconscious      = (string)element.Element("Unconscious").Attribute("value");
 
-                element = element.Element("HitDice");
+                element = root.Element("HitPoints").Element("HitDice");
                 character.HitPoints.D6          = (int)element.Element("D6").Attribute("total");
                 character.HitPoints.D8          = (int)element.Element("D8").Attribute("total");
                 character.HitPoints.D10         = (int)element.Element("D10").Attribute("total");
