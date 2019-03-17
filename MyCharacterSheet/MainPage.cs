@@ -808,7 +808,7 @@ namespace MyCharacterSheet
         {
             string condition;
 
-            condition = Program.Character.HitPoints.Conditions;
+            condition = "";//Program.Character.HitPoints.Conditions;
 
             // Check if comma is needed
             if (!Program.Character.HitPoints.Conditions.Equals("") && !Program.Character.MovementCondition.Equals(""))

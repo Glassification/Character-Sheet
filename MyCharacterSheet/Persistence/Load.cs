@@ -197,7 +197,24 @@ namespace MyCharacterSheet.Persistence
                 character.HitPoints.MaxHP       = (int)   element.Element("MaxHP").Attribute("value");
                 character.HitPoints.HP          = (int)   element.Element("CurrentHP").Attribute("value");
                 character.HitPoints.TempHP      = (int)   element.Element("TemporaryHP").Attribute("value");
-                character.HitPoints.Conditions  = (string)element.Element("Conditions").Attribute("value");
+                //character.HitPoints.Conditions  = (string)element.Element("Conditions").Attribute("value");
+
+                element = element.Element("Conditions");
+                character.HitPoints.Conditions.Blinded          = (string)element.Element("Blinded").Attribute("value");
+                character.HitPoints.Conditions.Charmed          = (string)element.Element("Charmed").Attribute("value");
+                character.HitPoints.Conditions.Deafened         = (string)element.Element("Deafened").Attribute("value");
+                character.HitPoints.Conditions.Fatigued         = (string)element.Element("Fatigued").Attribute("value");
+                character.HitPoints.Conditions.Frightened       = (string)element.Element("Frightened").Attribute("value");
+                character.HitPoints.Conditions.Grappled         = (string)element.Element("Grappled").Attribute("value");
+                character.HitPoints.Conditions.Incapacitated    = (string)element.Element("Incapacitated").Attribute("value");
+                character.HitPoints.Conditions.Invisible        = (string)element.Element("Invisible").Attribute("value");
+                character.HitPoints.Conditions.Paralyzed        = (string)element.Element("Paralyzed").Attribute("value");
+                character.HitPoints.Conditions.Petrified        = (string)element.Element("Petrified").Attribute("value");
+                character.HitPoints.Conditions.Poisoned         = (string)element.Element("Poisoned").Attribute("value");
+                character.HitPoints.Conditions.Prone            = (string)element.Element("Prone").Attribute("value");
+                character.HitPoints.Conditions.Restrained       = (string)element.Element("Restrained").Attribute("value");
+                character.HitPoints.Conditions.Stunned          = (string)element.Element("Stunned").Attribute("value");
+                character.HitPoints.Conditions.Unconscious      = (string)element.Element("Unconscious").Attribute("value");
 
                 element = element.Element("HitDice");
                 character.HitPoints.D6          = (int)element.Element("D6").Attribute("total");

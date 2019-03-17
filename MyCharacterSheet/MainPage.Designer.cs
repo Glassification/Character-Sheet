@@ -129,7 +129,6 @@
             oLabels.Add(label53);
             oLabels.Add(label57);
             oLabels.Add(label58);
-            oLabels.Add(oConditions);
             oLabels.Add(oDefaultFocus);
             oLabels.Add(label81);
             oLabels.Add(oInitiative);
