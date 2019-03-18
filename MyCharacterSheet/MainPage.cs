@@ -175,6 +175,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void LoadPageLists()
         {
+            FillConditions();
             FillWeapons();
             FillAmmo();
             oSecondaryPage.FillAbility();
@@ -537,6 +538,7 @@ namespace MyCharacterSheet
             if (!control)
             {
                 oPropertyPage.ShowPane();
+                FillConditions();
                 InvalidateAll();
             }
         }
@@ -798,6 +800,25 @@ namespace MyCharacterSheet
             else
             {
                 SetAutosaveState();
+            }
+        }
+
+        /// =========================================
+        /// FillConditions()
+        /// =========================================
+        private void FillConditions()
+        {
+            oConditionsDataGrid.Rows.Clear();
+
+            foreach (string condition in Program.Character.HitPoints.Conditions.ToArray())
+            {
+                if (!condition.Equals(""))
+                {
+                    int index = oConditionsDataGrid.Rows.Add();
+                    DataGridViewRow row = oConditionsDataGrid.Rows[index];
+
+                    row.Cells[oCondition.Index].Value = condition;
+                }
             }
         }
 
@@ -2872,6 +2893,7 @@ namespace MyCharacterSheet
         {
             Sounds.ButtonClick();
             oPropertyPage.ShowPane();
+            FillConditions();
             InvalidateAll();
         }
 

@@ -34,6 +34,36 @@ namespace MyCharacterSheet.Characters
 
         #endregion
 
+        #region Methods
+
+        /// =========================================
+        /// ToArray()
+        /// =========================================
+        public string[] ToArray()
+        {
+            string[] array = new string[15];
+
+            array[0] = Blinded.Equals("Cured")? "" : "Blinded";
+            array[1] = Charmed.Equals("Cured") ? "" : "Charmed"; ;
+            array[2] = Deafened.Equals("Cured") ? "" : "Deafened"; ;
+            array[3] = Fatigued.Equals("Cured") ? "" : "Fatigued"; ;
+            array[4] = Frightened.Equals("Cured") ? "" : "Frightened"; ;
+            array[5] = Grappled.Equals("Cured") ? "" : "Grappled"; ;
+            array[6] = Incapacitated.Equals("Cured") ? "" : "Incapacitated"; ;
+            array[7] = Invisible.Equals("Cured") ? "" : "Invisible"; ;
+            array[8] = Paralyzed.Equals("Cured") ? "" : "Paralyzed"; ;
+            array[9] = Petrified.Equals("Cured") ? "" : "Petrified"; ;
+            array[10] = Poisoned.Equals("Cured") ? "" : "Poisoned"; ;
+            array[11] = Prone.Equals("Cured") ? "" : "Prone"; ;
+            array[12] = Restrained.Equals("Cured") ? "" : "Restrained"; ;
+            array[13] = Stunned.Equals("Cured") ? "" : "Stunned"; ;
+            array[14] = Unconscious.Equals("Cured") ? "" : "Unconscious"; ;
+
+            return array;
+        }
+
+        #endregion
+
         #region Accessors
 
         [Browsable(true)]
