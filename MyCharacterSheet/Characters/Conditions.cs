@@ -1,15 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MyCharacterSheet.TypeConverters;
+using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyCharacterSheet.Characters
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class Conditions : ExpandableObjectConverter
     {
+
+        #region Constants
+
+        public const string BlindedDescription = "Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.";
+        public const string CharmedDescription = "You cannot attack the charmer. The charmer has advantage on ability checks when interacting socially.";
+        public const string DeafenedDescription = "You cannot hear and automatically fails any ability check that requires hearing.";
+        public const string Exausted1 = "";
+        public const string Exausted2 = "";
+        public const string Exausted3 = "";
+        public const string Exausted4 = "";
+        public const string Exausted5 = "";
+        public const string Exausted6 = "";
+        public const string FatiguedDescription = "";
+        public const string FrightenedDescription = "";
+        public const string GrappledDescription = "";
+        public const string IncapacitatedDescription = "";
+        public const string InvisibleDescription = "";
+        public const string ParalyzedDescription = "";
+        public const string PetrifiedDescription = "";
+        public const string PoisonedDescription = "";
+        public const string ProneDescription = "";
+        public const string RestrainedDescription = "";
+        public const string StunnedDescription = "";
+        public const string UnconsciousDescription = "";
+
+        #endregion
 
         #region Constructor
 
@@ -43,10 +66,10 @@ namespace MyCharacterSheet.Characters
         {
             string[] array = new string[15];
 
-            array[0] = Blinded.Equals("Cured")? "" : "Blinded";
+            array[0] = Blinded.Equals("Cured") ? "" : "Blinded";
             array[1] = Charmed.Equals("Cured") ? "" : "Charmed"; ;
             array[2] = Deafened.Equals("Cured") ? "" : "Deafened"; ;
-            array[3] = Fatigued.Equals("Cured") ? "" : "Fatigued"; ;
+            array[3] = Fatigued.Equals("Cured") ? "" : Fatigued; ;
             array[4] = Frightened.Equals("Cured") ? "" : "Frightened"; ;
             array[5] = Grappled.Equals("Cured") ? "" : "Grappled"; ;
             array[6] = Incapacitated.Equals("Cured") ? "" : "Incapacitated"; ;
@@ -62,6 +85,80 @@ namespace MyCharacterSheet.Characters
             return array;
         }
 
+        /// =========================================
+        /// GetDescription()
+        /// =========================================
+        public string GetDescription(string name)
+        {
+            string description = "";
+
+            switch (name)
+            {
+                case "Blinded":
+                    description = BlindedDescription;
+                    break;
+                case "Charmed":
+                    description = CharmedDescription;
+                    break;
+                case "Deafened":
+                    description = DeafenedDescription;
+                    break;
+                case "Frightened":
+                    description = FrightenedDescription;
+                    break;
+                case "Grappled":
+                    description = GrappledDescription;
+                    break;
+                case "Incapacitated":
+                    description = IncapacitatedDescription;
+                    break;
+                case "Invisible":
+                    description = InvisibleDescription;
+                    break;
+                case "Paralyzed":
+                    description = ParalyzedDescription;
+                    break;
+                case "Petrified":
+                    description = PetrifiedDescription;
+                    break;
+                case "Poisoned":
+                    description = PoisonedDescription;
+                    break;
+                case "Prone":
+                    description = ProneDescription;
+                    break;
+                case "Restrained":
+                    description = RestrainedDescription;
+                    break;
+                case "Stunned":
+                    description = StunnedDescription;
+                    break;
+                case "Unconscious":
+                    description = UnconsciousDescription;
+                    break;
+                case "Exhaustion 1":
+                    description = Exausted1;
+                    break;
+                case "Exhaustion 2":
+                    description = Exausted2;
+                    break;
+                case "Exhaustion 3":
+                    description = Exausted3;
+                    break;
+                case "Exhaustion 4":
+                    description = Exausted4;
+                    break;
+                case "Exhaustion 5":
+                    description = Exausted5;
+                    break;
+                case "Exhaustion 6":
+                    description = Exausted6;
+                    break;
+            }
+
+            return description;
+        }
+
         #endregion
 
         #region Accessors
@@ -70,7 +167,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Blinded")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(BlindedDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Blinded
         {
             get;
@@ -81,7 +179,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Charmed")]
-        [Description("You cannot attack the charmer. The charmer has advantage on ability checks when interacting socially.")]
+        [Description(CharmedDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Charmed
         {
             get;
@@ -92,7 +191,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Deafened")]
-        [Description("You cannot hear and automatically fails any ability check that requires hearing.")]
+        [Description(DeafenedDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Deafened
         {
             get;
@@ -102,19 +202,9 @@ namespace MyCharacterSheet.Characters
         [Browsable(true)]
         [ReadOnly(false)]
         [Category("Conditions")]
-        [DisplayName("Encumbered")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
-        public string Encumbered
-        {
-            get;
-            set;
-        }
-
-        [Browsable(true)]
-        [ReadOnly(false)]
-        [Category("Conditions")]
         [DisplayName("Fatigued")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(FatiguedDescription)]
+        [TypeConverter(typeof(ExhaustionConverter))]
         public string Fatigued
         {
             get;
@@ -125,7 +215,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Frightened")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(FrightenedDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Frightened
         {
             get;
@@ -136,7 +227,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Grappled")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(GrappledDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Grappled
         {
             get;
@@ -147,7 +239,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Incapacitated")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(IncapacitatedDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Incapacitated
         {
             get;
@@ -158,7 +251,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Invisible")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(InvisibleDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Invisible
         {
             get;
@@ -169,7 +263,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Paralyzed")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(ParalyzedDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Paralyzed
         {
             get;
@@ -180,7 +275,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Petrified")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(PetrifiedDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Petrified
         {
             get;
@@ -191,7 +287,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Poisoned")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(PoisonedDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Poisoned
         {
             get;
@@ -202,7 +299,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Prone")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(ProneDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Prone
         {
             get;
@@ -213,7 +311,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Restrained")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(RestrainedDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Restrained
         {
             get;
@@ -224,7 +323,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Stunned")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(StunnedDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Stunned
         {
             get;
@@ -235,7 +335,8 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Conditions")]
         [DisplayName("Unconscious")]
-        [Description("Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.")]
+        [Description(UnconsciousDescription)]
+        [TypeConverter(typeof(ConditionConverter))]
         public string Unconscious
         {
             get;

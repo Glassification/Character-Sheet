@@ -106,6 +106,8 @@
     <Compile Include="TertiaryPage.Designer.cs">
       <DependentUpon>TertiaryPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="TypeConverters\ConditionConverter.cs" />
+    <Compile Include="TypeConverters\ExhaustionConverter.cs" />
     <Compile Include="TypeConverters\PlayerClassConverter.cs" />
     <Compile Include="TypeConverters\PlayerRaceConverter.cs" />
     <Compile Include="Utility\Constants.cs" />
