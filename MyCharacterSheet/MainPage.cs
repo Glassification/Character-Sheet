@@ -976,7 +976,7 @@ namespace MyCharacterSheet
                 oEXP.Text = Program.Character.EXP + " / " + Constants.Experience(Program.Character.Level);
                 oClass.Text = Program.Character.Class;
                 oLanguage.Text = Program.Character.Language;
-                oMovement.Text = Program.Character.GetMovement();
+                oMovement.Text = Program.Character.Movement;
                 oVision.Text = Program.Character.Vision;
 
                 oStrScore.Text = Program.Character.Strength + "";

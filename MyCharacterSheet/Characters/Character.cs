@@ -125,50 +125,6 @@ namespace MyCharacterSheet.Characters
             return dc;
         }
 
-        /// =========================================
-        /// GetMovement()
-        /// =========================================
-        public string GetMovement()
-        {
-            int move;
-            string str;
-
-            // TODO - fix if/else logic
-            if (int.TryParse(Movement, out move))
-            {
-                if (Settings.UseEncumbrance)
-                {
-                    if (CarryWeight > Light && CarryWeight <= Medium)
-                    {
-                        move -= MOVE_REDUCTION;
-                        MovementCondition = "Encumbered";
-                    }
-                    else if (CarryWeight > Medium)
-                    {
-                        move -= MOVE_REDUCTION * 2;
-                        MovementCondition = "Heavily Encumbered";
-                    }
-
-                }
-                else if (ArmorClass.ArmorStrength > Strength)
-                {
-                    move -= MOVE_REDUCTION;
-                    MovementCondition = "Encumbered";
-                }
-                else
-                {
-                    MovementCondition = "";
-                }
-                str = move.ToString();
-            }
-            else
-            {
-                str = Movement;
-            }
-
-            return str;
-        }
-
         // =========================================
         /// GetWeaponIndex()
         /// =========================================

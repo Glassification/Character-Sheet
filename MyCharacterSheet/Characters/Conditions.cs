@@ -1,4 +1,5 @@
 ﻿using MyCharacterSheet.TypeConverters;
+using MyCharacterSheet.Utility;
 using System;
 using System.ComponentModel;
 
@@ -13,6 +14,7 @@ namespace MyCharacterSheet.Characters
         public const string BlindedDescription = "Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.";
         public const string CharmedDescription = "You cannot attack the charmer. The charmer has advantage on ability checks when interacting socially.";
         public const string DeafenedDescription = "You cannot hear and automatically fails any ability check that requires hearing.";
+        public const string EncumbranceDescription = "";
         public const string Exausted1 = "Disadvantage on Ability Checks.";
         public const string Exausted2 = "Speed halved.";
         public const string Exausted3 = "Disadvantage on Attack rolls and Saving Throws.";
@@ -64,23 +66,24 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         public string[] ToArray()
         {
-            string[] array = new string[15];
+            string[] array = new string[16];
 
             array[0] = Blinded.Equals("Cured") ? "" : "Blinded";
-            array[1] = Charmed.Equals("Cured") ? "" : "Charmed"; ;
-            array[2] = Deafened.Equals("Cured") ? "" : "Deafened"; ;
-            array[3] = Fatigued.Equals("Cured") ? "" : Fatigued; ;
-            array[4] = Frightened.Equals("Cured") ? "" : "Frightened"; ;
-            array[5] = Grappled.Equals("Cured") ? "" : "Grappled"; ;
-            array[6] = Incapacitated.Equals("Cured") ? "" : "Incapacitated"; ;
-            array[7] = Invisible.Equals("Cured") ? "" : "Invisible"; ;
-            array[8] = Paralyzed.Equals("Cured") ? "" : "Paralyzed"; ;
-            array[9] = Petrified.Equals("Cured") ? "" : "Petrified"; ;
-            array[10] = Poisoned.Equals("Cured") ? "" : "Poisoned"; ;
-            array[11] = Prone.Equals("Cured") ? "" : "Prone"; ;
-            array[12] = Restrained.Equals("Cured") ? "" : "Restrained"; ;
-            array[13] = Stunned.Equals("Cured") ? "" : "Stunned"; ;
-            array[14] = Unconscious.Equals("Cured") ? "" : "Unconscious"; ;
+            array[1] = Charmed.Equals("Cured") ? "" : "Charmed";
+            array[2] = Deafened.Equals("Cured") ? "" : "Deafened";
+            array[3] = Encumbrance.Equals("Normal") ? "" : Encumbrance;
+            array[4] = Fatigued.Equals("Cured") ? "" : Fatigued;
+            array[5] = Frightened.Equals("Cured") ? "" : "Frightened";
+            array[6] = Grappled.Equals("Cured") ? "" : "Grappled";
+            array[7] = Incapacitated.Equals("Cured") ? "" : "Incapacitated";
+            array[8] = Invisible.Equals("Cured") ? "" : "Invisible";
+            array[9] = Paralyzed.Equals("Cured") ? "" : "Paralyzed";
+            array[10] = Petrified.Equals("Cured") ? "" : "Petrified";
+            array[11] = Poisoned.Equals("Cured") ? "" : "Poisoned";
+            array[12] = Prone.Equals("Cured") ? "" : "Prone";
+            array[13] = Restrained.Equals("Cured") ? "" : "Restrained";
+            array[14] = Stunned.Equals("Cured") ? "" : "Stunned";
+            array[15] = Unconscious.Equals("Cured") ? "" : "Unconscious";
 
             return array;
         }
@@ -90,7 +93,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         public string GetDescription(string name)
         {
-            string description = "";
+            string description;
 
             switch (name)
             {
@@ -102,6 +105,10 @@ namespace MyCharacterSheet.Characters
                     break;
                 case "Deafened":
                     description = DeafenedDescription;
+                    break;
+                case "Encumbered":
+                case "Heavily Encumbered":
+                    description = EncumbranceDescription;
                     break;
                 case "Frightened":
                     description = FrightenedDescription;
@@ -154,6 +161,9 @@ namespace MyCharacterSheet.Characters
                 case "Exhaustion 6":
                     description = Exausted6;
                     break;
+                default:
+                    description = "";
+                    break;
             }
 
             return description;
@@ -199,6 +209,38 @@ namespace MyCharacterSheet.Characters
             set;
         }
 
+        [Browsable(true)]
+        [ReadOnly(true)]
+        [Category("Conditions")]
+        [DisplayName("Encumbrance")]
+        [Description("")]
+        public string Encumbrance
+        {
+            get
+            {
+                string str = "Normal";
+
+                if (Settings.UseEncumbrance)
+                {
+                    if (Program.Character.CarryWeight > Program.Character.Light && Program.Character.CarryWeight <= Program.Character.Medium)
+                    {
+                        str = "Encumbered";
+                    }
+                    else if (Program.Character.CarryWeight > Program.Character.Medium)
+                    {
+                        str = "Heavily Encumbered";
+                    }
+
+                }
+                else if (Program.Character.ArmorClass.ArmorStrength > Program.Character.Strength)
+                {
+                    str = "Encumbered";
+                }
+
+                return str;
+            }
+        }
+        
         [Browsable(true)]
         [ReadOnly(false)]
         [Category("Conditions")]
