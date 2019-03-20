@@ -563,6 +563,7 @@ namespace MyCharacterSheet
                     oTertiaryPage.SetAnimalCompanionVisibility();
                 }
 
+                FillConditions();
                 InvalidateAll();
             }
         }
@@ -827,26 +828,6 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// FormatCondition()
-        /// =========================================
-        private string FormatCondition()
-        {
-            string condition;
-
-            condition = "";//Program.Character.HitPoints.Conditions;
-
-            // Check if comma is needed
-            if (!Program.Character.HitPoints.Conditions.Equals("") && !Program.Character.MovementCondition.Equals(""))
-            {
-                condition += ", ";
-            }
-
-            condition += Program.Character.MovementCondition;
-
-            return condition;
-        }
-
-        /// =========================================
         /// ResizeText()
         /// =========================================
         public void ResizeLabels()
@@ -976,7 +957,7 @@ namespace MyCharacterSheet
                 oEXP.Text = Program.Character.EXP + " / " + Constants.Experience(Program.Character.Level);
                 oClass.Text = Program.Character.Class;
                 oLanguage.Text = Program.Character.Language;
-                oMovement.Text = Program.Character.Movement;
+                oMovement.Text = Program.Character.HitPoints.Conditions.FormatMovement();
                 oVision.Text = Program.Character.Vision;
 
                 oStrScore.Text = Program.Character.Strength + "";
@@ -1073,8 +1054,8 @@ namespace MyCharacterSheet
                 oMiscAC.Text = Program.Character.ArmorClass.MiscAC + "";
                 oMagicAC.Text = Program.Character.ArmorClass.MagicAC + "";
 
+                oTotalHitPoints.Text = "/" + Program.Character.HitPoints.Conditions.FormatHealth();
                 oHitPoints.Text = (Program.Character.HitPoints.HP + Program.Character.HitPoints.TempHP) + "";
-                oTotalHitPoints.Text = "/" + Program.Character.HitPoints.MaxHP;
                 oHitPoints.ForeColor = Program.Character.HitPoints.HitPointsColour;
                 //oTotalHitPoints.ForeColor = Program.Character.HitPoints.HitPointsColour;
                 oInitiative.Text = Program.Character.Initiative + "";

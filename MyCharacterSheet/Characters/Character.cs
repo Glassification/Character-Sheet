@@ -370,7 +370,6 @@ namespace MyCharacterSheet.Characters
             copy.Language               = Language;
             copy.Marks                  = Marks;
             copy.Movement               = Movement;
-            copy.MovementCondition      = MovementCondition;
             copy.Name                   = Name;
             copy.PassivePerceptionBonus = PassivePerceptionBonus;
             copy.PersonalityBackground  = PersonalityBackground;
@@ -1058,14 +1057,6 @@ namespace MyCharacterSheet.Characters
 
                 return wgt;
             }
-        }
-
-        [Browsable(false)]
-        [ReadOnly(true)]
-        public string MovementCondition
-        {
-            get;
-            set;
         }
 
         [Browsable(false)]

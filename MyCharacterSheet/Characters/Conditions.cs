@@ -14,7 +14,7 @@ namespace MyCharacterSheet.Characters
         public const string BlindedDescription = "Automatically fail any ability checks. Attack rolls against you have advantage, your attacks have disadvantage.";
         public const string CharmedDescription = "You cannot attack the charmer. The charmer has advantage on ability checks when interacting socially.";
         public const string DeafenedDescription = "You cannot hear and automatically fails any ability check that requires hearing.";
-        public const string EncumbranceDescription = "";
+        public const string EncumbranceDescription = "A carry weight exceding 5 and 10 times Strength will reduce speed by 10 and 20 respectivly.";
         public const string Exausted1 = "Disadvantage on Ability Checks.";
         public const string Exausted2 = "Speed halved.";
         public const string Exausted3 = "Disadvantage on Attack rolls and Saving Throws.";
@@ -169,6 +169,64 @@ namespace MyCharacterSheet.Characters
             return description;
         }
 
+        /// =========================================
+        /// FormatMovement()
+        /// =========================================
+        public string FormatMovement()
+        {
+            string movement = Program.Character.Movement;
+            int intMovement;
+
+            if (int.TryParse(Program.Character.Movement, out intMovement))
+            {
+                if (Fatigued.Equals("Exhaustion 5") || Grappled.Equals("Afflicted") || Restrained.Equals("Afflicted"))
+                {
+                    movement = "0";
+                }
+                else
+                {
+                    if (Encumbrance.Equals("Encumbered"))
+                    {
+                        movement = (intMovement - 10).ToString();
+                        intMovement = intMovement - 10;
+                    }
+                    else if (Encumbrance.Equals("Heavily Encumbered"))
+                    {
+                        movement = (intMovement - 20).ToString();
+                        intMovement = intMovement - 20;
+                    }
+
+                    if (Fatigued.Equals("Exhaustion 2"))
+                    {
+                        movement = (intMovement / 2).ToString();
+                    }
+                }
+            }
+
+            return movement;
+        }
+
+        /// =========================================
+        /// FormatHealth()
+        /// =========================================
+        public string FormatHealth()
+        {
+            string health = Program.Character.HitPoints.MaxHP.ToString();
+            int halfHP = Program.Character.HitPoints.MaxHP / 2;
+
+            if (Fatigued.Equals("Exhaustion 4"))
+            {
+                health = halfHP.ToString();
+                
+                if (Program.Character.HitPoints.HP > halfHP)
+                {
+                    Program.Character.HitPoints.HP = halfHP;
+                }
+            }
+
+            return health;
+        }
+
         #endregion
 
         #region Accessors
@@ -213,7 +271,7 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(true)]
         [Category("Conditions")]
         [DisplayName("Encumbrance")]
-        [Description("")]
+        [Description(EncumbranceDescription)]
         public string Encumbrance
         {
             get

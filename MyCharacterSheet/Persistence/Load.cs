@@ -462,7 +462,6 @@ namespace MyCharacterSheet.Persistence
             character.Language = "";
             character.Marks = "";
             character.Movement = "";
-            character.MovementCondition = "";
             character.Name = "";
             character.PassivePerceptionBonus = 0;
             character.PersonalityBackground = "";
