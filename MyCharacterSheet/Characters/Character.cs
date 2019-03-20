@@ -125,50 +125,6 @@ namespace MyCharacterSheet.Characters
             return dc;
         }
 
-        /// =========================================
-        /// GetMovement()
-        /// =========================================
-        public string GetMovement()
-        {
-            int move;
-            string str;
-
-            // TODO - fix if/else logic
-            if (int.TryParse(Movement, out move))
-            {
-                if (Settings.UseEncumbrance)
-                {
-                    if (CarryWeight > Light && CarryWeight <= Medium)
-                    {
-                        move -= MOVE_REDUCTION;
-                        MovementCondition = "Encumbered";
-                    }
-                    else if (CarryWeight > Medium)
-                    {
-                        move -= MOVE_REDUCTION * 2;
-                        MovementCondition = "Heavily Encumbered";
-                    }
-
-                }
-                else if (ArmorClass.ArmorStrength > Strength)
-                {
-                    move -= MOVE_REDUCTION;
-                    MovementCondition = "Encumbered";
-                }
-                else
-                {
-                    MovementCondition = "";
-                }
-                str = move.ToString();
-            }
-            else
-            {
-                str = Movement;
-            }
-
-            return str;
-        }
-
         // =========================================
         /// GetWeaponIndex()
         /// =========================================
@@ -414,7 +370,6 @@ namespace MyCharacterSheet.Characters
             copy.Language               = Language;
             copy.Marks                  = Marks;
             copy.Movement               = Movement;
-            copy.MovementCondition      = MovementCondition;
             copy.Name                   = Name;
             copy.PassivePerceptionBonus = PassivePerceptionBonus;
             copy.PersonalityBackground  = PersonalityBackground;
@@ -1102,14 +1057,6 @@ namespace MyCharacterSheet.Characters
 
                 return wgt;
             }
-        }
-
-        [Browsable(false)]
-        [ReadOnly(true)]
-        public string MovementCondition
-        {
-            get;
-            set;
         }
 
         [Browsable(false)]

@@ -14,49 +14,52 @@ namespace MyCharacterSheet
 
         #region Constants
 
-        private const int   MENU_HEIGHT     = 26;
-        private const int   MENU_RATE       = 2;
-        private const int   TAB_WIDTH       = 47;
-        private const int   TAB_RATE        = 4;
-        private const int   SAVE_X_OFFSET   = 170;
-        private const int   SAVE_Y_OFFSET   = 95;
+        private const int MENU_HEIGHT = 26;
+        private const int MENU_RATE = 2;
+        private const int TAB_WIDTH = 47;
+        private const int TAB_RATE = 4;
+        private const int SAVE_X_OFFSET = 170;
+        private const int SAVE_Y_OFFSET = 95;
 
         #endregion
 
         #region Members
 
-        private PropertyPage    oPropertyPage    = new PropertyPage();
-        private DivideLootPage  oDivideLootPage  = new DivideLootPage();
-        private DiceRollerPage  oDiceRollerPage  = new DiceRollerPage();
-        private SettingsPage    oSettingsPage    = new SettingsPage();
-        public  TablePage       oTablePage       = new TablePage();
-        private EasterEggPage   oEasterEggPage   = new EasterEggPage();
+        private PropertyPage oPropertyPage = new PropertyPage();
+        private DivideLootPage oDivideLootPage = new DivideLootPage();
+        private DiceRollerPage oDiceRollerPage = new DiceRollerPage();
+        private SettingsPage oSettingsPage = new SettingsPage();
+        public TablePage oTablePage = new TablePage();
+        private EasterEggPage oEasterEggPage = new EasterEggPage();
 
-        private List<Label>     oLabels          = new List<Label>();
-        private List<Button>    oButtons         = new List<Button>();
-        private List<float>     oLabelSizes      = new List<float>();
-        private List<float>     oButtonSizes     = new List<float>();
+        private List<Label> oLabels = new List<Label>();
+        private List<Button> oButtons = new List<Button>();
+        private List<float> oLabelSizes = new List<float>();
+        private List<float> oButtonSizes = new List<float>();
 
-        private SecondaryPage   oSecondaryPage   = null;
-        private TertiaryPage    oTertiaryPage    = null;
-        private CampainPage     oCampainPage     = null;
+        private SecondaryPage oSecondaryPage = null;
+        private TertiaryPage oTertiaryPage = null;
+        private CampainPage oCampainPage = null;
 
-        private VerticalButton  btnPrimary       = new VerticalButton();
-        private VerticalButton  btnSecondary     = new VerticalButton();
-        private VerticalButton  btnTertiary      = new VerticalButton();
-        private VerticalButton  btnCampain       = new VerticalButton();
+        private VerticalButton btnPrimary = new VerticalButton();
+        private VerticalButton btnSecondary = new VerticalButton();
+        private VerticalButton btnTertiary = new VerticalButton();
+        private VerticalButton btnCampain = new VerticalButton();
 
-        private Rectangle   dragBoxFromMouseDown;
-        private int         rowIndexFromMouseDown;
-        private int         rowIndexOfItemUnderMouseToDrop;
+        private Rectangle dragBoxFromMouseDown;
+        private int rowIndexFromMouseDown;
+        private int rowIndexOfItemUnderMouseToDrop;
 
-        public enum Pages   { Primary, Secondary, Tertiary, Campain};
+        public enum Pages { Primary, Secondary, Tertiary, Campain };
 
-        public enum Saves   { Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma};
+        public enum Saves { Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma };
 
-        public enum Skills  { Athletics,     Acrobatics, SleightOfHand, Stealth,        Arcana,      History,
-                              Investigation, Nature,     Religion,      AnimalHandling, Insight,     Medicine,
-                              Perception,    Survival,   Deception,     Intimidation,   Performance, Persuasion};
+        public enum Skills
+        {
+            Athletics, Acrobatics, SleightOfHand, Stealth, Arcana, History,
+            Investigation, Nature, Religion, AnimalHandling, Insight, Medicine,
+            Perception, Survival, Deception, Intimidation, Performance, Persuasion
+        };
 
         #endregion
 
@@ -70,7 +73,7 @@ namespace MyCharacterSheet
             Program.Loading = true;
 
             InitializeComponent();
- 
+
             //Create message filter
             NativeMethods filter = new NativeMethods(this);
             filter.FormClicked += mouseFilter_FormClicked;
@@ -175,6 +178,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void LoadPageLists()
         {
+            FillConditions();
             FillWeapons();
             FillAmmo();
             oSecondaryPage.FillAbility();
@@ -233,7 +237,7 @@ namespace MyCharacterSheet
             oTabPanel.Width = 0;
 
             TabHidden = true;
-            TabHiding = false; 
+            TabHiding = false;
         }
 
         /// =========================================
@@ -241,7 +245,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void CreateSaveProgressBar()
         {
-            oSavePanel.Location = new Point(Size.Width  - SAVE_X_OFFSET, Size.Height - SAVE_Y_OFFSET);
+            oSavePanel.Location = new Point(Size.Width - SAVE_X_OFFSET, Size.Height - SAVE_Y_OFFSET);
             oSavePanel.Visible = false;
         }
 
@@ -252,7 +256,7 @@ namespace MyCharacterSheet
         {
             oMenuStrip.BackColor = DarkGrey;
             oMenuStrip.ForeColor = Color.White;
-            
+
             foreach (ToolStripMenuItem item in oMenuStrip.Items)
             {
                 item.BackColor = DarkGrey;
@@ -317,7 +321,7 @@ namespace MyCharacterSheet
                 row.Cells[AmmoDmgType.Index].Value = ammo.Type;
                 row.Cells[Used.Index].Value = ammo.Used;
 
-               // row.Cells[oIncrement.Index].
+                // row.Cells[oIncrement.Index].
 
                 row.Tag = ammo.ID;
             }
@@ -537,6 +541,7 @@ namespace MyCharacterSheet
             if (!control)
             {
                 oPropertyPage.ShowPane();
+                FillConditions();
                 InvalidateAll();
             }
         }
@@ -558,6 +563,7 @@ namespace MyCharacterSheet
                     oTertiaryPage.SetAnimalCompanionVisibility();
                 }
 
+                FillConditions();
                 InvalidateAll();
             }
         }
@@ -746,10 +752,10 @@ namespace MyCharacterSheet
         {
             Pages tab = 0;
 
-            if      (oPrimaryTable.Visible)  { tab = Pages.Primary; }
+            if (oPrimaryTable.Visible) { tab = Pages.Primary; }
             else if (oSecondaryPage.Visible) { tab = Pages.Secondary; }
-            else if (oTertiaryPage.Visible)  { tab = Pages.Tertiary; }
-            else if (oCampainPage.Visible)   { tab = Pages.Campain; }
+            else if (oTertiaryPage.Visible) { tab = Pages.Tertiary; }
+            else if (oCampainPage.Visible) { tab = Pages.Campain; }
 
             return tab;
         }
@@ -802,23 +808,23 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// FormatCondition()
+        /// FillConditions()
         /// =========================================
-        private string FormatCondition()
+        private void FillConditions()
         {
-            string condition;
+            oConditionsDataGrid.Rows.Clear();
 
-            condition = Program.Character.HitPoints.Conditions;
-
-            // Check if comma is needed
-            if (!Program.Character.HitPoints.Conditions.Equals("") && !Program.Character.MovementCondition.Equals(""))
+            foreach (string condition in Program.Character.HitPoints.Conditions.ToArray())
             {
-                condition += ", ";
+                if (!condition.Equals(""))
+                {
+                    int index = oConditionsDataGrid.Rows.Add();
+                    DataGridViewRow row = oConditionsDataGrid.Rows[index];
+
+                    row.Cells[oCondition.Index].Value = condition;
+                    row.Cells[oCondition.Index].ToolTipText = Program.Character.HitPoints.Conditions.GetDescription(condition);
+                }
             }
-
-            condition += Program.Character.MovementCondition;
-
-            return condition;
         }
 
         /// =========================================
@@ -951,7 +957,7 @@ namespace MyCharacterSheet
                 oEXP.Text = Program.Character.EXP + " / " + Constants.Experience(Program.Character.Level);
                 oClass.Text = Program.Character.Class;
                 oLanguage.Text = Program.Character.Language;
-                oMovement.Text = Program.Character.GetMovement();
+                oMovement.Text = Program.Character.HitPoints.Conditions.FormatMovement();
                 oVision.Text = Program.Character.Vision;
 
                 oStrScore.Text = Program.Character.Strength + "";
@@ -1048,8 +1054,8 @@ namespace MyCharacterSheet
                 oMiscAC.Text = Program.Character.ArmorClass.MiscAC + "";
                 oMagicAC.Text = Program.Character.ArmorClass.MagicAC + "";
 
+                oTotalHitPoints.Text = "/" + Program.Character.HitPoints.Conditions.FormatHealth();
                 oHitPoints.Text = (Program.Character.HitPoints.HP + Program.Character.HitPoints.TempHP) + "";
-                oTotalHitPoints.Text = "/" + Program.Character.HitPoints.MaxHP;
                 oHitPoints.ForeColor = Program.Character.HitPoints.HitPointsColour;
                 //oTotalHitPoints.ForeColor = Program.Character.HitPoints.HitPointsColour;
                 oInitiative.Text = Program.Character.Initiative + "";
@@ -1315,7 +1321,7 @@ namespace MyCharacterSheet
                 }
             }
         }
-        
+
         /// =========================================
         /// oTabTimer_Tick()
         /// =========================================
@@ -1820,7 +1826,7 @@ namespace MyCharacterSheet
             {
                 Rectangle rect = oWeaponDataGrid.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
                 Row = e.RowIndex;
-                oWeaponContextMenu.Show(oWeaponDataGrid ,new Point(rect.X + e.X + OFFSET, rect.Y + e.Y + OFFSET));
+                oWeaponContextMenu.Show(oWeaponDataGrid, new Point(rect.X + e.X + OFFSET, rect.Y + e.Y + OFFSET));
             }
         }
 
@@ -1905,8 +1911,8 @@ namespace MyCharacterSheet
                 const int MIN = 0, MAX = 100;
 
                 string ID = oAmmoGridView.Rows[e.RowIndex].Tag.ToString();
-                int dataGridUsed    = int.Parse((string)oAmmoGridView.Rows[e.RowIndex].Cells[Used.Index].Value);
-                int quantity        = int.Parse((string)oAmmoGridView.Rows[e.RowIndex].Cells[Qty.Index].Value);
+                int dataGridUsed = int.Parse((string)oAmmoGridView.Rows[e.RowIndex].Cells[Used.Index].Value);
+                int quantity = int.Parse((string)oAmmoGridView.Rows[e.RowIndex].Cells[Qty.Index].Value);
 
                 if (e.ColumnIndex == oIncrement.Index && dataGridUsed < MAX && dataGridUsed < quantity)
                 {
@@ -2872,6 +2878,7 @@ namespace MyCharacterSheet
         {
             Sounds.ButtonClick();
             oPropertyPage.ShowPane();
+            FillConditions();
             InvalidateAll();
         }
 
@@ -3250,7 +3257,7 @@ namespace MyCharacterSheet
             fullscreenToolStripMenuItem.ForeColor = Color.White;
             fullscreenToolStripMenuItem.Image = Properties.Resources.fullscreen_128;
 
-            if(Fullscreen)
+            if (Fullscreen)
                 fullscreenToolStripMenuItem.Image = Properties.Resources.fullscreen_selected_128;
         }
 
