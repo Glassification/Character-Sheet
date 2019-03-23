@@ -444,7 +444,7 @@ namespace MyCharacterSheet
                     if (IsXML(oOpenFileDialog.FileName))
                     {
                         Program.FileLocation = oOpenFileDialog.FileName;
-                        Program.Character.LoadCharacterSheet();
+                        Program.Character.LoadCharacterSheetFromFile();
                         LoadPageLists();
                         oCampainPage.ClearDocumentList();
                         oCampainPage.FillDocumentList();

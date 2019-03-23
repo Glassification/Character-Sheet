@@ -11,7 +11,7 @@ namespace MyCharacterSheet
 
         #region Members
 
-        private List<Player>   players = new List<Player>();
+        public List<Player>   players = new List<Player>();
 
         #endregion
 
@@ -106,7 +106,7 @@ namespace MyCharacterSheet
         /// =========================================
         /// Distribute()
         /// =========================================
-        private void Distribute(Player loot)
+        public void Distribute(Player loot)
         {
             bool end = false;
             double maxValue = loot.Total/players.Count;

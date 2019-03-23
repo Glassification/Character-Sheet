@@ -19,13 +19,30 @@ namespace MyCharacterSheet.Persistence
         #region Methods
 
         /// =========================================
+        /// LoadCharacterSheetFromFile()
+        /// =========================================
+        public static void LoadCharacterSheetFromFile(Character character)
+        {
+            XDocument xml = XDocument.Load(Program.FileLocation);
+            LoadCharacterSheetXML(character, xml);
+        }
+
+        /// =========================================
+        /// LoadCharacterSheetFromString()
+        /// =========================================
+        public static void LoadCharacterSheetFromString(Character character, string xmlString)
+        {
+            XDocument xml = XDocument.Parse(xmlString);
+            LoadCharacterSheetXML(character, xml);
+        }
+
+        /// =========================================
         /// LoadCharacterSheetXML()
         /// =========================================
-        public static void LoadCharacterSheetXML(Character character)
+        private static void LoadCharacterSheetXML(Character character, XDocument xml)
         {
             try
             {
-                XDocument xml = XDocument.Load(Program.FileLocation);
                 XElement root = xml.Element("Character");
                 XElement element;
 

@@ -314,13 +314,23 @@ namespace MyCharacterSheet.Characters
         }
 
         /// =========================================
-        /// LoadCharacterSheet()
+        /// LoadCharacterSheetFromFile()
         /// =========================================
-        public void LoadCharacterSheet()
+        public void LoadCharacterSheetFromFile()
         {
             ClearLists();
 
-            Load.LoadCharacterSheetXML(this);
+            Load.LoadCharacterSheetFromFile(this);
+        }
+
+        /// =========================================
+        /// LoadCharacterSheetFromString()
+        /// =========================================
+        public void LoadCharacterSheetFromString(string xmlString)
+        {
+            ClearLists();
+
+            Load.LoadCharacterSheetFromString(this, xmlString);
         }
 
         /// =========================================
