@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyCharacterSheet.SavingThrowsNamespace
 {
-    class Wisdom : SavingThrows
+    public class Wisdom : SavingThrows
     {
         private int bonus;
 
