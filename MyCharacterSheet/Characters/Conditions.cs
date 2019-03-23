@@ -196,7 +196,7 @@ namespace MyCharacterSheet.Characters
                         intMovement = intMovement - 20;
                     }
 
-                    if (Fatigued.Equals("Exhaustion 2"))
+                    if (Fatigued.Equals("Exhaustion 2") || Fatigued.Equals("Exhaustion 3") || Fatigued.Equals("Exhaustion 4"))
                     {
                         movement = (intMovement / 2).ToString();
                     }
@@ -214,7 +214,7 @@ namespace MyCharacterSheet.Characters
             string health = Program.Character.HitPoints.MaxHP.ToString();
             int halfHP = Program.Character.HitPoints.MaxHP / 2;
 
-            if (Fatigued.Equals("Exhaustion 4"))
+            if (Fatigued.Equals("Exhaustion 4") || Fatigued.Equals("Exhaustion 5"))
             {
                 health = halfHP.ToString();
                 
@@ -222,6 +222,11 @@ namespace MyCharacterSheet.Characters
                 {
                     Program.Character.HitPoints.HP = halfHP;
                 }
+            }
+            else if (Fatigued.Equals("Exhaustion 6"))
+            {
+                health = "0";
+                Program.Character.HitPoints.HP = 0;
             }
 
             return health;
