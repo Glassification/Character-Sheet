@@ -15,9 +15,31 @@ namespace MyCharacterSheet.Persistence
         #region Methods
 
         /// =========================================
+        /// SaveCharacterSheetToFile()
+        /// =========================================
+        public static void SaveCharacterSheetToFile(Character character)
+        {
+            XDocument xml = SaveCharacterSheetXML(character);
+
+            xml.Save(Program.FileLocation);
+        }
+
+        /// =========================================
+        /// SaveCharacterSheetToString()
+        /// =========================================
+        public static string SaveCharacterSheetToString(Character character)
+        {
+            string xmlString = "";
+
+            xmlString = SaveCharacterSheetXML(character).ToString();
+
+            return xmlString;
+        }
+
+        /// =========================================
         /// SaveCharacterSheetXML()
         /// =========================================
-        public static void SaveCharacterSheetXML(Character character)
+        private static XDocument SaveCharacterSheetXML(Character character)
         {
             XDocument xml = new XDocument(
                 new XElement("Character",
@@ -292,7 +314,7 @@ namespace MyCharacterSheet.Persistence
                     )
                 );
 
-            xml.Save(Program.FileLocation);
+            return xml;
         }
 
         #endregion

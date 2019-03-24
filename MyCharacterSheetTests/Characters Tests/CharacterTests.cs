@@ -42,29 +42,51 @@ namespace MyCharacterSheetTests.Characters_Tests
         [TestMethod]
         public void ValidTotalLevel_IsValid_ShouldWork()
         {
-            Character character = new Character();
             Program.Loading = false;
+            Program.Character.LoadCharacterSheetFromString(GetTestXml());
 
-            character.LoadCharacterSheetFromString(GetTestXml());
-            character.PlayerClass1.ClassLevel = 1;
-            character.PlayerClass2.ClassLevel = 1;
-            character.PlayerClass3.ClassLevel = 0;
+            Program.Character.PlayerClass1.ClassLevel = 1;
+            Program.Character.PlayerClass2.ClassLevel = 1;
+            Program.Character.PlayerClass3.ClassLevel = 0;
 
-            Assert.IsTrue(character.ValidTotalLevel(1, 2));
+            Assert.IsTrue(Program.Character.ValidTotalLevel(1, 2));
         }
 
         [TestMethod]
         public void ValidTotalLevel_IsNotValid_ShouldNotWork()
         {
-            Character character = new Character();
-            //Program.Loading = false;
+            Program.Loading = false;
+            Program.Character.LoadCharacterSheetFromString(GetTestXml());
 
-            character.LoadCharacterSheetFromString(GetTestXml());
-            character.PlayerClass1.ClassLevel = 10;
-            character.PlayerClass2.ClassLevel = 10;
-            character.PlayerClass3.ClassLevel = 0;
+            Program.Character.PlayerClass1.ClassLevel = 10;
+            Program.Character.PlayerClass2.ClassLevel = 10;
+            Program.Character.PlayerClass3.ClassLevel = 0;
 
-            Assert.IsFalse(character.ValidTotalLevel(1, 2));
+            Assert.IsFalse(Program.Character.ValidTotalLevel(1, 2));
+        }
+
+        [TestMethod]
+        public void ValidName_IsValid_ShouldWork()
+        {
+            Program.Loading = false;
+            Program.Character.LoadCharacterSheetFromString(GetTestXml());
+
+            Program.Character.PlayerClass1.ClassName = "Test 1";
+            Program.Character.PlayerClass2.ClassName = "Test 2";
+
+            Assert.IsTrue(Program.Character.ValidName("Test 3", 2));
+        }
+
+        [TestMethod]
+        public void ValidName_IsNotValid_ShouldNotWork()
+        {
+            Program.Loading = false;
+            Program.Character.LoadCharacterSheetFromString(GetTestXml());
+
+            Program.Character.PlayerClass1.ClassName = "Test 1";
+            Program.Character.PlayerClass2.ClassName = "Test 2";
+
+            Assert.IsFalse(Program.Character.ValidName("Test 2", 2));
         }
 
         [TestMethod]

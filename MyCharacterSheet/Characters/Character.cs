@@ -348,7 +348,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         public void SaveCharacterSheet()
         {
-            Save.SaveCharacterSheetXML(this);
+            Save.SaveCharacterSheetToFile(this);
         }
 
         /// =========================================

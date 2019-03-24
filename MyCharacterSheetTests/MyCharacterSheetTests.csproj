@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Characters Tests\CharacterTests.cs" />
     <Compile Include="DivideLootPageTests.cs" />
+    <Compile Include="Persistence Tests\SaveTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
