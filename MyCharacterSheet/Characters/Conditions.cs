@@ -15,11 +15,11 @@ namespace MyCharacterSheet.Characters
         public const string CharmedDescription = "You cannot attack the charmer. The charmer has advantage on ability checks when interacting socially.";
         public const string DeafenedDescription = "You cannot hear and automatically fails any ability check that requires hearing.";
         public const string EncumbranceDescription = "A carry weight exceding 5 and 10 times Strength will reduce speed by 10 and 20 respectivly.";
-        public const string Exausted1 = "Disadvantage on Ability Checks.";
-        public const string Exausted2 = "Speed halved.";
-        public const string Exausted3 = "Disadvantage on Attack rolls and Saving Throws.";
-        public const string Exausted4 = "Hit point maximum halved.";
-        public const string Exausted5 = "Speed reduced to 0.";
+        public const string Exausted1 = "Disadvantage on Ability Checks";
+        public const string Exausted2 = "Speed halved";
+        public const string Exausted3 = "Disadvantage on Attack rolls and Saving Throws";
+        public const string Exausted4 = "Hit point maximum halved";
+        public const string Exausted5 = "Speed reduced to 0";
         public const string Exausted6 = "Death.";
         public const string FatiguedDescription = "Exaustion levels stack up to 6. A long rest reduces the level by 1.";
         public const string FrightenedDescription = "You have disadvantage on Ability Checks and Attack rolls while the source of fear is within line of sight. You can’t willingly move closer to the source.";
@@ -94,6 +94,7 @@ namespace MyCharacterSheet.Characters
         public string GetDescription(string name)
         {
             string description;
+            string str = ", ";
 
             switch (name)
             {
@@ -147,16 +148,16 @@ namespace MyCharacterSheet.Characters
                     description = Exausted1;
                     break;
                 case "Exhaustion 2":
-                    description = Exausted2;
+                    description = Exausted1 + str + Exausted2;
                     break;
                 case "Exhaustion 3":
-                    description = Exausted3;
+                    description = Exausted1 + str + Exausted2 + str + Exausted3;
                     break;
                 case "Exhaustion 4":
-                    description = Exausted4;
+                    description = Exausted1 + str + Exausted2 + str + Exausted3 + str + Exausted4;
                     break;
                 case "Exhaustion 5":
-                    description = Exausted5;
+                    description = Exausted1 + str + Exausted2 + str + Exausted3 + str + Exausted4 + str + Exausted5;
                     break;
                 case "Exhaustion 6":
                     description = Exausted6;
