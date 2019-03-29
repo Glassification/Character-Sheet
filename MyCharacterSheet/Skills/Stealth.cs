@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyCharacterSheet.SkillsNamespace
 {
-    class Stealth : Skills
+    public class Stealth : Skills
     {
         private int bonus;
 

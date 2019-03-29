@@ -10,10 +10,19 @@ namespace MyCharacterSheet
     ///<summary>
     /// Provides constants and static methods for the entry point of the application.
     /// </summary>
-    static class Program
+    static public class Program
     {
 
         #region Methods
+
+        static Program()
+        {
+            Character = new Character();
+            Loading = true;
+            Mute = true;
+            Typing = false;
+            LastTable = Tables.Abilities;
+        }
 
         /// =========================================
         /// Main()
@@ -21,12 +30,6 @@ namespace MyCharacterSheet
         [STAThread]
         static void Main()
         {
-            Character = new Character();
-            Loading = true;
-            Mute = true;
-            Typing = false;
-            LastTable = Tables.Abilities;
-
             //SpellParser.ParseSpellCSV();
 
             Application.EnableVisualStyles();
