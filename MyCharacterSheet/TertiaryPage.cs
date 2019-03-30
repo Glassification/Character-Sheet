@@ -389,6 +389,8 @@ namespace MyCharacterSheet
                 oCompanionNote1.Text = Program.Character.Companion.Notes.First;
                 oCompanionNote2.Text = Program.Character.Companion.Notes.Second;
 
+                FillSpellclass();
+
                 ResizeLabels();
 
                 Drawing = false;
@@ -426,7 +428,7 @@ namespace MyCharacterSheet
             // Sort each item
             for (int i = 0; i < oMagicGridView.Rows.Count; i++)
             {
-                rowID = oMagicGridView.Rows[i].Tag as string;
+                rowID = oMagicGridView.Rows[i].Tag.ToString();
 
                 // Check if already in correct position 
                 if (!rowID.Equals(Program.Character.Spellcasting.oMagic[i].ID))
@@ -467,7 +469,7 @@ namespace MyCharacterSheet
         {
             Program.Modified = true;
 
-            Program.Character.Spellcasting.RemoveMagicItem(oMagicGridView.Rows[Row].Tag as string);
+            Program.Character.Spellcasting.RemoveMagicItem(oMagicGridView.Rows[Row].Tag.ToString());
             oMagicGridView.Rows.RemoveAt(Row);
         }
 
@@ -1008,7 +1010,7 @@ namespace MyCharacterSheet
             // Sort each item
             for (int i = 0; i < oSpellListDataView.Rows.Count; i++)
             {
-                rowID = oSpellListDataView.Rows[i].Tag as string;
+                rowID = oSpellListDataView.Rows[i].Tag.ToString();
 
                 // Check if already in correct position 
                 if (!rowID.Equals(Program.Character.Spellcasting.oSpells[i].ID))
@@ -1045,7 +1047,7 @@ namespace MyCharacterSheet
         {
             Program.Modified = true;
 
-            Program.Character.Spellcasting.RemoveSpellItem(oSpellListDataView.Rows[Row].Tag as string);
+            Program.Character.Spellcasting.RemoveSpellItem(oSpellListDataView.Rows[Row].Tag.ToString());
             oSpellListDataView.Rows.RemoveAt(Row);
         }
 

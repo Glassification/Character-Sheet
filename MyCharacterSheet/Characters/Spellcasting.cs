@@ -119,7 +119,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oSpells.Count && !end; i++)
             {
-                if (oSpells[i].ID.Equals(id))
+                if (oSpells[i].ID.ToString().Equals(id))
                 {
                     index = i;
                     end = true;
@@ -138,7 +138,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oSpells.Count && !end; i++)
             {
-                if (oSpells[i].ID.Equals(id))
+                if (oSpells[i].ID.ToString().Equals(id))
                 {
                     oSpells.RemoveAt(i);
                     end = true;
@@ -156,7 +156,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oMagic.Count && !end; i++)
             {
-                if (oMagic[i].ID.Equals(id))
+                if (oMagic[i].ID.ToString().Equals(id))
                 {
                     index = i;
                     end = true;
@@ -175,7 +175,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oMagic.Count && !end; i++)
             {
-                if (oMagic[i].ID.Equals(id))
+                if (oMagic[i].ID.ToString().Equals(id))
                 {
                     oMagic.RemoveAt(i);
                     end = true;
@@ -390,7 +390,6 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(false)]
         [ReadOnly(true)]
-        [Category("Used Spells")]
         public int NineUsed
         {
             get;

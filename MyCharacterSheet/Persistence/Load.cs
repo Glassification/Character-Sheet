@@ -231,7 +231,7 @@ namespace MyCharacterSheet.Persistence
                 character.HitPoints.Conditions.Restrained       = (string)element.Element("Restrained").Attribute("value");
                 character.HitPoints.Conditions.Stunned          = (string)element.Element("Stunned").Attribute("value");
                 character.HitPoints.Conditions.Unconscious      = (string)element.Element("Unconscious").Attribute("value");
-
+                
                 element = root.Element("HitPoints").Element("HitDice");
                 character.HitPoints.D6          = (int)element.Element("D6").Attribute("total");
                 character.HitPoints.D8          = (int)element.Element("D8").Attribute("total");

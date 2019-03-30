@@ -135,7 +135,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oWeapons.Count && !end; i++)
             {
-                if (oWeapons[i].ID.Equals(id))
+                if (oWeapons[i].ID.ToString().Equals(id))
                 {
                     index = i;
                     end = true;
@@ -154,7 +154,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oWeapons.Count && !end; i++)
             {
-                if (oWeapons[i].ID.Equals(id))
+                if (oWeapons[i].ID.ToString().Equals(id))
                 {
                     oWeapons.RemoveAt(i);
                     end = true;
@@ -172,7 +172,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oAmmo.Count && !end; i++)
             {
-                if (oAmmo[i].ID.Equals(id))
+                if (oAmmo[i].ID.ToString().Equals(id))
                 {
                     index = i;
                     end = true;
@@ -191,7 +191,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oAmmo.Count && !end; i++)
             {
-                if (oAmmo[i].ID.Equals(id))
+                if (oAmmo[i].ID.ToString().Equals(id))
                 {
                     oAmmo.RemoveAt(i);
                     end = true;
@@ -209,7 +209,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oAmmo.Count && !end; i++)
             {
-                if (oAmmo[i].ID.Equals(id))
+                if (oAmmo[i].ID.ToString().Equals(id))
                 {
                     used = int.Parse(oAmmo[i].Used);
                     used++;
@@ -229,7 +229,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oAmmo.Count && !end; i++)
             {
-                if (oAmmo[i].ID.Equals(id))
+                if (oAmmo[i].ID.ToString().Equals(id))
                 {
                     used = int.Parse(oAmmo[i].Used);
                     used--;
@@ -249,7 +249,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oInventory.Count && !end; i++)
             {
-                if (oInventory[i].ID.Equals(id))
+                if (oInventory[i].ID.ToString().Equals(id))
                 {
                     index = i;
                     end = true;
@@ -268,7 +268,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oInventory.Count && !end; i++)
             {
-                if (oInventory[i].ID.Equals(id))
+                if (oInventory[i].ID.ToString().Equals(id))
                 {
                     oInventory.RemoveAt(i);
                     end = true;
@@ -286,7 +286,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oAbility.Count && !end; i++)
             {
-                if (oAbility[i].ID.Equals(id))
+                if (oAbility[i].ID.ToString().Equals(id))
                 {
                     index = i;
                     end = true;
@@ -305,7 +305,7 @@ namespace MyCharacterSheet.Characters
 
             for (int i = 0; i < oAbility.Count && !end; i++)
             {
-                if (oAbility[i].ID.Equals(id))
+                if (oAbility[i].ID.ToString().Equals(id))
                 {
                     oAbility.RemoveAt(i);
                     end = true;

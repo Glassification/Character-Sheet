@@ -1784,7 +1784,7 @@ namespace MyCharacterSheet
             // Sort each item
             for (int i = 0; i < oAmmoGridView.Rows.Count; i++)
             {
-                rowID = oAmmoGridView.Rows[i].Tag as string;
+                rowID = oAmmoGridView.Rows[i].Tag.ToString();
 
                 // Check if already in correct position 
                 if (!rowID.Equals(Program.Character.oAmmo[i].ID))
@@ -1848,7 +1848,7 @@ namespace MyCharacterSheet
         {
             Program.Modified = true;
 
-            Program.Character.RemoveWeaponItem(oWeaponDataGrid.Rows[Row].Tag as string);
+            Program.Character.RemoveWeaponItem(oWeaponDataGrid.Rows[Row].Tag.ToString());
             oWeaponDataGrid.Rows.RemoveAt(Row);
         }
 
@@ -1882,7 +1882,7 @@ namespace MyCharacterSheet
         {
             Program.Modified = true;
 
-            Program.Character.RemoveAmmoItem(oAmmoGridView.Rows[Row].Tag as string);
+            Program.Character.RemoveAmmoItem(oAmmoGridView.Rows[Row].Tag.ToString());
             oAmmoGridView.Rows.RemoveAt(Row);
         }
 
