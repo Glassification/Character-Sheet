@@ -112,7 +112,7 @@ namespace MyCharacterSheet.Characters
         // =========================================
         /// GetSpellIndex()
         /// =========================================
-        public int GetSpellIndex(string id)
+        public int GetSpellIndex(Guid id)
         {
             bool end = false;
             int index = -1;
@@ -132,7 +132,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// RemoveSpellItem()
         /// =========================================
-        public void RemoveSpellItem(string id)
+        public void RemoveSpellItem(Guid id)
         {
             bool end = false;
 
@@ -149,7 +149,7 @@ namespace MyCharacterSheet.Characters
         // =========================================
         /// GetMagicIndex()
         /// =========================================
-        public int GetMagicIndex(string id)
+        public int GetMagicIndex(Guid id)
         {
             bool end = false;
             int index = -1;
@@ -169,7 +169,7 @@ namespace MyCharacterSheet.Characters
         // =========================================
         /// RemoveMagicItem()
         /// =========================================
-        public void RemoveMagicItem(string id)
+        public void RemoveMagicItem(Guid id)
         {
             bool end = false;
 
@@ -390,7 +390,6 @@ namespace MyCharacterSheet.Characters
 
         [Browsable(false)]
         [ReadOnly(true)]
-        [Category("Used Spells")]
         public int NineUsed
         {
             get;

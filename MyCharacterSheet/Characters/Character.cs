@@ -128,7 +128,7 @@ namespace MyCharacterSheet.Characters
         // =========================================
         /// GetWeaponIndex()
         /// =========================================
-        public int GetWeaponIndex(string id)
+        public int GetWeaponIndex(Guid id)
         {
             bool end = false;
             int index = -1;
@@ -148,7 +148,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// RemoveWeaponItem()
         /// =========================================
-        public void RemoveWeaponItem(string id)
+        public void RemoveWeaponItem(Guid id)
         {
             bool end = false;
 
@@ -165,7 +165,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// GetAmmoIndex()
         /// =========================================
-        public int GetAmmoIndex(string id)
+        public int GetAmmoIndex(Guid id)
         {
             bool end = false;
             int index = -1;
@@ -185,7 +185,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// RemoveAmmoItem()
         /// =========================================
-        public void RemoveAmmoItem(string id)
+        public void RemoveAmmoItem(Guid id)
         {
             bool end = false;
 
@@ -202,7 +202,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// IncrementAmmoQuantity()
         /// =========================================
-        public void IncrementAmmoQuantity(string id)
+        public void IncrementAmmoQuantity(Guid id)
         {
             bool end = false;
             int used;
@@ -222,7 +222,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// DecrementAmmoQuantity()
         /// =========================================
-        public void DecrementAmmoQuantity(string id)
+        public void DecrementAmmoQuantity(Guid id)
         {
             bool end = false;
             int used;
@@ -242,7 +242,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// GetInventoryIndex()
         /// =========================================
-        public int GetInventoryIndex(string id)
+        public int GetInventoryIndex(Guid id)
         {
             bool end = false;
             int index = -1;
@@ -262,7 +262,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// RemoveInventoryItem()
         /// =========================================
-        public void RemoveInventoryItem(string id)
+        public void RemoveInventoryItem(Guid id)
         {
             bool end = false;
 
@@ -279,7 +279,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// GetAbilityIndex()
         /// =========================================
-        public int GetAbilityIndex(string id)
+        public int GetAbilityIndex(Guid id)
         {
             bool end = false;
             int index = -1;
@@ -299,7 +299,7 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// RemoveAbilityItem()
         /// =========================================
-        public void RemoveAbilityItem(string id)
+        public void RemoveAbilityItem(Guid id)
         {
             bool end = false;
 

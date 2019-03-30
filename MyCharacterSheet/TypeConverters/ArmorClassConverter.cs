@@ -20,27 +20,29 @@ namespace MyCharacterSheet.TypeConverters
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo info, object value)
         {
             string worn, aType, stealth, sType;
-            int aAC, sAC, miscAC, magicAC, strength;//, aWgt, sWgt;
+            int aAC, sAC, miscAC, magicAC, strength, aWgt, sWgt;
             string[] tokens;
 
             if (value is string)
             {
                 try
                 {
-                    string str = value as string;
+                    string str = value.ToString();
 
                     tokens = str.Split(',');
                     worn = tokens[0];
                     aType = tokens[1];
                     aAC = int.Parse(tokens[2]);
                     stealth = tokens[3];
-                    sType = tokens[4];
-                    sAC = int.Parse(tokens[5]);
-                    miscAC = int.Parse(tokens[6]);
-                    magicAC = int.Parse(tokens[7]);
-                    strength = int.Parse(tokens[8]);
+                    aWgt = int.Parse(tokens[4]);
+                    sType = tokens[5];
+                    sAC = int.Parse(tokens[6]);
+                    sWgt = int.Parse(tokens[7]);
+                    miscAC = int.Parse(tokens[8]);
+                    magicAC = int.Parse(tokens[9]);
+                    strength = int.Parse(tokens[10]);
 
-                    return null;// new ArmorClass(worn, aType, aAC, stealth, sType, sAC, miscAC, magicAC, strength);
+                    return new ArmorClass(worn, aType, aAC, stealth, aWgt, sType, sAC, sWgt, miscAC, magicAC, strength);
                 }
                 catch { }
                 throw new ArgumentException("Can not convert '" + (string)value + "' to type Person");

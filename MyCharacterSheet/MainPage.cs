@@ -1749,13 +1749,13 @@ namespace MyCharacterSheet
         private void oWeaponDataGrid_Sorted(object sender, EventArgs e)
         {
             int index;
-            string rowID;
+            Guid rowID;
             Weapon item;
 
             // Sort each item
             for (int i = 0; i < oWeaponDataGrid.Rows.Count; i++)
             {
-                rowID = oWeaponDataGrid.Rows[i].Tag as string;
+                rowID = (Guid)oWeaponDataGrid.Rows[i].Tag;
 
                 // Check if already in correct position 
                 if (!rowID.Equals(Program.Character.oWeapons[i].ID))
@@ -1778,13 +1778,13 @@ namespace MyCharacterSheet
         private void oAmmoGridView_Sorted(object sender, EventArgs e)
         {
             int index;
-            string rowID;
+            Guid rowID;
             Ammunition item;
 
             // Sort each item
             for (int i = 0; i < oAmmoGridView.Rows.Count; i++)
             {
-                rowID = oAmmoGridView.Rows[i].Tag as string;
+                rowID = (Guid)oAmmoGridView.Rows[i].Tag;
 
                 // Check if already in correct position 
                 if (!rowID.Equals(Program.Character.oAmmo[i].ID))
@@ -1848,7 +1848,7 @@ namespace MyCharacterSheet
         {
             Program.Modified = true;
 
-            Program.Character.RemoveWeaponItem(oWeaponDataGrid.Rows[Row].Tag as string);
+            Program.Character.RemoveWeaponItem((Guid)oWeaponDataGrid.Rows[Row].Tag);
             oWeaponDataGrid.Rows.RemoveAt(Row);
         }
 
@@ -1882,7 +1882,7 @@ namespace MyCharacterSheet
         {
             Program.Modified = true;
 
-            Program.Character.RemoveAmmoItem(oAmmoGridView.Rows[Row].Tag as string);
+            Program.Character.RemoveAmmoItem((Guid)oAmmoGridView.Rows[Row].Tag);
             oAmmoGridView.Rows.RemoveAt(Row);
         }
 
@@ -1910,7 +1910,7 @@ namespace MyCharacterSheet
             {
                 const int MIN = 0, MAX = 100;
 
-                string ID = oAmmoGridView.Rows[e.RowIndex].Tag.ToString();
+                Guid ID = (Guid)oAmmoGridView.Rows[e.RowIndex].Tag;
                 int dataGridUsed = int.Parse((string)oAmmoGridView.Rows[e.RowIndex].Cells[Used.Index].Value);
                 int quantity = int.Parse((string)oAmmoGridView.Rows[e.RowIndex].Cells[Qty.Index].Value);
 

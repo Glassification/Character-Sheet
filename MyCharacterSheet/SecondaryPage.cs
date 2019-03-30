@@ -417,7 +417,7 @@ namespace MyCharacterSheet
         {
             Program.Modified = true;
 
-            Program.Character.RemoveAbilityItem(oAbilitiesGridView.Rows[Row].Tag as string);
+            Program.Character.RemoveAbilityItem((Guid)oAbilitiesGridView.Rows[Row].Tag);
             oAbilitiesGridView.Rows.RemoveAt(Row);
         }
 
@@ -556,13 +556,13 @@ namespace MyCharacterSheet
         private void oAbilitiesGridView_Sorted(object sender, EventArgs e)
         {
             int index;
-            string rowID;
+            Guid rowID;
             Ability item;
 
             // Sort each item
             for (int i = 0; i < oAbilitiesGridView.Rows.Count; i++)
             {
-                rowID = oAbilitiesGridView.Rows[i].Tag as string;
+                rowID = (Guid)oAbilitiesGridView.Rows[i].Tag;
 
                 // Check if already in correct position 
                 if (!rowID.Equals(Program.Character.oAbility[i].ID))
@@ -628,7 +628,7 @@ namespace MyCharacterSheet
         {
             Program.Modified = true;
 
-            Program.Character.RemoveInventoryItem(oInventoryGrid.Rows[Row].Tag as string);
+            Program.Character.RemoveInventoryItem((Guid)oInventoryGrid.Rows[Row].Tag);
             oInventoryGrid.Rows.RemoveAt(Row);
         }
 
@@ -778,13 +778,13 @@ namespace MyCharacterSheet
         private void oInventoryGrid_Sorted(object sender, EventArgs e)
         {
             int index;
-            string rowID;
+            Guid rowID;
             Inventory item;
 
             // Sort each item
             for (int i = 0; i < oInventoryGrid.Rows.Count; i++)
             {
-                rowID = oInventoryGrid.Rows[i].Tag as string;
+                rowID = (Guid)oInventoryGrid.Rows[i].Tag;
 
                 // Check if already in correct position 
                 if (!rowID.Equals(Program.Character.oInventory[i].ID))
