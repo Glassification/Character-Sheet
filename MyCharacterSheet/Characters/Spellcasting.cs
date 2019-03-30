@@ -112,14 +112,14 @@ namespace MyCharacterSheet.Characters
         // =========================================
         /// GetSpellIndex()
         /// =========================================
-        public int GetSpellIndex(string id)
+        public int GetSpellIndex(Guid id)
         {
             bool end = false;
             int index = -1;
 
             for (int i = 0; i < oSpells.Count && !end; i++)
             {
-                if (oSpells[i].ID.ToString().Equals(id))
+                if (oSpells[i].ID.Equals(id))
                 {
                     index = i;
                     end = true;
@@ -132,13 +132,13 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// RemoveSpellItem()
         /// =========================================
-        public void RemoveSpellItem(string id)
+        public void RemoveSpellItem(Guid id)
         {
             bool end = false;
 
             for (int i = 0; i < oSpells.Count && !end; i++)
             {
-                if (oSpells[i].ID.ToString().Equals(id))
+                if (oSpells[i].ID.Equals(id))
                 {
                     oSpells.RemoveAt(i);
                     end = true;
@@ -149,14 +149,14 @@ namespace MyCharacterSheet.Characters
         // =========================================
         /// GetMagicIndex()
         /// =========================================
-        public int GetMagicIndex(string id)
+        public int GetMagicIndex(Guid id)
         {
             bool end = false;
             int index = -1;
 
             for (int i = 0; i < oMagic.Count && !end; i++)
             {
-                if (oMagic[i].ID.ToString().Equals(id))
+                if (oMagic[i].ID.Equals(id))
                 {
                     index = i;
                     end = true;
@@ -169,13 +169,13 @@ namespace MyCharacterSheet.Characters
         // =========================================
         /// RemoveMagicItem()
         /// =========================================
-        public void RemoveMagicItem(string id)
+        public void RemoveMagicItem(Guid id)
         {
             bool end = false;
 
             for (int i = 0; i < oMagic.Count && !end; i++)
             {
-                if (oMagic[i].ID.ToString().Equals(id))
+                if (oMagic[i].ID.Equals(id))
                 {
                     oMagic.RemoveAt(i);
                     end = true;

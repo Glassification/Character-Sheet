@@ -128,14 +128,14 @@ namespace MyCharacterSheet.Characters
         // =========================================
         /// GetWeaponIndex()
         /// =========================================
-        public int GetWeaponIndex(string id)
+        public int GetWeaponIndex(Guid id)
         {
             bool end = false;
             int index = -1;
 
             for (int i = 0; i < oWeapons.Count && !end; i++)
             {
-                if (oWeapons[i].ID.ToString().Equals(id))
+                if (oWeapons[i].ID.Equals(id))
                 {
                     index = i;
                     end = true;
@@ -148,13 +148,13 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// RemoveWeaponItem()
         /// =========================================
-        public void RemoveWeaponItem(string id)
+        public void RemoveWeaponItem(Guid id)
         {
             bool end = false;
 
             for (int i = 0; i < oWeapons.Count && !end; i++)
             {
-                if (oWeapons[i].ID.ToString().Equals(id))
+                if (oWeapons[i].ID.Equals(id))
                 {
                     oWeapons.RemoveAt(i);
                     end = true;
@@ -165,14 +165,14 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// GetAmmoIndex()
         /// =========================================
-        public int GetAmmoIndex(string id)
+        public int GetAmmoIndex(Guid id)
         {
             bool end = false;
             int index = -1;
 
             for (int i = 0; i < oAmmo.Count && !end; i++)
             {
-                if (oAmmo[i].ID.ToString().Equals(id))
+                if (oAmmo[i].ID.Equals(id))
                 {
                     index = i;
                     end = true;
@@ -185,13 +185,13 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// RemoveAmmoItem()
         /// =========================================
-        public void RemoveAmmoItem(string id)
+        public void RemoveAmmoItem(Guid id)
         {
             bool end = false;
 
             for (int i = 0; i < oAmmo.Count && !end; i++)
             {
-                if (oAmmo[i].ID.ToString().Equals(id))
+                if (oAmmo[i].ID.Equals(id))
                 {
                     oAmmo.RemoveAt(i);
                     end = true;
@@ -202,14 +202,14 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// IncrementAmmoQuantity()
         /// =========================================
-        public void IncrementAmmoQuantity(string id)
+        public void IncrementAmmoQuantity(Guid id)
         {
             bool end = false;
             int used;
 
             for (int i = 0; i < oAmmo.Count && !end; i++)
             {
-                if (oAmmo[i].ID.ToString().Equals(id))
+                if (oAmmo[i].ID.Equals(id))
                 {
                     used = int.Parse(oAmmo[i].Used);
                     used++;
@@ -222,14 +222,14 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// DecrementAmmoQuantity()
         /// =========================================
-        public void DecrementAmmoQuantity(string id)
+        public void DecrementAmmoQuantity(Guid id)
         {
             bool end = false;
             int used;
 
             for (int i = 0; i < oAmmo.Count && !end; i++)
             {
-                if (oAmmo[i].ID.ToString().Equals(id))
+                if (oAmmo[i].ID.Equals(id))
                 {
                     used = int.Parse(oAmmo[i].Used);
                     used--;
@@ -242,14 +242,14 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// GetInventoryIndex()
         /// =========================================
-        public int GetInventoryIndex(string id)
+        public int GetInventoryIndex(Guid id)
         {
             bool end = false;
             int index = -1;
 
             for (int i = 0; i < oInventory.Count && !end; i++)
             {
-                if (oInventory[i].ID.ToString().Equals(id))
+                if (oInventory[i].ID.Equals(id))
                 {
                     index = i;
                     end = true;
@@ -262,13 +262,13 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// RemoveInventoryItem()
         /// =========================================
-        public void RemoveInventoryItem(string id)
+        public void RemoveInventoryItem(Guid id)
         {
             bool end = false;
 
             for (int i = 0; i < oInventory.Count && !end; i++)
             {
-                if (oInventory[i].ID.ToString().Equals(id))
+                if (oInventory[i].ID.Equals(id))
                 {
                     oInventory.RemoveAt(i);
                     end = true;
@@ -279,14 +279,14 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// GetAbilityIndex()
         /// =========================================
-        public int GetAbilityIndex(string id)
+        public int GetAbilityIndex(Guid id)
         {
             bool end = false;
             int index = -1;
 
             for (int i = 0; i < oAbility.Count && !end; i++)
             {
-                if (oAbility[i].ID.ToString().Equals(id))
+                if (oAbility[i].ID.Equals(id))
                 {
                     index = i;
                     end = true;
@@ -299,13 +299,13 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         /// RemoveAbilityItem()
         /// =========================================
-        public void RemoveAbilityItem(string id)
+        public void RemoveAbilityItem(Guid id)
         {
             bool end = false;
 
             for (int i = 0; i < oAbility.Count && !end; i++)
             {
-                if (oAbility[i].ID.ToString().Equals(id))
+                if (oAbility[i].ID.Equals(id))
                 {
                     oAbility.RemoveAt(i);
                     end = true;
