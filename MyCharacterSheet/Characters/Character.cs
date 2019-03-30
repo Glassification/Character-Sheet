@@ -452,6 +452,20 @@ namespace MyCharacterSheet.Characters
         }
 
         /// =========================================
+        /// ResetChecks()
+        /// =========================================
+        public void ResetChecks()
+        {
+            foreach (Skills skill in oSkills)
+                skill.Checks = Checks.Normal;
+
+            foreach (SavingThrows save in oSavingThrows)
+                save.Checks = Checks.Normal;
+
+            HitPoints.Conditions.FormatChecks();
+        }
+
+        /// =========================================
         /// ClearLists()
         /// =========================================
         public void ClearLists()

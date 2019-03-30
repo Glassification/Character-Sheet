@@ -840,6 +840,30 @@ namespace MyCharacterSheet
             }
         }
 
+        /// =========================================
+        /// GetCheckColor()
+        /// =========================================
+        private Color GetCheckColor(Checks check)
+        {
+            Color color;
+
+            switch (check)
+            {
+                case Checks.Disadvantage:
+                    color = Color.IndianRed;
+                    break;
+                case Checks.Fail:
+                    color = Color.Transparent;
+                    break;
+                case Checks.Normal:
+                default:
+                    color = Color.Black;
+                    break;
+            }
+
+            return color;
+        }
+
         #endregion
 
         #region Accessors
@@ -949,6 +973,8 @@ namespace MyCharacterSheet
             {
                 Drawing = true;
 
+                Program.Character.ResetChecks();
+
                 oCharName.Text = Program.Character.Name;
                 oRace.Text = Program.Character.Race;
                 oBackground.Text = Program.Character.Background;
@@ -981,6 +1007,13 @@ namespace MyCharacterSheet
                 oWisSavingThrow.Text = Program.Character.oSavingThrows[4].Bonus + "";
                 oChaSavingThrow.Text = Program.Character.oSavingThrows[5].Bonus + "";
 
+                oStrSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[0].Checks);
+                oDexSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[1].Checks);
+                oConSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[2].Checks);
+                oIntSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[3].Checks);
+                oWisSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[4].Checks);
+                oChaSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[5].Checks);
+
                 chkStrengthP.Checked = Program.Character.oSavingThrows[0].Proficiency;
                 chkDexterityP.Checked = Program.Character.oSavingThrows[1].Proficiency;
                 chkConstitutionP.Checked = Program.Character.oSavingThrows[2].Proficiency;
@@ -1006,6 +1039,25 @@ namespace MyCharacterSheet
                 oIntimidationSkill.Text = Program.Character.oSkills[15].Bonus + "";
                 oPerformanceSkill.Text = Program.Character.oSkills[16].Bonus + "";
                 oPersuasionSkill.Text = Program.Character.oSkills[17].Bonus + "";
+
+                oAthleticsSkill.ForeColor = GetCheckColor(Program.Character.oSkills[0].Checks);
+                oAcrobaticsSkill.ForeColor = GetCheckColor(Program.Character.oSkills[1].Checks);
+                oSleightSkill.ForeColor = GetCheckColor(Program.Character.oSkills[2].Checks);
+                oStealthSkill.ForeColor = GetCheckColor(Program.Character.oSkills[3].Checks);
+                oArcanaSkill.ForeColor = GetCheckColor(Program.Character.oSkills[4].Checks);
+                oHistorySkill.ForeColor = GetCheckColor(Program.Character.oSkills[5].Checks);
+                oInvestigationSkill.ForeColor = GetCheckColor(Program.Character.oSkills[6].Checks);
+                oNatureSkill.ForeColor = GetCheckColor(Program.Character.oSkills[7].Checks);
+                oReligionSkill.ForeColor = GetCheckColor(Program.Character.oSkills[8].Checks);
+                oAnimalSkill.ForeColor = GetCheckColor(Program.Character.oSkills[9].Checks);
+                oInsightSkill.ForeColor = GetCheckColor(Program.Character.oSkills[10].Checks);
+                oMedicineSkill.ForeColor = GetCheckColor(Program.Character.oSkills[11].Checks);
+                oPerceptionSkill.ForeColor = GetCheckColor(Program.Character.oSkills[12].Checks);
+                oSurvivalSkill.ForeColor = GetCheckColor(Program.Character.oSkills[13].Checks);
+                oDeceptionSkill.ForeColor = GetCheckColor(Program.Character.oSkills[14].Checks);
+                oIntimidationSkill.ForeColor = GetCheckColor(Program.Character.oSkills[15].Checks);
+                oPerformanceSkill.ForeColor = GetCheckColor(Program.Character.oSkills[16].Checks);
+                oPersuasionSkill.ForeColor = GetCheckColor(Program.Character.oSkills[17].Checks);
 
                 chkAthleticsP.Checked = Program.Character.oSkills[0].Proficiency;
                 chkAthleticsE.Checked = Program.Character.oSkills[0].Expertise;
