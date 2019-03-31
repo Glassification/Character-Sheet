@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using static MyCharacterSheet.Utility.Constants;
 
@@ -2886,6 +2887,52 @@ namespace MyCharacterSheet
         #endregion
 
         #region Tool Strip Events
+
+        /// =========================================
+        /// aboutToolStripMenuItem_Click()
+        /// =========================================
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Sounds.ButtonClick();
+
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            MessageBox.Show("Current Version: " + +version.Major + "." + version.Minor + "." + version.Build, "About My Character Sheet", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        /// =========================================
+        /// helpToolStripMenuItem_DropDownOpened()
+        /// =========================================
+        private void helpToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            helpToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// helpToolStripMenuItem_DropDownClosed()
+        /// =========================================
+        private void helpToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        {
+            helpToolStripMenuItem.ForeColor = Color.White;
+        }
+
+        /// =========================================
+        /// aboutToolStripMenuItem_MouseEnter()
+        /// =========================================
+        private void aboutToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            aboutToolStripMenuItem.ForeColor = Color.Black;
+            aboutToolStripMenuItem.Image = Properties.Resources.about_selected_128;
+        }
+
+        /// =========================================
+        /// aboutToolStripMenuItem_MouseLeave()
+        /// =========================================
+        private void aboutToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            aboutToolStripMenuItem.ForeColor = Color.White;
+            aboutToolStripMenuItem.Image = Properties.Resources.about_128;
+        }
 
         /// =========================================
         /// newToolStripMenuItem_Click()
