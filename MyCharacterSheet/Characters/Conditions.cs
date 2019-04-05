@@ -219,6 +219,29 @@ namespace MyCharacterSheet.Characters
             return description;
         }
 
+        public Conditions Copy()
+        {
+            Conditions copy = new Conditions();
+
+            copy.Blinded = Blinded;
+            copy.Charmed = Charmed;
+            copy.Deafened = Deafened;
+            copy.Fatigued = Fatigued;
+            copy.Frightened = Frightened;
+            copy.Grappled = Grappled;
+            copy.Incapacitated = Incapacitated;
+            copy.Invisible = Invisible;
+            copy.Paralyzed = Paralyzed;
+            copy.Petrified = Petrified;
+            copy.Poisoned = Poisoned;
+            copy.Prone = Prone;
+            copy.Restrained = Restrained;
+            copy.Stunned = Stunned;
+            copy.Unconscious = Unconscious;
+
+            return copy;
+        }
+
         /// =========================================
         /// FormatMovement()
         /// =========================================

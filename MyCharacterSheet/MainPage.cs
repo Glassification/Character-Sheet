@@ -1,4 +1,6 @@
 ﻿using MyCharacterSheet.Lists;
+using MyCharacterSheet.SavingThrowsNamespace;
+using MyCharacterSheet.SkillsNamespace;
 using MyCharacterSheet.Utility;
 using System;
 using System.Collections.Generic;
@@ -850,11 +852,9 @@ namespace MyCharacterSheet
 
             switch (check)
             {
+                case Checks.Fail:
                 case Checks.Disadvantage:
                     color = Color.IndianRed;
-                    break;
-                case Checks.Fail:
-                    color = Color.Transparent;
                     break;
                 case Checks.Normal:
                 default:
@@ -863,6 +863,47 @@ namespace MyCharacterSheet
             }
 
             return color;
+        }
+
+        /// =========================================
+        /// GetSavingThrowCheckStatus()
+        /// =========================================
+        private string GetSavingThrowCheckStatus(SavingThrows savingThrow)
+        {
+            string status = "";
+
+            switch (savingThrow.Checks)
+            {
+                case Checks.Fail:
+                    status = "Fail (" + savingThrow.Bonus + ")";
+                    break;
+                case Checks.Disadvantage:
+                case Checks.Normal:
+                default:
+                    status = savingThrow.Bonus + "";
+                    break;
+            }
+
+            return status;
+        }
+
+        private string GetSkillCheckStatus(SkillsNamespace.Skills skill)
+        {
+            string status = "";
+
+            switch (skill.Checks)
+            {
+                case Checks.Fail:
+                    status = "Fail (" + skill.Bonus + ")";
+                    break;
+                case Checks.Disadvantage:
+                case Checks.Normal:
+                default:
+                    status = skill.Bonus + "";
+                    break;
+            }
+
+            return status;
         }
 
         #endregion
@@ -1001,12 +1042,12 @@ namespace MyCharacterSheet
                 oWisBonus.Text = Constants.Bonus(Program.Character.Wisdom) + "";
                 oChaBonus.Text = Constants.Bonus(Program.Character.Charisma) + "";
 
-                oStrSavingThrow.Text = Program.Character.oSavingThrows[0].Bonus + "";
-                oDexSavingThrow.Text = Program.Character.oSavingThrows[1].Bonus + "";
-                oConSavingThrow.Text = Program.Character.oSavingThrows[2].Bonus + "";
-                oIntSavingThrow.Text = Program.Character.oSavingThrows[3].Bonus + "";
-                oWisSavingThrow.Text = Program.Character.oSavingThrows[4].Bonus + "";
-                oChaSavingThrow.Text = Program.Character.oSavingThrows[5].Bonus + "";
+                oStrSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[0]);
+                oDexSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[1]);
+                oConSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[2]);
+                oIntSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[3]);
+                oWisSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[4]);
+                oChaSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[5]);
 
                 oStrSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[0].Checks);
                 oDexSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[1].Checks);
@@ -1022,24 +1063,24 @@ namespace MyCharacterSheet
                 chkWisdomP.Checked = Program.Character.oSavingThrows[4].Proficiency;
                 chkCharismaP.Checked = Program.Character.oSavingThrows[5].Proficiency;
 
-                oAthleticsSkill.Text = Program.Character.oSkills[0].Bonus + "";
-                oAcrobaticsSkill.Text = Program.Character.oSkills[1].Bonus + "";
-                oSleightSkill.Text = Program.Character.oSkills[2].Bonus + "";
-                oStealthSkill.Text = Program.Character.oSkills[3].Bonus + "";
-                oArcanaSkill.Text = Program.Character.oSkills[4].Bonus + "";
-                oHistorySkill.Text = Program.Character.oSkills[5].Bonus + "";
-                oInvestigationSkill.Text = Program.Character.oSkills[6].Bonus + "";
-                oNatureSkill.Text = Program.Character.oSkills[7].Bonus + "";
-                oReligionSkill.Text = Program.Character.oSkills[8].Bonus + "";
-                oAnimalSkill.Text = Program.Character.oSkills[9].Bonus + "";
-                oInsightSkill.Text = Program.Character.oSkills[10].Bonus + "";
-                oMedicineSkill.Text = Program.Character.oSkills[11].Bonus + "";
-                oPerceptionSkill.Text = Program.Character.oSkills[12].Bonus + "";
-                oSurvivalSkill.Text = Program.Character.oSkills[13].Bonus + "";
-                oDeceptionSkill.Text = Program.Character.oSkills[14].Bonus + "";
-                oIntimidationSkill.Text = Program.Character.oSkills[15].Bonus + "";
-                oPerformanceSkill.Text = Program.Character.oSkills[16].Bonus + "";
-                oPersuasionSkill.Text = Program.Character.oSkills[17].Bonus + "";
+                oAthleticsSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[0]);
+                oAcrobaticsSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[1]);
+                oSleightSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[2]);
+                oStealthSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[3]);
+                oArcanaSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[4]);
+                oHistorySkill.Text = GetSkillCheckStatus(Program.Character.oSkills[5]);
+                oInvestigationSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[6]);
+                oNatureSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[7]);
+                oReligionSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[8]);
+                oAnimalSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[9]);
+                oInsightSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[10]);
+                oMedicineSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[11]);
+                oPerceptionSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[12]);
+                oSurvivalSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[13]);
+                oDeceptionSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[14]);
+                oIntimidationSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[15]);
+                oPerformanceSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[16]);
+                oPersuasionSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[17]);
 
                 oAthleticsSkill.ForeColor = GetCheckColor(Program.Character.oSkills[0].Checks);
                 oAcrobaticsSkill.ForeColor = GetCheckColor(Program.Character.oSkills[1].Checks);

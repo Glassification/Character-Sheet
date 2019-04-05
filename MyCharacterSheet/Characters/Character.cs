@@ -95,7 +95,7 @@ namespace MyCharacterSheet.Characters
         public string GetDC(string ability)
         {
             string dc;
-
+            
             switch (ability)
             {
                 case "STR":
@@ -407,7 +407,7 @@ namespace MyCharacterSheet.Characters
             copy.ArmorClass = new ArmorClass(ArmorClass.ArmorWorn, ArmorClass.ArmorType, ArmorClass.ArmorAC, ArmorClass.ArmorStealth, ArmorClass.ArmorWeight, ArmorClass.ShieldType, 
                                              ArmorClass.ShieldAC, ArmorClass.ShieldWeight, ArmorClass.MiscAC, ArmorClass.MagicAC, ArmorClass.ArmorStrength);
 
-            copy.HitPoints = new HitPoints(HitPoints.HP, HitPoints.MaxHP, HitPoints.TempHP, HitPoints.Conditions, HitPoints.D6, HitPoints.D8, HitPoints.D10, 
+            copy.HitPoints = new HitPoints(HitPoints.HP, HitPoints.MaxHP, HitPoints.TempHP, HitPoints.Conditions.Copy(), HitPoints.D6, HitPoints.D8, HitPoints.D10, 
                                            HitPoints.D12, HitPoints.SpentD6, HitPoints.SpentD8, HitPoints.SpentD10, HitPoints.SpentD12);
 
             copy.Spellcasting = new Spellcasting(Spellcasting.Level, Spellcasting.PactTotal, Spellcasting.OneTotal, Spellcasting.TwoTotal, Spellcasting.ThreeTotal, 
