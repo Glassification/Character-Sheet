@@ -243,6 +243,8 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="dndnextlogo.ico" />
+    <Content Include="Resources\about_128.png" />
+    <Content Include="Resources\about_selected_128.png" />
     <Content Include="Resources\AmmoList.xml" />
     <Content Include="Resources\divide_loot_128.png" />
     <Content Include="Resources\divide_loot_selected_128.png" />

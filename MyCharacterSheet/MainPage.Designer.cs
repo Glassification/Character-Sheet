@@ -200,6 +200,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -210,8 +212,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainPage));
             this.oPrimaryTable = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -403,6 +403,8 @@
             this.label58 = new System.Windows.Forms.Label();
             this.oPanelHP = new System.Windows.Forms.Panel();
             this.oInputHP = new System.Windows.Forms.TextBox();
+            this.oConditionsDataGrid = new System.Windows.Forms.DataGridView();
+            this.oCondition = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel57 = new System.Windows.Forms.TableLayoutPanel();
             this.label97 = new System.Windows.Forms.Label();
             this.label98 = new System.Windows.Forms.Label();
@@ -546,6 +548,8 @@
             this.divideLootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.longRestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.diceRollerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuPanel = new System.Windows.Forms.Panel();
             this.oMenuTimer = new System.Windows.Forms.Timer(this.components);
             this.oSaveTimer = new System.Windows.Forms.Timer(this.components);
@@ -571,8 +575,6 @@
             this.addWeaponToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oAddAmmoContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addAmmoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oConditionsDataGrid = new System.Windows.Forms.DataGridView();
-            this.oCondition = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.oPrimaryTable.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -612,6 +614,7 @@
             this.tableLayoutPanel32.SuspendLayout();
             this.tableLayoutPanel36.SuspendLayout();
             this.oPanelHP.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.oConditionsDataGrid)).BeginInit();
             this.tableLayoutPanel57.SuspendLayout();
             this.tableLayoutPanel62.SuspendLayout();
             this.tableLayoutPanel63.SuspendLayout();
@@ -652,7 +655,6 @@
             this.oTabPanel.SuspendLayout();
             this.oAddWeaponContextMenu.SuspendLayout();
             this.oAddAmmoContextMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.oConditionsDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // oPrimaryTable
@@ -3542,6 +3544,50 @@
             this.oInputHP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.oInputHP_KeyDown);
             this.oInputHP.Leave += new System.EventHandler(this.oInputHP_Leave);
             // 
+            // oConditionsDataGrid
+            // 
+            this.oConditionsDataGrid.AllowUserToAddRows = false;
+            this.oConditionsDataGrid.AllowUserToDeleteRows = false;
+            this.oConditionsDataGrid.AllowUserToResizeColumns = false;
+            this.oConditionsDataGrid.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.oConditionsDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.oConditionsDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(54)))), ((int)(((byte)(92)))));
+            this.oConditionsDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.oConditionsDataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.oConditionsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.oConditionsDataGrid.ColumnHeadersVisible = false;
+            this.oConditionsDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.oCondition});
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(246)))), ((int)(((byte)(249)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(246)))), ((int)(((byte)(249)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.oConditionsDataGrid.DefaultCellStyle = dataGridViewCellStyle2;
+            this.oConditionsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.oConditionsDataGrid.Location = new System.Drawing.Point(0, 105);
+            this.oConditionsDataGrid.Margin = new System.Windows.Forms.Padding(0);
+            this.oConditionsDataGrid.Name = "oConditionsDataGrid";
+            this.oConditionsDataGrid.ReadOnly = true;
+            this.oConditionsDataGrid.RowHeadersVisible = false;
+            this.oConditionsDataGrid.RowTemplate.Height = 24;
+            this.oConditionsDataGrid.Size = new System.Drawing.Size(158, 37);
+            this.oConditionsDataGrid.TabIndex = 5;
+            // 
+            // oCondition
+            // 
+            this.oCondition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.oCondition.HeaderText = "Column1";
+            this.oCondition.Name = "oCondition";
+            this.oCondition.ReadOnly = true;
+            // 
             // tableLayoutPanel57
             // 
             this.tableLayoutPanel57.ColumnCount = 1;
@@ -5447,7 +5493,8 @@
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
             this.viewToolStripMenuItem,
-            this.toolsToolStripMenuItem});
+            this.toolsToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.oMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.oMenuStrip.Name = "oMenuStrip";
             this.oMenuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -5653,6 +5700,26 @@
             this.diceRollerToolStripMenuItem.Click += new System.EventHandler(this.diceRollerToolStripMenuItem_Click);
             this.diceRollerToolStripMenuItem.MouseEnter += new System.EventHandler(this.diceRollerToolStripMenuItem_MouseEnter);
             this.diceRollerToolStripMenuItem.MouseLeave += new System.EventHandler(this.diceRollerToolStripMenuItem_MouseLeave);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
+            this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.DropDownClosed += new System.EventHandler(this.helpToolStripMenuItem_DropDownClosed);
+            this.helpToolStripMenuItem.DropDownOpened += new System.EventHandler(this.helpToolStripMenuItem_DropDownOpened);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Image = global::MyCharacterSheet.Properties.Resources.about_128;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.MouseEnter += new System.EventHandler(this.aboutToolStripMenuItem_MouseEnter);
+            this.aboutToolStripMenuItem.MouseLeave += new System.EventHandler(this.aboutToolStripMenuItem_MouseLeave);
             // 
             // MenuPanel
             // 
@@ -5899,50 +5966,6 @@
             this.addAmmoToolStripMenuItem.MouseEnter += new System.EventHandler(this.addAmmoToolStripMenuItem_MouseEnter_1);
             this.addAmmoToolStripMenuItem.MouseLeave += new System.EventHandler(this.addAmmoToolStripMenuItem_MouseLeave_1);
             // 
-            // oConditionsDataGrid
-            // 
-            this.oConditionsDataGrid.AllowUserToAddRows = false;
-            this.oConditionsDataGrid.AllowUserToDeleteRows = false;
-            this.oConditionsDataGrid.AllowUserToResizeColumns = false;
-            this.oConditionsDataGrid.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.oConditionsDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.oConditionsDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(54)))), ((int)(((byte)(92)))));
-            this.oConditionsDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.oConditionsDataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.oConditionsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.oConditionsDataGrid.ColumnHeadersVisible = false;
-            this.oConditionsDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.oCondition});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(246)))), ((int)(((byte)(249)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(246)))), ((int)(((byte)(249)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.oConditionsDataGrid.DefaultCellStyle = dataGridViewCellStyle2;
-            this.oConditionsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.oConditionsDataGrid.Location = new System.Drawing.Point(0, 105);
-            this.oConditionsDataGrid.Margin = new System.Windows.Forms.Padding(0);
-            this.oConditionsDataGrid.Name = "oConditionsDataGrid";
-            this.oConditionsDataGrid.ReadOnly = true;
-            this.oConditionsDataGrid.RowHeadersVisible = false;
-            this.oConditionsDataGrid.RowTemplate.Height = 24;
-            this.oConditionsDataGrid.Size = new System.Drawing.Size(158, 37);
-            this.oConditionsDataGrid.TabIndex = 5;
-            // 
-            // oCondition
-            // 
-            this.oCondition.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.oCondition.HeaderText = "Column1";
-            this.oCondition.Name = "oCondition";
-            this.oCondition.ReadOnly = true;
-            // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -6027,6 +6050,7 @@
             this.tableLayoutPanel36.PerformLayout();
             this.oPanelHP.ResumeLayout(false);
             this.oPanelHP.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.oConditionsDataGrid)).EndInit();
             this.tableLayoutPanel57.ResumeLayout(false);
             this.tableLayoutPanel57.PerformLayout();
             this.tableLayoutPanel62.ResumeLayout(false);
@@ -6089,7 +6113,6 @@
             this.oTabPanel.ResumeLayout(false);
             this.oAddWeaponContextMenu.ResumeLayout(false);
             this.oAddAmmoContextMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.oConditionsDataGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -6456,6 +6479,8 @@
         private System.Windows.Forms.Label oHitPoints;
         private System.Windows.Forms.DataGridView oConditionsDataGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn oCondition;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 

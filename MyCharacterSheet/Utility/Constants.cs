@@ -64,6 +64,7 @@ namespace MyCharacterSheet.Utility
 
         //Enumerations
         public enum Tables { Abilities, Ammunition, Inventory, Magics, Spells, Weapons };
+        public enum Checks { Normal, Disadvantage, Fail };
 
         #endregion
 

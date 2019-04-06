@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyCharacterSheet.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,12 @@ namespace MyCharacterSheet.SkillsNamespace
         }
 
         public bool Expertise
+        {
+            get;
+            set;
+        }
+
+        public Constants.Checks Checks
         {
             get;
             set;

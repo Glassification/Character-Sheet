@@ -40,6 +40,9 @@ namespace MyCharacterSheet
         /// =========================================
         public void ShowPane()
         {
+            if (oHistoryGridView.Rows.Count > 0)
+                oHistoryGridView.FirstDisplayedScrollingRowIndex = 0;
+
             Show();
         }
 
@@ -102,6 +105,8 @@ namespace MyCharacterSheet
             row.Cells[oRoll.Index].Value = "(" + number + "d" + die + ")" + sign + modifier;
             row.Cells[oDice.Index].Value = ListToString() + sign + modifier;
             row.Cells[oTotal.Index].Value = total.ToString();
+
+            oHistoryGridView.FirstDisplayedScrollingRowIndex = oHistoryGridView.Rows.Count - 1;
         }
 
         /// =========================================

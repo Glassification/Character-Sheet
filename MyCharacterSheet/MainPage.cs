@@ -1,9 +1,11 @@
 ﻿using MyCharacterSheet.Lists;
+using MyCharacterSheet.SavingThrowsNamespace;
 using MyCharacterSheet.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using static MyCharacterSheet.Utility.Constants;
 
@@ -840,6 +842,72 @@ namespace MyCharacterSheet
             }
         }
 
+        /// =========================================
+        /// GetCheckColor()
+        /// =========================================
+        private Color GetCheckColor(Checks check)
+        {
+            Color color;
+
+            switch (check)
+            {
+                case Checks.Fail:
+                case Checks.Disadvantage:
+                    color = Color.IndianRed;
+                    break;
+                case Checks.Normal:
+                default:
+                    color = Color.Black;
+                    break;
+            }
+
+            return color;
+        }
+
+        /// =========================================
+        /// GetSavingThrowCheckStatus()
+        /// =========================================
+        private string GetSavingThrowCheckStatus(SavingThrows savingThrow)
+        {
+            string status = "";
+
+            switch (savingThrow.Checks)
+            {
+                case Checks.Fail:
+                    status = "Fail (" + savingThrow.Bonus + ")";
+                    break;
+                case Checks.Disadvantage:
+                case Checks.Normal:
+                default:
+                    status = savingThrow.Bonus + "";
+                    break;
+            }
+
+            return status;
+        }
+
+        /// =========================================
+        /// GetSkillCheckStatus()
+        /// =========================================
+        private string GetSkillCheckStatus(SkillsNamespace.Skills skill)
+        {
+            string status = "";
+
+            switch (skill.Checks)
+            {
+                case Checks.Fail:
+                    status = "Fail (" + skill.Bonus + ")";
+                    break;
+                case Checks.Disadvantage:
+                case Checks.Normal:
+                default:
+                    status = skill.Bonus + "";
+                    break;
+            }
+
+            return status;
+        }
+
         #endregion
 
         #region Accessors
@@ -949,6 +1017,8 @@ namespace MyCharacterSheet
             {
                 Drawing = true;
 
+                Program.Character.ResetChecks();
+
                 oCharName.Text = Program.Character.Name;
                 oRace.Text = Program.Character.Race;
                 oBackground.Text = Program.Character.Background;
@@ -974,12 +1044,19 @@ namespace MyCharacterSheet
                 oWisBonus.Text = Constants.Bonus(Program.Character.Wisdom) + "";
                 oChaBonus.Text = Constants.Bonus(Program.Character.Charisma) + "";
 
-                oStrSavingThrow.Text = Program.Character.oSavingThrows[0].Bonus + "";
-                oDexSavingThrow.Text = Program.Character.oSavingThrows[1].Bonus + "";
-                oConSavingThrow.Text = Program.Character.oSavingThrows[2].Bonus + "";
-                oIntSavingThrow.Text = Program.Character.oSavingThrows[3].Bonus + "";
-                oWisSavingThrow.Text = Program.Character.oSavingThrows[4].Bonus + "";
-                oChaSavingThrow.Text = Program.Character.oSavingThrows[5].Bonus + "";
+                oStrSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[0]);
+                oDexSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[1]);
+                oConSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[2]);
+                oIntSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[3]);
+                oWisSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[4]);
+                oChaSavingThrow.Text = GetSavingThrowCheckStatus(Program.Character.oSavingThrows[5]);
+
+                oStrSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[0].Checks);
+                oDexSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[1].Checks);
+                oConSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[2].Checks);
+                oIntSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[3].Checks);
+                oWisSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[4].Checks);
+                oChaSavingThrow.ForeColor = GetCheckColor(Program.Character.oSavingThrows[5].Checks);
 
                 chkStrengthP.Checked = Program.Character.oSavingThrows[0].Proficiency;
                 chkDexterityP.Checked = Program.Character.oSavingThrows[1].Proficiency;
@@ -988,24 +1065,43 @@ namespace MyCharacterSheet
                 chkWisdomP.Checked = Program.Character.oSavingThrows[4].Proficiency;
                 chkCharismaP.Checked = Program.Character.oSavingThrows[5].Proficiency;
 
-                oAthleticsSkill.Text = Program.Character.oSkills[0].Bonus + "";
-                oAcrobaticsSkill.Text = Program.Character.oSkills[1].Bonus + "";
-                oSleightSkill.Text = Program.Character.oSkills[2].Bonus + "";
-                oStealthSkill.Text = Program.Character.oSkills[3].Bonus + "";
-                oArcanaSkill.Text = Program.Character.oSkills[4].Bonus + "";
-                oHistorySkill.Text = Program.Character.oSkills[5].Bonus + "";
-                oInvestigationSkill.Text = Program.Character.oSkills[6].Bonus + "";
-                oNatureSkill.Text = Program.Character.oSkills[7].Bonus + "";
-                oReligionSkill.Text = Program.Character.oSkills[8].Bonus + "";
-                oAnimalSkill.Text = Program.Character.oSkills[9].Bonus + "";
-                oInsightSkill.Text = Program.Character.oSkills[10].Bonus + "";
-                oMedicineSkill.Text = Program.Character.oSkills[11].Bonus + "";
-                oPerceptionSkill.Text = Program.Character.oSkills[12].Bonus + "";
-                oSurvivalSkill.Text = Program.Character.oSkills[13].Bonus + "";
-                oDeceptionSkill.Text = Program.Character.oSkills[14].Bonus + "";
-                oIntimidationSkill.Text = Program.Character.oSkills[15].Bonus + "";
-                oPerformanceSkill.Text = Program.Character.oSkills[16].Bonus + "";
-                oPersuasionSkill.Text = Program.Character.oSkills[17].Bonus + "";
+                oAthleticsSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[0]);
+                oAcrobaticsSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[1]);
+                oSleightSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[2]);
+                oStealthSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[3]);
+                oArcanaSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[4]);
+                oHistorySkill.Text = GetSkillCheckStatus(Program.Character.oSkills[5]);
+                oInvestigationSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[6]);
+                oNatureSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[7]);
+                oReligionSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[8]);
+                oAnimalSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[9]);
+                oInsightSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[10]);
+                oMedicineSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[11]);
+                oPerceptionSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[12]);
+                oSurvivalSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[13]);
+                oDeceptionSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[14]);
+                oIntimidationSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[15]);
+                oPerformanceSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[16]);
+                oPersuasionSkill.Text = GetSkillCheckStatus(Program.Character.oSkills[17]);
+
+                oAthleticsSkill.ForeColor = GetCheckColor(Program.Character.oSkills[0].Checks);
+                oAcrobaticsSkill.ForeColor = GetCheckColor(Program.Character.oSkills[1].Checks);
+                oSleightSkill.ForeColor = GetCheckColor(Program.Character.oSkills[2].Checks);
+                oStealthSkill.ForeColor = GetCheckColor(Program.Character.oSkills[3].Checks);
+                oArcanaSkill.ForeColor = GetCheckColor(Program.Character.oSkills[4].Checks);
+                oHistorySkill.ForeColor = GetCheckColor(Program.Character.oSkills[5].Checks);
+                oInvestigationSkill.ForeColor = GetCheckColor(Program.Character.oSkills[6].Checks);
+                oNatureSkill.ForeColor = GetCheckColor(Program.Character.oSkills[7].Checks);
+                oReligionSkill.ForeColor = GetCheckColor(Program.Character.oSkills[8].Checks);
+                oAnimalSkill.ForeColor = GetCheckColor(Program.Character.oSkills[9].Checks);
+                oInsightSkill.ForeColor = GetCheckColor(Program.Character.oSkills[10].Checks);
+                oMedicineSkill.ForeColor = GetCheckColor(Program.Character.oSkills[11].Checks);
+                oPerceptionSkill.ForeColor = GetCheckColor(Program.Character.oSkills[12].Checks);
+                oSurvivalSkill.ForeColor = GetCheckColor(Program.Character.oSkills[13].Checks);
+                oDeceptionSkill.ForeColor = GetCheckColor(Program.Character.oSkills[14].Checks);
+                oIntimidationSkill.ForeColor = GetCheckColor(Program.Character.oSkills[15].Checks);
+                oPerformanceSkill.ForeColor = GetCheckColor(Program.Character.oSkills[16].Checks);
+                oPersuasionSkill.ForeColor = GetCheckColor(Program.Character.oSkills[17].Checks);
 
                 chkAthleticsP.Checked = Program.Character.oSkills[0].Proficiency;
                 chkAthleticsE.Checked = Program.Character.oSkills[0].Expertise;
@@ -2834,6 +2930,57 @@ namespace MyCharacterSheet
         #endregion
 
         #region Tool Strip Events
+
+        /// =========================================
+        /// aboutToolStripMenuItem_Click()
+        /// =========================================
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Sounds.ButtonClick();
+
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            MessageBox.Show("Character Sheet Current Version: " + version.Major + "." + version.Minor + "." + version.Build, 
+                            "About Character Sheet", 
+                            MessageBoxButtons.OK, 
+                            MessageBoxIcon.Information);
+
+            Sounds.ButtonClick();
+        }
+
+        /// =========================================
+        /// helpToolStripMenuItem_DropDownOpened()
+        /// =========================================
+        private void helpToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            helpToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        /// =========================================
+        /// helpToolStripMenuItem_DropDownClosed()
+        /// =========================================
+        private void helpToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        {
+            helpToolStripMenuItem.ForeColor = Color.White;
+        }
+
+        /// =========================================
+        /// aboutToolStripMenuItem_MouseEnter()
+        /// =========================================
+        private void aboutToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            aboutToolStripMenuItem.ForeColor = Color.Black;
+            aboutToolStripMenuItem.Image = Properties.Resources.about_selected_128;
+        }
+
+        /// =========================================
+        /// aboutToolStripMenuItem_MouseLeave()
+        /// =========================================
+        private void aboutToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+            aboutToolStripMenuItem.ForeColor = Color.White;
+            aboutToolStripMenuItem.Image = Properties.Resources.about_128;
+        }
 
         /// =========================================
         /// newToolStripMenuItem_Click()

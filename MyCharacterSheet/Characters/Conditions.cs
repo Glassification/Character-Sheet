@@ -1,7 +1,10 @@
-﻿using MyCharacterSheet.TypeConverters;
+﻿using MyCharacterSheet.SavingThrowsNamespace;
+using MyCharacterSheet.SkillsNamespace;
+using MyCharacterSheet.TypeConverters;
 using MyCharacterSheet.Utility;
 using System;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace MyCharacterSheet.Characters
 {
@@ -60,6 +63,52 @@ namespace MyCharacterSheet.Characters
         #endregion
 
         #region Methods
+
+        private bool Afflicted(string condition)
+        {
+            return !condition.Equals("Cured");
+        }
+
+        /// =========================================
+        /// FormatChecks()
+        /// =========================================
+        public void FormatChecks()
+        {
+            if (Fatigued.Equals("Exhaustion 1") || Fatigued.Equals("Exhaustion 2") || Fatigued.Equals("Exhaustion 3") || Fatigued.Equals("Exhaustion 4") || Fatigued.Equals("Exhaustion 5") || Afflicted(Frightened) || Afflicted(Poisoned))
+            {
+                foreach (Skills skill in Program.Character.oSkills)
+                {
+                    skill.Checks = Constants.Checks.Disadvantage;
+                }
+            }
+
+            if (Afflicted(Blinded))
+            {
+                foreach (Skills skill in Program.Character.oSkills)
+                {
+                    skill.Checks = Constants.Checks.Fail;
+                }
+            }
+             
+            if (Fatigued.Equals("Exhaustion 3") || Fatigued.Equals("Exhaustion 4") || Fatigued.Equals("Exhaustion 5"))
+            {
+                foreach (SavingThrows saves in Program.Character.oSavingThrows)
+                {
+                    saves.Checks = Constants.Checks.Disadvantage;
+                }
+            }
+
+            if (Afflicted(Restrained))
+            {
+                Program.Character.oSavingThrows[(int)MainPage.Saves.Dexterity].Checks = Constants.Checks.Disadvantage;
+            }
+
+            if (Afflicted(Paralyzed) || Afflicted(Stunned))
+            {
+                Program.Character.oSavingThrows[(int)MainPage.Saves.Strength].Checks = Constants.Checks.Fail;
+                Program.Character.oSavingThrows[(int)MainPage.Saves.Dexterity].Checks = Constants.Checks.Fail;
+            }
+        }
 
         /// =========================================
         /// ToArray()
@@ -168,6 +217,29 @@ namespace MyCharacterSheet.Characters
             }
 
             return description;
+        }
+
+        public Conditions Copy()
+        {
+            Conditions copy = new Conditions();
+
+            copy.Blinded = Blinded;
+            copy.Charmed = Charmed;
+            copy.Deafened = Deafened;
+            copy.Fatigued = Fatigued;
+            copy.Frightened = Frightened;
+            copy.Grappled = Grappled;
+            copy.Incapacitated = Incapacitated;
+            copy.Invisible = Invisible;
+            copy.Paralyzed = Paralyzed;
+            copy.Petrified = Petrified;
+            copy.Poisoned = Poisoned;
+            copy.Prone = Prone;
+            copy.Restrained = Restrained;
+            copy.Stunned = Stunned;
+            copy.Unconscious = Unconscious;
+
+            return copy;
         }
 
         /// =========================================
@@ -284,6 +356,11 @@ namespace MyCharacterSheet.Characters
             {
                 string str = "Normal";
 
+                if (Program.Character.ArmorClass.ArmorStrength > Program.Character.Strength)
+                {
+                    str = "Encumbered";
+                }
+
                 if (Settings.UseEncumbrance)
                 {
                     if (Program.Character.CarryWeight > Program.Character.Light && Program.Character.CarryWeight <= Program.Character.Medium)
@@ -295,10 +372,6 @@ namespace MyCharacterSheet.Characters
                         str = "Heavily Encumbered";
                     }
 
-                }
-                else if (Program.Character.ArmorClass.ArmorStrength > Program.Character.Strength)
-                {
-                    str = "Encumbered";
                 }
 
                 return str;

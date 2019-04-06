@@ -61,6 +61,26 @@ namespace MyCharacterSheet.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap about_128 {
+            get {
+                object obj = ResourceManager.GetObject("about_128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap about_selected_128 {
+            get {
+                object obj = ResourceManager.GetObject("about_selected_128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
         ///&lt;Ammunitions&gt;
         ///  &lt;Ammunition name=&quot;Arrows&quot; qty=&quot;20&quot; /&gt;
@@ -450,12 +470,11 @@ namespace MyCharacterSheet.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
         ///&lt;Weapons&gt;
-        ///  &lt;SimpleMelee&gt;
-        ///    &lt;Weapon name=&quot;Club&quot; damage=&quot;1d4&quot; type=&quot;Bludgeoning&quot; weight=&quot;2&quot; range=&quot;5 / 5&quot; notes=&quot;Light&quot;/&gt;
-        ///    &lt;Weapon name=&quot;Dagger&quot; damage=&quot;1d4&quot; type=&quot;Piercing&quot; weight=&quot;1&quot; range=&quot;20 / 60&quot; notes=&quot;Finesse, light, thrown&quot;/&gt;
-        ///    &lt;Weapon name=&quot;Greatclub&quot; damage=&quot;1d8&quot; type=&quot;Bludgeoning&quot; weight=&quot;10&quot; range=&quot;5 / 5&quot; notes=&quot;Two-handed&quot;/&gt;
-        ///    &lt;Weapon name=&quot;Handaxe&quot; damage=&quot;1d6&quot; type=&quot;Slashing&quot; weight=&quot;2&quot; range=&quot;20 / 60&quot; notes=&quot;Light, thrown&quot;/&gt;
-        ///    &lt;Weapon  [rest of string was truncated]&quot;;.
+        ///  &lt;Weapon name=&quot;Club&quot; damage=&quot;1d4&quot; type=&quot;Bludgeoning&quot; weight=&quot;2&quot; range=&quot;5 / 5&quot; notes=&quot;Light&quot;/&gt;
+        ///  &lt;Weapon name=&quot;Dagger&quot; damage=&quot;1d4&quot; type=&quot;Piercing&quot; weight=&quot;1&quot; range=&quot;20 / 60&quot; notes=&quot;Finesse, light, thrown&quot;/&gt;
+        ///  &lt;Weapon name=&quot;Greatclub&quot; damage=&quot;1d8&quot; type=&quot;Bludgeoning&quot; weight=&quot;10&quot; range=&quot;5 / 5&quot; notes=&quot;Two-handed&quot;/&gt;
+        ///  &lt;Weapon name=&quot;Handaxe&quot; damage=&quot;1d6&quot; type=&quot;Slashing&quot; weight=&quot;2&quot; range=&quot;20 / 60&quot; notes=&quot;Light, thrown&quot;/&gt;
+        ///  &lt;Weapon name=&quot;Javelin&quot; damage=&quot;1d6&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string WeaponList {
             get {
