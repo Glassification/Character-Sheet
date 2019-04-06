@@ -1,6 +1,5 @@
 ﻿using MyCharacterSheet.Lists;
 using MyCharacterSheet.SavingThrowsNamespace;
-using MyCharacterSheet.SkillsNamespace;
 using MyCharacterSheet.Utility;
 using System;
 using System.Collections.Generic;
@@ -887,6 +886,9 @@ namespace MyCharacterSheet
             return status;
         }
 
+        /// =========================================
+        /// GetSkillCheckStatus()
+        /// =========================================
         private string GetSkillCheckStatus(SkillsNamespace.Skills skill)
         {
             string status = "";
@@ -2938,7 +2940,12 @@ namespace MyCharacterSheet
 
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
-            MessageBox.Show("Current Version: " + +version.Major + "." + version.Minor + "." + version.Build, "About My Character Sheet", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Character Sheet Current Version: " + version.Major + "." + version.Minor + "." + version.Build, 
+                            "About Character Sheet", 
+                            MessageBoxButtons.OK, 
+                            MessageBoxIcon.Information);
+
+            Sounds.ButtonClick();
         }
 
         /// =========================================
