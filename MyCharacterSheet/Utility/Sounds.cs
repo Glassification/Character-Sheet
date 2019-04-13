@@ -15,8 +15,6 @@ namespace MyCharacterSheet.Utility
         private static SoundPlayer oEasterEggSound;
         private static SoundPlayer oHeMan;
 
-        private static SpeechSynthesizer synth = new SpeechSynthesizer();
-
         #endregion
 
         #region Constructor
@@ -43,41 +41,6 @@ namespace MyCharacterSheet.Utility
         #endregion
 
         #region Methods
-
-        /// =========================================
-        /// TalkAsync()
-        /// =========================================
-        public static void TalkAsync(string text)
-        {
-            StopAsync();
-            synth.SpeakAsync(text);
-        }
-
-        /// =========================================
-        /// StopAsync()
-        /// =========================================
-        public static void StopAsync()
-        {
-            if (synth.State == SynthesizerState.Speaking || synth.State == SynthesizerState.Paused)
-            {
-                synth.SpeakAsyncCancelAll();
-            }
-        }
-
-        /// =========================================
-        /// PauseAsync()
-        /// =========================================
-        public static void PauseAsync()
-        {
-            if (synth.State == SynthesizerState.Paused)
-            {
-                synth.Resume();
-            }
-            else if (synth.State == SynthesizerState.Speaking)
-            {
-                synth.Pause();
-            }
-        }
 
         /// =========================================
         /// ButtonClick()

@@ -60,10 +60,6 @@
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oDeleteContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnPlay = new System.Windows.Forms.Button();
-            this.btnPause = new System.Windows.Forms.Button();
-            this.btnStop = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -71,7 +67,6 @@
             this.oTextBoxContextMenu.SuspendLayout();
             this.oEditDocumentContextMenu.SuspendLayout();
             this.oDeleteContextMenu.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // oCampainTextBox
@@ -149,7 +144,6 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 95F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 2.5F));
             this.tableLayoutPanel2.Controls.Add(this.oCampainTextBox, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel5, 2, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(194, 50);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
@@ -425,62 +419,6 @@
             this.deleteToolStripMenuItem1.MouseEnter += new System.EventHandler(this.deleteToolStripMenuItem1_MouseEnter);
             this.deleteToolStripMenuItem1.MouseLeave += new System.EventHandler(this.deleteToolStripMenuItem1_MouseLeave);
             // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 1;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.btnPlay, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.btnPause, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.btnStop, 0, 2);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(1074, 16);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 4;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 82F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(29, 636);
-            this.tableLayoutPanel5.TabIndex = 1;
-            // 
-            // btnPlay
-            // 
-            this.btnPlay.BackColor = System.Drawing.Color.Green;
-            this.btnPlay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnPlay.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnPlay.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnPlay.Location = new System.Drawing.Point(3, 3);
-            this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(23, 32);
-            this.btnPlay.TabIndex = 0;
-            this.btnPlay.UseVisualStyleBackColor = false;
-            this.btnPlay.Click += new System.EventHandler(this.BtnPlay_Click);
-            // 
-            // btnPause
-            // 
-            this.btnPause.BackColor = System.Drawing.Color.Yellow;
-            this.btnPause.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnPause.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnPause.Location = new System.Drawing.Point(3, 41);
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(23, 32);
-            this.btnPause.TabIndex = 1;
-            this.btnPause.UseVisualStyleBackColor = false;
-            this.btnPause.Click += new System.EventHandler(this.BtnPause_Click);
-            // 
-            // btnStop
-            // 
-            this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.btnStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnStop.Location = new System.Drawing.Point(3, 79);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(23, 32);
-            this.btnStop.TabIndex = 2;
-            this.btnStop.UseVisualStyleBackColor = false;
-            this.btnStop.Click += new System.EventHandler(this.BtnStop_Click);
-            // 
             // CampainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -496,7 +434,6 @@
             this.oTextBoxContextMenu.ResumeLayout(false);
             this.oEditDocumentContextMenu.ResumeLayout(false);
             this.oDeleteContextMenu.ResumeLayout(false);
-            this.tableLayoutPanel5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -534,9 +471,5 @@
         private System.Windows.Forms.Button btnAddSeparator;
         private System.Windows.Forms.ContextMenuStrip oDeleteContextMenu;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.Button btnPlay;
-        private System.Windows.Forms.Button btnPause;
-        private System.Windows.Forms.Button btnStop;
     }
 }

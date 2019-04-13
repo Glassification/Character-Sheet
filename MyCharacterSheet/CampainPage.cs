@@ -856,36 +856,5 @@ namespace MyCharacterSheet
 
         #endregion
 
-        #region Speech Events
-
-        /// =========================================
-        /// BtnPlay_Click()
-        /// =========================================
-        private void BtnPlay_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(oCampainTextBox.Text))
-            {
-                Sounds.TalkAsync(oCampainTextBox.Text);
-            }
-        }
-
-        /// =========================================
-        /// BtnPause_Click()
-        /// =========================================
-        private void BtnPause_Click(object sender, EventArgs e)
-        {
-            Sounds.PauseAsync();
-        }
-
-        /// =========================================
-        /// BtnStop_Click()
-        /// =========================================
-        private void BtnStop_Click(object sender, EventArgs e)
-        {
-            Sounds.StopAsync();
-        }
-
-        #endregion
-
     }
 }
