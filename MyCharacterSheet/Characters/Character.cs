@@ -44,7 +44,58 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         public Character()
         {
-            Spellcasting = new Spellcasting(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            Age = "";
+            Alignment = "";
+            Armor = "";
+            Background = "";
+            Bond = "";
+            Charisma = 1;
+            ClassResource = "None";
+            Constitution = 1;
+            CP = 0;
+            Dexterity = 1;
+            EP = 0;
+            EXP = 0;
+            EyeColour = "";
+            Flaw = "";
+            Gender = "";
+            GP = 0;
+            HairColour = "";
+            Height = "";
+            Ideal = "";
+            InitiativeBonus = 0;
+            Intelligence = 1;
+            Language = "";
+            Marks = "";
+            Movement = "";
+            Name = "";
+            PassivePerceptionBonus = 0;
+            PersonalityBackground = "";
+            PersonalityNotes = "";
+            Pool = 0;
+            PP = 0;
+            Race = "";
+            Shields = "";
+            SkinColour = "";
+            SP = 0;
+            Spent = 0;
+            Strength = 1;
+            Tools = "";
+            Trait1 = "";
+            Trait2 = "";
+            Vision = "";
+            Weapons = "";
+            Weight = "";
+            Wisdom = 1;
+
+            PlayerClass1 = new PlayerClass(0);
+            PlayerClass2 = new PlayerClass(1);
+            PlayerClass3 = new PlayerClass(2);
+
+            Spellcasting = new Spellcasting();
+            ArmorClass = new ArmorClass();
+            Companion = new Companion();
+            HitPoints = new HitPoints();
         }
 
         #endregion

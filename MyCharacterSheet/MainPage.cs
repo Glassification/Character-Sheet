@@ -11,6 +11,7 @@ using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
+#nullable enable
     public partial class MainPage : Form
     {
 
@@ -39,9 +40,9 @@ namespace MyCharacterSheet
         private List<float> oLabelSizes = new List<float>();
         private List<float> oButtonSizes = new List<float>();
 
-        private SecondaryPage oSecondaryPage = null;
-        private TertiaryPage oTertiaryPage = null;
-        private CampainPage oCampainPage = null;
+        private SecondaryPage oSecondaryPage = new SecondaryPage();
+        private TertiaryPage oTertiaryPage = new TertiaryPage();
+        private CampainPage oCampainPage = new CampainPage();
 
         private VerticalButton btnPrimary = new VerticalButton();
         private VerticalButton btnSecondary = new VerticalButton();
@@ -91,19 +92,16 @@ namespace MyCharacterSheet
             Program.Character.CreateCharacterSheet();
 
             //Load secondary page
-            oSecondaryPage = new SecondaryPage();
             Controls.Add(oSecondaryPage);
             oSecondaryPage.Visible = false;
             oSecondaryPage.Dock = DockStyle.Fill;
 
             //Load tertiary page
-            oTertiaryPage = new TertiaryPage();
             Controls.Add(oTertiaryPage);
             oTertiaryPage.Visible = false;
             oTertiaryPage.Dock = DockStyle.Fill;
 
             //Load Campain Page
-            oCampainPage = new CampainPage();
             Controls.Add(oCampainPage);
             oCampainPage.Visible = false;
             oCampainPage.Dock = DockStyle.Fill;
@@ -135,9 +133,9 @@ namespace MyCharacterSheet
         /// ========================================= 
         protected virtual void NestedControl_Mousemove(object sender, MouseEventArgs e)
         {
-            Control current = sender as Control;
+            Control? current = sender as Control;
 
-            if (current.Parent != null && current.Parent != this)
+            if (current != null && current.Parent != null && current.Parent != this)
             {
                 MouseEventArgs newArgs = new MouseEventArgs
                 (
@@ -151,7 +149,7 @@ namespace MyCharacterSheet
             }
             else
             {
-                MainPage_MouseMove(current, e);
+                MainPage_MouseMove(current == null ? new object() : current, e);
             }
         }
 
@@ -372,16 +370,16 @@ namespace MyCharacterSheet
                 {
                     default:
                     case Pages.Primary:
-                        btnPrimaryPanel_Click(null, EventArgs.Empty);
+                        btnPrimaryPanel_Click(new object(), EventArgs.Empty);
                         break;
                     case Pages.Secondary:
-                        btnSecondaryPanel_Click(null, EventArgs.Empty);
+                        btnSecondaryPanel_Click(new object(), EventArgs.Empty);
                         break;
                     case Pages.Tertiary:
-                        btnTertiaryPanel_Click(null, EventArgs.Empty);
+                        btnTertiaryPanel_Click(new object(), EventArgs.Empty);
                         break;
                     case Pages.Campain:
-                        btnCampainPanel_Click(null, EventArgs.Empty);
+                        btnCampainPanel_Click(new object(), EventArgs.Empty);
                         break;
                 }
             }
@@ -608,7 +606,7 @@ namespace MyCharacterSheet
         {
             if (!control)
             {
-                longRestToolStripMenuItem_Click(null, EventArgs.Empty);
+                longRestToolStripMenuItem_Click(new object(), EventArgs.Empty);
             }
         }
 
@@ -1304,22 +1302,22 @@ namespace MyCharacterSheet
                     //Main Page
                     case Keys.D1:
                         if (!e.Control)
-                            btnPrimaryPanel_Click(null, EventArgs.Empty);
+                            btnPrimaryPanel_Click(new object(), EventArgs.Empty);
                         break;
                     //Secondary Page
                     case Keys.D2:
                         if (!e.Control)
-                            btnSecondaryPanel_Click(null, EventArgs.Empty);
+                            btnSecondaryPanel_Click(new object(), EventArgs.Empty);
                         break;
                     //Tertiary Page
                     case Keys.D3:
                         if (!e.Control)
-                            btnTertiaryPanel_Click(null, EventArgs.Empty);
+                            btnTertiaryPanel_Click(new object(), EventArgs.Empty);
                         break;
                     // Campain Page
                     case Keys.D4:
                         if (!e.Control)
-                            btnCampainPanel_Click(null, EventArgs.Empty);
+                            btnCampainPanel_Click(new object(), EventArgs.Empty);
                         break;
                 }
             }
@@ -2178,7 +2176,7 @@ namespace MyCharacterSheet
                 if (e.Effect == DragDropEffects.Move)
                 {
 
-                    DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
+                    DataGridViewRow? rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
                     if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oAmmoGridView.Rows.Count)
@@ -2264,7 +2262,7 @@ namespace MyCharacterSheet
                 if (e.Effect == DragDropEffects.Move)
                 {
 
-                    DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
+                    DataGridViewRow? rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
                     if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oWeaponDataGrid.Rows.Count)
@@ -2936,8 +2934,6 @@ namespace MyCharacterSheet
         /// =========================================
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Sounds.ButtonClick();
-
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
             MessageBox.Show("Character Sheet Current Version: " + version.Major + "." + version.Minor + "." + version.Build, 
