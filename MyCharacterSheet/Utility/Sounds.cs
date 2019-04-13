@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Media;
+using System.Speech.Synthesis;
 
 namespace MyCharacterSheet.Utility
 {
@@ -33,6 +34,8 @@ namespace MyCharacterSheet.Utility
 
             stream = Properties.Resources.I_Say_Hey;
             oHeMan = new SoundPlayer(stream);
+
+            stream.Close();
         }
 
         #endregion
