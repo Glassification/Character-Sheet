@@ -3,6 +3,7 @@ using System;
 
 namespace MyCharacterSheet.Lists
 {
+    #nullable enable
     /// <summary>
     /// Represents details about a spell the player can learn.
     /// </summary>
@@ -36,6 +37,21 @@ namespace MyCharacterSheet.Lists
 
         public Spell(bool unique)
         {
+            Name = "";
+            Level = "";
+            Page = "";
+            School = "";
+            Ritual = "";
+            Components = "";
+            Concentration = "";
+            Range = "";
+            Duration = "";
+            Area = "";
+            Save = "";
+            Damage = "";
+            Description = "";
+            Prepared = "";
+
             if (unique)
                 ID = Guid.NewGuid();
             else

@@ -5,6 +5,7 @@ using MyCharacterSheet.Utility;
 
 namespace MyCharacterSheet.Characters
 {
+    #nullable enable
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class ArmorClass : ExpandableObjectConverter
     {

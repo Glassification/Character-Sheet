@@ -5,6 +5,7 @@ using System.ComponentModel;
 
 namespace MyCharacterSheet.Characters
 {
+    #nullable enable
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class Spellcasting : ExpandableObjectConverter
     {

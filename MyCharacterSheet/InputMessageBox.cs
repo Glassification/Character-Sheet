@@ -3,6 +3,7 @@ using System.Windows.Forms;
 
 namespace MyCharacterSheet
 {
+    #nullable enable
     public partial class InputMessageBox : Form
     {
 
@@ -29,7 +30,7 @@ namespace MyCharacterSheet
         /// =========================================
         /// ShowMessage()
         /// =========================================
-        public string ShowMessage(string message, string title, string defaultInput)
+        public string? ShowMessage(string message, string title, string defaultInput)
         {
             Text = title;
             Message.Text = message;
@@ -44,7 +45,7 @@ namespace MyCharacterSheet
 
         #region Accessors
 
-        private string InputText
+        private string? InputText
         {
             get;
             set;

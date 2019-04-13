@@ -7,6 +7,7 @@ using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
+    #nullable enable
     public partial class TablePage : Form
     {
 
@@ -18,6 +19,7 @@ namespace MyCharacterSheet
 
             oTableTabControl.ItemSize = new Size((oTableTabControl.Width / oTableTabControl.TabCount)-1, 0);
             Editing = false;
+            Data = new object();
 
             FillWeaponComboBoxes();
             FillAmmunitionComboBoxes();
@@ -197,31 +199,37 @@ namespace MyCharacterSheet
         /// =========================================
         /// EditWeapon()
         /// =========================================
-        private void EditWeapon(Weapon weapon)
+        private void EditWeapon(Weapon? weapon)
         {
-            weapon.Name = oWeaponNameComboBox.Text;
-            weapon.Ability = oWeaponsAbilityComboBox.Text;
-            weapon.Damage = oWeaponsDamageTextBox.Text;
-            weapon.Misc = oWeaponsMiscTextBox.Text;
-            weapon.Type = oWeaponsDamageTypeComboBox.Text;
-            weapon.Range = oWeaponsRangeTextBox.Text;
-            weapon.Notes = oWeaponsNotesTextBox.Text;
-            weapon.Weight = oWeaponWgtNumericUpDown.Value.ToString();
+            if (weapon != null)
+            {
+                weapon.Name = oWeaponNameComboBox.Text;
+                weapon.Ability = oWeaponsAbilityComboBox.Text;
+                weapon.Damage = oWeaponsDamageTextBox.Text;
+                weapon.Misc = oWeaponsMiscTextBox.Text;
+                weapon.Type = oWeaponsDamageTypeComboBox.Text;
+                weapon.Range = oWeaponsRangeTextBox.Text;
+                weapon.Notes = oWeaponsNotesTextBox.Text;
+                weapon.Weight = oWeaponWgtNumericUpDown.Value.ToString();
+            }
         }
 
         /// =========================================
         /// FillWeapon()
         /// =========================================
-        private void FillWeapon(Weapon weapon)
+        private void FillWeapon(Weapon? weapon)
         {
-            oWeaponNameComboBox.Text = weapon.Name;
-            oWeaponsAbilityComboBox.Text = weapon.Ability;
-            oWeaponsDamageTextBox.Text = weapon.Damage;
-            oWeaponsMiscTextBox.Text = weapon.Misc;
-            oWeaponsDamageTypeComboBox.Text = weapon.Type;
-            oWeaponsRangeTextBox.Text = weapon.Range;
-            oWeaponsNotesTextBox.Text = weapon.Notes;
-            oWeaponWgtNumericUpDown.Value = decimal.Parse(weapon.Weight);
+            if (weapon != null)
+            {
+                oWeaponNameComboBox.Text = weapon.Name;
+                oWeaponsAbilityComboBox.Text = weapon.Ability;
+                oWeaponsDamageTextBox.Text = weapon.Damage;
+                oWeaponsMiscTextBox.Text = weapon.Misc;
+                oWeaponsDamageTypeComboBox.Text = weapon.Type;
+                oWeaponsRangeTextBox.Text = weapon.Range;
+                oWeaponsNotesTextBox.Text = weapon.Notes;
+                oWeaponWgtNumericUpDown.Value = decimal.Parse(weapon.Weight);
+            }
         }
 
         /// =========================================
@@ -276,25 +284,31 @@ namespace MyCharacterSheet
         /// =========================================
         /// EditAmmunition()
         /// =========================================
-        private void EditAmmunition(Ammunition ammo)
+        private void EditAmmunition(Ammunition? ammo)
         {
-            ammo.Name = oAmmoNameComboBox.Text;
-            ammo.Quantity = ((int)oAmmoQtyNumericUpDown.Value).ToString();
-            ammo.Bonus = oAmmoBonusTextBox.Text;
-            ammo.Type = oAmmoTypeComboBox.Text;
-            ammo.Used = ((int)oAmmoUsedNumericUpDown.Value).ToString();
+            if (ammo != null)
+            {
+                ammo.Name = oAmmoNameComboBox.Text;
+                ammo.Quantity = ((int)oAmmoQtyNumericUpDown.Value).ToString();
+                ammo.Bonus = oAmmoBonusTextBox.Text;
+                ammo.Type = oAmmoTypeComboBox.Text;
+                ammo.Used = ((int)oAmmoUsedNumericUpDown.Value).ToString();
+            }
         }
 
         /// =========================================
         /// FillAmmunition()
         /// =========================================
-        private void FillAmmunition(Ammunition ammo)
+        private void FillAmmunition(Ammunition? ammo)
         {
-            oAmmoNameComboBox.Text = ammo.Name;
-            oAmmoQtyNumericUpDown.Value = decimal.Parse(ammo.Quantity);
-            oAmmoBonusTextBox.Text = ammo.Bonus;
-            oAmmoTypeComboBox.Text = ammo.Type;
-            oAmmoUsedNumericUpDown.Value = decimal.Parse(ammo.Used);
+            if (ammo != null)
+            {
+                oAmmoNameComboBox.Text = ammo.Name;
+                oAmmoQtyNumericUpDown.Value = decimal.Parse(ammo.Quantity);
+                oAmmoBonusTextBox.Text = ammo.Bonus;
+                oAmmoTypeComboBox.Text = ammo.Type;
+                oAmmoUsedNumericUpDown.Value = decimal.Parse(ammo.Used);
+            }
         }
 
         /// =========================================
@@ -342,23 +356,29 @@ namespace MyCharacterSheet
         /// =========================================
         /// EditInventory()
         /// =========================================
-        private void EditInventory(Inventory inventory)
+        private void EditInventory(Inventory? inventory)
         {
-            inventory.Name = oInventoryNameComboBox.Text;
-            inventory.Amount = ((int)oInventoryQtyNumericUpDown.Value).ToString();
-            inventory.Weight = oInventoryWgtNumericUpDown.Value.ToString();
-            inventory.Note = oInventoryNoteTextBox.Text;
+            if (inventory != null)
+            {
+                inventory.Name = oInventoryNameComboBox.Text;
+                inventory.Amount = ((int)oInventoryQtyNumericUpDown.Value).ToString();
+                inventory.Weight = oInventoryWgtNumericUpDown.Value.ToString();
+                inventory.Note = oInventoryNoteTextBox.Text;
+            }
         }
 
         /// =========================================
         /// FillInventory()
         /// =========================================
-        private void FillInventory(Inventory inventory)
+        private void FillInventory(Inventory? inventory)
         {
-            oInventoryNameComboBox.Text = inventory.Name;
-            oInventoryQtyNumericUpDown.Value = decimal.Parse(inventory.Amount);
-            oInventoryWgtNumericUpDown.Value = decimal.Parse(inventory.Weight);
-            oInventoryNoteTextBox.Text = inventory.Note;
+            if (inventory != null)
+            {
+                oInventoryNameComboBox.Text = inventory.Name;
+                oInventoryQtyNumericUpDown.Value = decimal.Parse(inventory.Amount);
+                oInventoryWgtNumericUpDown.Value = decimal.Parse(inventory.Weight);
+                oInventoryNoteTextBox.Text = inventory.Note;
+            }
         }
 
         /// =========================================
@@ -398,27 +418,33 @@ namespace MyCharacterSheet
         /// =========================================
         /// EditAbility()
         /// =========================================
-        private void EditAbility(Ability ability)
+        private void EditAbility(Ability? ability)
         {
-            ability.Name = oAbilityNameTextBox.Text;
-            ability.Level = oAbilityLevelTextBox.Text;
-            ability.Uses = oAbilityUsesTextBox.Text;
-            ability.Recovery = oAbilityRecoveryTextBox.Text;
-            ability.Action = oAbilityActionTextBox.Text;
-            ability.Note = oAbilityNotesTextBox.Text;
+            if (ability != null)
+            {
+                ability.Name = oAbilityNameTextBox.Text;
+                ability.Level = oAbilityLevelTextBox.Text;
+                ability.Uses = oAbilityUsesTextBox.Text;
+                ability.Recovery = oAbilityRecoveryTextBox.Text;
+                ability.Action = oAbilityActionTextBox.Text;
+                ability.Note = oAbilityNotesTextBox.Text;
+            }
         }
 
         /// =========================================
         /// FillAbility()
         /// =========================================
-        private void FillAbility(Ability ability)
+        private void FillAbility(Ability? ability)
         {
-            oAbilityNameTextBox.Text = ability.Name;
-            oAbilityLevelTextBox.Text = ability.Level;
-            oAbilityUsesTextBox.Text = ability.Uses;
-            oAbilityRecoveryTextBox.Text = ability.Recovery;
-            oAbilityActionTextBox.Text = ability.Action;
-            oAbilityNotesTextBox.Text = ability.Note;
+            if (ability != null)
+            {
+                oAbilityNameTextBox.Text = ability.Name;
+                oAbilityLevelTextBox.Text = ability.Level;
+                oAbilityUsesTextBox.Text = ability.Uses;
+                oAbilityRecoveryTextBox.Text = ability.Recovery;
+                oAbilityActionTextBox.Text = ability.Action;
+                oAbilityNotesTextBox.Text = ability.Note;
+            }
         }
 
         /// =========================================
@@ -467,25 +493,31 @@ namespace MyCharacterSheet
         /// =========================================
         /// EditMagic()
         /// =========================================
-        private void EditMagic(Magic magic)
+        private void EditMagic(Magic? magic)
         {
-            magic.Class = oMagicClassTextBox.Text;
-            magic.Ability = oMagicAbilityComboBox.Text;
-            magic.Cantrips = ((int)oMagicCantripsNumericUpDown.Value).ToString();
-            magic.Spells = ((int)oMagicSpellsNumericUpDown.Value).ToString();
-            magic.Prepared = ((int)oMagicPreparedNumericUpDown.Value).ToString();
+            if (magic != null)
+            {
+                magic.Class = oMagicClassTextBox.Text;
+                magic.Ability = oMagicAbilityComboBox.Text;
+                magic.Cantrips = ((int)oMagicCantripsNumericUpDown.Value).ToString();
+                magic.Spells = ((int)oMagicSpellsNumericUpDown.Value).ToString();
+                magic.Prepared = ((int)oMagicPreparedNumericUpDown.Value).ToString();
+            }
         }
 
         /// =========================================
         /// FillMagic()
         /// =========================================
-        private void FillMagic(Magic magic)
+        private void FillMagic(Magic? magic)
         {
-            oMagicClassTextBox.Text = magic.Class;
-            oMagicAbilityComboBox.Text = magic.Ability;
-            oMagicCantripsNumericUpDown.Value = decimal.Parse(magic.Cantrips);
-            oMagicSpellsNumericUpDown.Value = decimal.Parse(magic.Spells);
-            oMagicPreparedNumericUpDown.Value = decimal.Parse(magic.Prepared);
+            if (magic != null)
+            {
+                oMagicClassTextBox.Text = magic.Class;
+                oMagicAbilityComboBox.Text = magic.Ability;
+                oMagicCantripsNumericUpDown.Value = decimal.Parse(magic.Cantrips);
+                oMagicSpellsNumericUpDown.Value = decimal.Parse(magic.Spells);
+                oMagicPreparedNumericUpDown.Value = decimal.Parse(magic.Prepared);
+            }
         }
 
         /// =========================================
@@ -552,43 +584,49 @@ namespace MyCharacterSheet
         /// =========================================
         /// EditNote()
         /// =========================================
-        private void EditSpell(Spell spell)
+        private void EditSpell(Spell? spell)
         {
-            spell.Name = oSpellNameComboBox.Text;
-            spell.Level = oSpellLevelTextBox.Text;
-            spell.Page = oSpellPageTextBox.Text;
-            spell.School = oSpellSchoolComboBox.Text;
-            spell.Ritual = oSpellRitualComboBox.Text;
-            spell.Components = oSpellCompTextBox.Text;
-            spell.Concentration = oSpellConcenComboBox.Text;
-            spell.Range = oSpellRangeTextBox.Text;
-            spell.Duration = oSpellDurationTextBox.Text;
-            spell.Area = oSpellAreaTextBox.Text;
-            spell.Save = oSpellSaveTextBox.Text;
-            spell.Damage = oSpellDamageTextBox.Text;
-            spell.Description = oSpellDescriptionTextBox.Text;
-            spell.Prepared = oSpellPreparedComboBox.Text;
+            if (spell != null)
+            {
+                spell.Name = oSpellNameComboBox.Text;
+                spell.Level = oSpellLevelTextBox.Text;
+                spell.Page = oSpellPageTextBox.Text;
+                spell.School = oSpellSchoolComboBox.Text;
+                spell.Ritual = oSpellRitualComboBox.Text;
+                spell.Components = oSpellCompTextBox.Text;
+                spell.Concentration = oSpellConcenComboBox.Text;
+                spell.Range = oSpellRangeTextBox.Text;
+                spell.Duration = oSpellDurationTextBox.Text;
+                spell.Area = oSpellAreaTextBox.Text;
+                spell.Save = oSpellSaveTextBox.Text;
+                spell.Damage = oSpellDamageTextBox.Text;
+                spell.Description = oSpellDescriptionTextBox.Text;
+                spell.Prepared = oSpellPreparedComboBox.Text;
+            }
         }
 
         /// =========================================
         /// FillNote()
         /// =========================================
-        private void FillSpell(Spell spell)
+        private void FillSpell(Spell? spell)
         {
-            oSpellNameComboBox.Text = spell.Name;
-            oSpellLevelTextBox.Text = spell.Level;
-            oSpellPageTextBox.Text = spell.Page;
-            oSpellSchoolComboBox.Text = spell.School;
-            oSpellRitualComboBox.Text = spell.Ritual;
-            oSpellCompTextBox.Text = spell.Components;
-            oSpellConcenComboBox.Text = spell.Concentration;
-            oSpellRangeTextBox.Text = spell.Range;
-            oSpellDurationTextBox.Text = spell.Duration;
-            oSpellAreaTextBox.Text = spell.Area;
-            oSpellSaveTextBox.Text = spell.Save;
-            oSpellDamageTextBox.Text = spell.Damage;
-            oSpellDescriptionTextBox.Text = spell.Description;
-            oSpellPreparedComboBox.Text = spell.Prepared;
+            if (spell != null)
+            {
+                oSpellNameComboBox.Text = spell.Name;
+                oSpellLevelTextBox.Text = spell.Level;
+                oSpellPageTextBox.Text = spell.Page;
+                oSpellSchoolComboBox.Text = spell.School;
+                oSpellRitualComboBox.Text = spell.Ritual;
+                oSpellCompTextBox.Text = spell.Components;
+                oSpellConcenComboBox.Text = spell.Concentration;
+                oSpellRangeTextBox.Text = spell.Range;
+                oSpellDurationTextBox.Text = spell.Duration;
+                oSpellAreaTextBox.Text = spell.Area;
+                oSpellSaveTextBox.Text = spell.Save;
+                oSpellDamageTextBox.Text = spell.Damage;
+                oSpellDescriptionTextBox.Text = spell.Description;
+                oSpellPreparedComboBox.Text = spell.Prepared;
+            }
         }
 
         /// =========================================
@@ -766,16 +804,19 @@ namespace MyCharacterSheet
         /// =========================================
         private void oWeaponNameComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            Weapon weapon = oWeaponNameComboBox.SelectedItem as Weapon;
+            Weapon? weapon = oWeaponNameComboBox.SelectedItem as Weapon;
 
-            oWeaponNameComboBox.Text = weapon.Name;
-            oWeaponsAbilityComboBox.Text = "";
-            oWeaponsDamageTextBox.Text = weapon.Damage;
-            oWeaponsMiscTextBox.Text = "";
-            oWeaponsDamageTypeComboBox.Text = weapon.Type;
-            oWeaponsRangeTextBox.Text = weapon.Range;
-            oWeaponsNotesTextBox.Text = weapon.Notes;
-            oWeaponWgtNumericUpDown.Value = decimal.Parse(weapon.Weight);
+            if (weapon != null)
+            {
+                oWeaponNameComboBox.Text = weapon.Name;
+                oWeaponsAbilityComboBox.Text = "";
+                oWeaponsDamageTextBox.Text = weapon.Damage;
+                oWeaponsMiscTextBox.Text = "";
+                oWeaponsDamageTypeComboBox.Text = weapon.Type;
+                oWeaponsRangeTextBox.Text = weapon.Range;
+                oWeaponsNotesTextBox.Text = weapon.Notes;
+                oWeaponWgtNumericUpDown.Value = decimal.Parse(weapon.Weight);
+            }
         }
 
         /// =========================================
@@ -783,12 +824,15 @@ namespace MyCharacterSheet
         /// =========================================
         private void oInventoryNameComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            Inventory inventory = oInventoryNameComboBox.SelectedItem as Inventory;
+            Inventory? inventory = oInventoryNameComboBox.SelectedItem as Inventory;
 
-            oInventoryNameComboBox.Text = inventory.Name;
-            oInventoryQtyNumericUpDown.Value = 1;
-            oInventoryWgtNumericUpDown.Value = decimal.Parse(inventory.Weight);
-            oInventoryNoteTextBox.Text = inventory.Note;
+            if (inventory != null)
+            {
+                oInventoryNameComboBox.Text = inventory.Name;
+                oInventoryQtyNumericUpDown.Value = 1;
+                oInventoryWgtNumericUpDown.Value = decimal.Parse(inventory.Weight);
+                oInventoryNoteTextBox.Text = inventory.Note;
+            }
         }
 
         /// =========================================
@@ -796,13 +840,16 @@ namespace MyCharacterSheet
         /// =========================================
         private void oAmmoNameComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            Ammunition ammunition = oAmmoNameComboBox.SelectedItem as Ammunition;
+            Ammunition? ammunition = oAmmoNameComboBox.SelectedItem as Ammunition;
 
-            oAmmoNameComboBox.Text = ammunition.Name;
-            oAmmoQtyNumericUpDown.Value = decimal.Parse(ammunition.Quantity);
-            oAmmoBonusTextBox.Text = "";
-            oAmmoTypeComboBox.Text = "None";
-            oAmmoUsedNumericUpDown.Value = 0;
+            if (ammunition != null)
+            {
+                oAmmoNameComboBox.Text = ammunition.Name;
+                oAmmoQtyNumericUpDown.Value = decimal.Parse(ammunition.Quantity);
+                oAmmoBonusTextBox.Text = "";
+                oAmmoTypeComboBox.Text = "None";
+                oAmmoUsedNumericUpDown.Value = 0;
+            }
         }
 
         /// =========================================
@@ -810,22 +857,25 @@ namespace MyCharacterSheet
         /// =========================================
         private void oSpellNameComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            Spell spell = oSpellNameComboBox.SelectedItem as Spell;
+            Spell? spell = oSpellNameComboBox.SelectedItem as Spell;
 
-            oSpellNameComboBox.Text = spell.Name;
-            oSpellLevelTextBox.Text = spell.Level;
-            oSpellPageTextBox.Text = spell.Page;
-            oSpellSchoolComboBox.Text = spell.School;
-            oSpellRitualComboBox.Text = spell.Ritual;
-            oSpellCompTextBox.Text = spell.Components;
-            oSpellConcenComboBox.Text = spell.Concentration;
-            oSpellRangeTextBox.Text = spell.Range;
-            oSpellDurationTextBox.Text = spell.Duration;
-            oSpellAreaTextBox.Text = spell.Area;
-            oSpellSaveTextBox.Text = spell.Save;
-            oSpellDamageTextBox.Text = spell.Damage;
-            oSpellDescriptionTextBox.Text = spell.Description;
-            oSpellPreparedComboBox.Text = spell.Prepared;
+            if (spell != null)
+            {
+                oSpellNameComboBox.Text = spell.Name;
+                oSpellLevelTextBox.Text = spell.Level;
+                oSpellPageTextBox.Text = spell.Page;
+                oSpellSchoolComboBox.Text = spell.School;
+                oSpellRitualComboBox.Text = spell.Ritual;
+                oSpellCompTextBox.Text = spell.Components;
+                oSpellConcenComboBox.Text = spell.Concentration;
+                oSpellRangeTextBox.Text = spell.Range;
+                oSpellDurationTextBox.Text = spell.Duration;
+                oSpellAreaTextBox.Text = spell.Area;
+                oSpellSaveTextBox.Text = spell.Save;
+                oSpellDamageTextBox.Text = spell.Damage;
+                oSpellDescriptionTextBox.Text = spell.Description;
+                oSpellPreparedComboBox.Text = spell.Prepared;
+            }
         }
 
         #endregion

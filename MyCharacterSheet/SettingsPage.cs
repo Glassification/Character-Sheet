@@ -5,6 +5,7 @@ using System.Windows.Forms;
 
 namespace MyCharacterSheet
 {
+    #nullable enable
     public partial class SettingsPage : Form
     {
 
@@ -157,7 +158,7 @@ namespace MyCharacterSheet
                     Close();
                     break;
                 case Keys.Return:
-                    btnOK_Click(null, EventArgs.Empty);
+                    btnOK_Click(new object(), EventArgs.Empty);
                     break;
             }
         }

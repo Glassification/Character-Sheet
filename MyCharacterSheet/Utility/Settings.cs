@@ -2,6 +2,7 @@
 
 namespace MyCharacterSheet.Utility
 {
+    #nullable enable
     /// <summary>
     /// Provides constants and static methods for global properties of the character sheet.
     /// </summary>

@@ -3,6 +3,7 @@ using System.Drawing;
 
 namespace MyCharacterSheet.Characters
 {
+    #nullable enable
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class HitPoints : ExpandableObjectConverter
     {

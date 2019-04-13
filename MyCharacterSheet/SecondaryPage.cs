@@ -8,6 +8,7 @@ using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
+    #nullable enable
     public partial class SecondaryPage : UserControl
     {
 
@@ -29,6 +30,8 @@ namespace MyCharacterSheet
             //Initialize components
             InitializeComponent();
             Drawing = false;
+            WgtValue = "";
+            QtyValue = "";
             
             //Set initial state
             FillLabelList();
@@ -529,7 +532,7 @@ namespace MyCharacterSheet
                 if (e.Effect == DragDropEffects.Move)
                 {
 
-                    DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
+                    DataGridViewRow? rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
                     if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oAbilitiesGridView.Rows.Count)
@@ -751,7 +754,7 @@ namespace MyCharacterSheet
                 if (e.Effect == DragDropEffects.Move)
                 {
 
-                    DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
+                    DataGridViewRow? rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
                     if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oInventoryGrid.Rows.Count)

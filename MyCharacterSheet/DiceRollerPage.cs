@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace MyCharacterSheet
 {
+    #nullable enable
     public partial class DiceRollerPage : Form
     {
 

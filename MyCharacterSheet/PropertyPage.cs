@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace MyCharacterSheet
 {
+    #nullable enable
     public partial class PropertyPage : Form
     {
 
@@ -18,6 +19,7 @@ namespace MyCharacterSheet
         {
             InitializeComponent();
             OriginalSize = Size;
+            Old = new Character();
             oPropertyGrid.PropertySort = PropertySort.Categorized;
         }
 
@@ -115,10 +117,10 @@ namespace MyCharacterSheet
             switch (e.KeyCode)
             {
                 case Keys.Escape:
-                    btnCancel_Click(null, EventArgs.Empty);
+                    btnCancel_Click(new object(), EventArgs.Empty);
                     break;
                 case Keys.Enter:
-                    btnOk_Click(null, EventArgs.Empty);
+                    btnOk_Click(new object(), EventArgs.Empty);
                     break;
             }
         }

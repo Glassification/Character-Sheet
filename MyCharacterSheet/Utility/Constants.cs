@@ -7,6 +7,7 @@ using System.Xml.Linq;
 
 namespace MyCharacterSheet.Utility
 {
+    #nullable enable
     /// <summary>
     /// Provides constants and static methods for a D&D character sheet.
     /// </summary>
@@ -360,9 +361,9 @@ namespace MyCharacterSheet.Utility
         /// =========================================
         /// WeaponList()
         /// =========================================
-        public static Weapon WeaponList(int index)
+        public static Weapon? WeaponList(int index)
         {
-            Weapon weapon = null;
+            Weapon? weapon = null;
 
             if (index >= 0 && index < oWeaponList.Count)
             {
@@ -383,9 +384,9 @@ namespace MyCharacterSheet.Utility
         /// =========================================
         /// ItemList()
         /// =========================================
-        public static Inventory ItemList(int index)
+        public static Inventory? ItemList(int index)
         {
-            Inventory inventory = null;
+            Inventory? inventory = null;
 
             if (index >= 0 && index < oInventoryList.Count)
             {
@@ -406,9 +407,9 @@ namespace MyCharacterSheet.Utility
         /// =========================================
         /// AmmoList()
         /// =========================================
-        public static Ammunition AmmoList(int index)
+        public static Ammunition? AmmoList(int index)
         {
-            Ammunition ammunition = null;
+            Ammunition? ammunition = null;
 
             if (index >= 0 && index < oAmmoList.Count)
             {
@@ -429,9 +430,9 @@ namespace MyCharacterSheet.Utility
         /// =========================================
         /// SpellList()
         /// =========================================
-        public static Spell SpellList(int index)
+        public static Spell? SpellList(int index)
         {
-            Spell spell = null;
+            Spell? spell = null;
 
             if (index >= 0 && index < oSpellList.Count)
             {

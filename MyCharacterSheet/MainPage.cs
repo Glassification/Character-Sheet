@@ -149,7 +149,7 @@ namespace MyCharacterSheet
             }
             else
             {
-                MainPage_MouseMove(current == null ? new object() : current, e);
+                MainPage_MouseMove(current ?? new object(), e);
             }
         }
 

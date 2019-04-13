@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyCharacterSheet.Lists
 {
+    #nullable enable
     /// <summary>
     /// Represents the rtf data of a text document.
     /// </summary>

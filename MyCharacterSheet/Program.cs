@@ -7,6 +7,7 @@ using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
+    #nullable enable
     ///<summary>
     /// Provides constants and static methods for the entry point of the application.
     /// </summary>

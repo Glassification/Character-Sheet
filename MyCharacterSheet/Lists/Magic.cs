@@ -3,6 +3,7 @@ using System;
 
 namespace MyCharacterSheet.Lists
 {
+    #nullable enable
     /// <summary>
     /// Represents the details of a players spell casting class.
     /// </summary>

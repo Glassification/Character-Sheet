@@ -2,6 +2,7 @@
 
 namespace MyCharacterSheet.Utility
 {
+    #nullable enable
     public static class EasterEggs
     {
 
