@@ -5,6 +5,7 @@ using System.Speech.Synthesis;
 
 namespace MyCharacterSheet.Utility
 {
+    #nullable enable
     public static class Sounds
     {
         

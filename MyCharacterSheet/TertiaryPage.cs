@@ -8,6 +8,7 @@ using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
+    #nullable enable
     public partial class TertiaryPage : UserControl
     {
 
@@ -38,6 +39,7 @@ namespace MyCharacterSheet
             InitializeComponent();
             Drawing = false;
             RowIndex = 1;
+            AnimalCompanion = new Control();
 
             //Set initial state
             FillLabelList();
@@ -594,7 +596,7 @@ namespace MyCharacterSheet
                 if (e.Effect == DragDropEffects.Move)
                 {
 
-                    DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
+                    DataGridViewRow? rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
                     if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oMagicGridView.Rows.Count)
@@ -1159,7 +1161,7 @@ namespace MyCharacterSheet
                 if (e.Effect == DragDropEffects.Move)
                 {
 
-                    DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
+                    DataGridViewRow? rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
 
                     //set as last row
                     if (rowIndexOfItemUnderMouseToDrop < 0 || rowIndexOfItemUnderMouseToDrop >= oSpellListDataView.Rows.Count)

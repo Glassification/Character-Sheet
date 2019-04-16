@@ -4,6 +4,7 @@ using MyCharacterSheet.SavingThrowsNamespace;
 using MyCharacterSheet.SkillsNamespace;
 using MyCharacterSheet.Utility;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -537,6 +538,154 @@ namespace MyCharacterSheet.Persistence
             character.Companion = new Companion();
 
             Settings.Default();
+        }
+
+        /// =========================================
+        /// LoadWeaponLists()
+        /// =========================================
+        public static List<Weapon> LoadWeaponLists()
+        {
+            List<Weapon> weapons = new List<Weapon>();
+
+            try
+            {
+                XDocument xml = XDocument.Parse(Properties.Resources.WeaponList);
+                XElement root = xml.Element("Weapons");
+
+                var SimpleMelee = root.Elements("Weapon");
+                foreach (XElement elem in SimpleMelee)
+                {
+                    Weapon weapon = new Weapon(false);
+
+                    weapon.Name = (string)elem.Attribute("name");
+                    weapon.Damage = (string)elem.Attribute("damage");
+                    weapon.Type = (string)elem.Attribute("type");
+                    weapon.Weight = (string)elem.Attribute("weight");
+                    weapon.Range = (string)elem.Attribute("range");
+                    weapon.Notes = (string)elem.Attribute("notes");
+
+                    weapons.Add(weapon);
+                }
+
+                // TODO - Sort the actual xml file
+                weapons.Sort((x, y) => x.Name.CompareTo(y.Name));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                MessageBox.Show("Error: Default weapon list not loaded successfully", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return weapons;
+        }
+
+        /// =========================================
+        /// LoadItemLists()
+        /// =========================================
+        public static List<Inventory> LoadItemLists()
+        {
+            List<Inventory> inventories = new List<Inventory>();
+
+            try
+            {
+                XDocument xml = XDocument.Parse(Properties.Resources.ItemList);
+                XElement root = xml.Element("Items");
+
+                var AdventuringGear = root.Elements("Item");
+                foreach (XElement elem in AdventuringGear)
+                {
+                    Inventory inventory = new Inventory(false);
+
+                    inventory.Name = (string)elem.Attribute("name");
+                    inventory.Weight = (string)elem.Attribute("weight");
+                    inventory.Note = (string)elem.Attribute("notes");
+
+                    inventories.Add(inventory);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                MessageBox.Show("Error: Default item list not loaded successfully", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return inventories;
+        }
+
+        /// =========================================
+        /// LoadItemLists()
+        /// =========================================
+        public static List<Ammunition> LoadAmmoLists()
+        {
+            List<Ammunition> ammo = new List<Ammunition>();
+
+            try
+            {
+                XDocument xml = XDocument.Parse(Properties.Resources.AmmoList);
+                XElement root = xml.Element("Ammunitions");
+
+                var Ammunitions = root.Elements("Ammunition");
+                foreach (XElement elem in Ammunitions)
+                {
+                    Ammunition ammunition = new Ammunition(false);
+
+                    ammunition.Name = (string)elem.Attribute("name");
+                    ammunition.Quantity = (string)elem.Attribute("qty");
+
+                    ammo.Add(ammunition);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                MessageBox.Show("Error: Default ammunition list not loaded successfully", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return ammo;
+        }
+
+        /// =========================================
+        /// LoadSpellList()
+        /// =========================================
+        public static List<Spell> LoadSpellList()
+        {
+            List<Spell> spells = new List<Spell>();
+
+            try
+            {
+                XDocument xml = XDocument.Parse(Properties.Resources.SpellList);
+                XElement root = xml.Element("Spells");
+
+                var Spells = root.Elements("Spell");
+                foreach (XElement elem in Spells)
+                {
+                    Spell spell = new Spell(false);
+
+                    spell.Name = (string)elem.Attribute("name");
+                    spell.Level = (string)elem.Attribute("level");
+                    spell.Page = (string)elem.Attribute("page");
+                    spell.School = (string)elem.Attribute("school");
+                    spell.Ritual = (string)elem.Attribute("ritual");
+                    spell.Components = ((string)elem.Attribute("comp")).Equals("") ? "N/A" : (string)elem.Attribute("comp");
+                    spell.Concentration = (string)elem.Attribute("concen");
+                    spell.Range = ((string)elem.Attribute("range")).Equals("") ? "N/A" : (string)elem.Attribute("range");
+                    spell.Duration = (string)elem.Attribute("duration");
+                    spell.Area = ((string)elem.Attribute("area")).Equals("") ? "N/A" : (string)elem.Attribute("area");
+                    spell.Save = ((string)elem.Attribute("save")).Equals("") ? "N/A" : (string)elem.Attribute("save");
+                    spell.Damage = ((string)elem.Attribute("damage")).Equals("") ? "N/A" : (string)elem.Attribute("damage");
+                    spell.Description = (string)elem.Attribute("description");
+                    spell.Prepared = (string)elem.Attribute("prepared");
+
+                    spells.Add(spell);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                MessageBox.Show("Error: Default spell list not loaded successfully", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return spells;
         }
 
         #endregion

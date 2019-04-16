@@ -3,6 +3,7 @@ using System;
 
 namespace MyCharacterSheet.Lists
 {
+    #nullable enable
     /// <summary>
     /// Represents details about a players feats, abilities, or traits.
     /// </summary>

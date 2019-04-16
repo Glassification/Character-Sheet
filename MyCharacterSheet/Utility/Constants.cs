@@ -1,4 +1,5 @@
 ﻿using MyCharacterSheet.Lists;
+using MyCharacterSheet.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,6 +8,7 @@ using System.Xml.Linq;
 
 namespace MyCharacterSheet.Utility
 {
+    #nullable enable
     /// <summary>
     /// Provides constants and static methods for a D&D character sheet.
     /// </summary>
@@ -48,15 +50,15 @@ namespace MyCharacterSheet.Utility
 
         private static string[] oFatiguedState      = { "Cured", "Exhaustion 1", "Exhaustion 2", "Exhaustion 3", "Exhaustion 4", "Exhaustion 5", "Exhaustion 6" };
 
-        private static List<Weapon>     oWeaponList     = new List<Weapon>();
-        private static List<Inventory>  oInventoryList  = new List<Inventory>();
-        private static List<Ammunition> oAmmoList       = new List<Ammunition>();
-        private static List<Spell>      oSpellList      = new List<Spell>();
+        private static List<Weapon>     oWeaponList;
+        private static List<Inventory>  oInventoryList;
+        private static List<Ammunition> oAmmoList;
+        private static List<Spell>      oSpellList;
 
         //Values
         public const char   DELIMITER   = '|';
         public const int    MAX_LEVEL   = 20;
-        public const string NEW_FILE    = "%NEW%";
+        public const string NEW_FILE    = "<NEW_FILE>";
         public const int    BASE_DC     = 8;
         public const int    OFFSET      = 2;
         public const int    COIN_GROUP  = 50;
@@ -72,10 +74,10 @@ namespace MyCharacterSheet.Utility
 
         static Constants()
         {
-            LoadWeaponLists();
-            LoadItemLists();
-            LoadAmmoLists();
-            LoadSpellList();
+            oWeaponList     = new List<Weapon>(Load.LoadWeaponLists());
+            oInventoryList  = new List<Inventory>(Load.LoadItemLists());
+            oAmmoList       = new List<Ammunition>(Load.LoadAmmoLists());
+            oSpellList      = new List<Spell>(Load.LoadSpellList());
         }
 
         #endregion
@@ -219,150 +221,14 @@ namespace MyCharacterSheet.Utility
 
         #endregion
 
-        #region Default Lists
-
-        /// =========================================
-        /// LoadWeaponLists()
-        /// =========================================
-        private static void LoadWeaponLists()
-        {
-            try
-            {
-                XDocument xml = XDocument.Parse(Properties.Resources.WeaponList);
-                XElement root = xml.Element("Weapons");
-
-                var SimpleMelee = root.Elements("Weapon");
-                foreach (XElement elem in SimpleMelee)
-                {
-                    Weapon weapon = new Weapon(false);
-
-                    weapon.Name     = (string)elem.Attribute("name");
-                    weapon.Damage   = (string)elem.Attribute("damage");
-                    weapon.Type     = (string)elem.Attribute("type");
-                    weapon.Weight   = (string)elem.Attribute("weight");
-                    weapon.Range    = (string)elem.Attribute("range");
-                    weapon.Notes    = (string)elem.Attribute("notes");
-
-                    oWeaponList.Add(weapon);
-                }
-
-                // TODO - Sort the actual xml file
-                oWeaponList.Sort((x, y) => x.Name.CompareTo(y.Name));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.StackTrace);
-                MessageBox.Show("Error: Default weapon list not loaded successfully", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// =========================================
-        /// LoadItemLists()
-        /// =========================================
-        private static void LoadItemLists()
-        {
-            try
-            {
-                XDocument xml = XDocument.Parse(Properties.Resources.ItemList);
-                XElement root = xml.Element("Items");
-
-                var AdventuringGear = root.Elements("Item");
-                foreach (XElement elem in AdventuringGear)
-                {
-                    Inventory inventory = new Inventory(false);
-
-                    inventory.Name      = (string)elem.Attribute("name");
-                    inventory.Weight    = (string)elem.Attribute("weight");
-                    inventory.Note      = (string)elem.Attribute("notes");
-
-                    oInventoryList.Add(inventory);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.StackTrace);
-                MessageBox.Show("Error: Default item list not loaded successfully", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// =========================================
-        /// LoadItemLists()
-        /// =========================================
-        private static void LoadAmmoLists()
-        {
-            try
-            {
-                XDocument xml = XDocument.Parse(Properties.Resources.AmmoList);
-                XElement root = xml.Element("Ammunitions");
-
-                var Ammunitions = root.Elements("Ammunition");
-                foreach (XElement elem in Ammunitions)
-                {
-                    Ammunition ammunition = new Ammunition(false);
-
-                    ammunition.Name     = (string)elem.Attribute("name");
-                    ammunition.Quantity = (string)elem.Attribute("qty");
-
-                    oAmmoList.Add(ammunition);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.StackTrace);
-                MessageBox.Show("Error: Default ammunition list not loaded successfully", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// =========================================
-        /// LoadSpellList()
-        /// =========================================
-        private static void LoadSpellList()
-        {
-            try
-            {
-                XDocument xml = XDocument.Parse(Properties.Resources.SpellList);
-                XElement root = xml.Element("Spells");
-
-                var Spells = root.Elements("Spell");
-                foreach (XElement elem in Spells)
-                {
-                    Spell spell = new Spell(false);
-
-                    spell.Name          = (string)elem.Attribute("name");
-                    spell.Level         = (string)elem.Attribute("level");
-                    spell.Page          = (string)elem.Attribute("page");
-                    spell.School        = (string)elem.Attribute("school");
-                    spell.Ritual        = (string)elem.Attribute("ritual");
-                    spell.Components    = ((string)elem.Attribute("comp")).Equals("")   ? "N/A" : (string)elem.Attribute("comp");
-                    spell.Concentration = (string)elem.Attribute("concen");
-                    spell.Range         = ((string)elem.Attribute("range")).Equals("")  ? "N/A" : (string)elem.Attribute("range");
-                    spell.Duration      = (string)elem.Attribute("duration");
-                    spell.Area          = ((string)elem.Attribute("area")).Equals("")   ? "N/A" : (string)elem.Attribute("area");
-                    spell.Save          = ((string)elem.Attribute("save")).Equals("")   ? "N/A" : (string)elem.Attribute("save");
-                    spell.Damage        = ((string)elem.Attribute("damage")).Equals("") ? "N/A" : (string)elem.Attribute("damage");
-                    spell.Description   = (string)elem.Attribute("description");
-                    spell.Prepared      = (string)elem.Attribute("prepared");
-
-                    oSpellList.Add(spell);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.StackTrace);
-                MessageBox.Show("Error: Default spell list not loaded successfully", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        #endregion
-
         #region List Accessors
 
         /// =========================================
         /// WeaponList()
         /// =========================================
-        public static Weapon WeaponList(int index)
+        public static Weapon? WeaponList(int index)
         {
-            Weapon weapon = null;
+            Weapon? weapon = null;
 
             if (index >= 0 && index < oWeaponList.Count)
             {
@@ -383,9 +249,9 @@ namespace MyCharacterSheet.Utility
         /// =========================================
         /// ItemList()
         /// =========================================
-        public static Inventory ItemList(int index)
+        public static Inventory? ItemList(int index)
         {
-            Inventory inventory = null;
+            Inventory? inventory = null;
 
             if (index >= 0 && index < oInventoryList.Count)
             {
@@ -406,9 +272,9 @@ namespace MyCharacterSheet.Utility
         /// =========================================
         /// AmmoList()
         /// =========================================
-        public static Ammunition AmmoList(int index)
+        public static Ammunition? AmmoList(int index)
         {
-            Ammunition ammunition = null;
+            Ammunition? ammunition = null;
 
             if (index >= 0 && index < oAmmoList.Count)
             {
@@ -429,9 +295,9 @@ namespace MyCharacterSheet.Utility
         /// =========================================
         /// SpellList()
         /// =========================================
-        public static Spell SpellList(int index)
+        public static Spell? SpellList(int index)
         {
-            Spell spell = null;
+            Spell? spell = null;
 
             if (index >= 0 && index < oSpellList.Count)
             {

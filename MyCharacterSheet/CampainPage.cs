@@ -7,6 +7,7 @@ using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
+    #nullable enable
     public partial class CampainPage : UserControl
     {
 
@@ -46,11 +47,17 @@ namespace MyCharacterSheet
         /// =========================================
         public void FillDocumentList()
         {
+            Document? document;
+
             if (Program.Character.oDocuments.Count > 0)
             {
                 oDocumentList.Items.AddRange(Program.Character.oDocuments.ToArray());
-                oCampainTextBox.Rtf = (oDocumentList.Items[0] as Document).Rtf;
-                oDocumentList.SelectedIndex = 0;
+                document = (oDocumentList.Items[0] as Document);
+                if (document != null)
+                {
+                    oCampainTextBox.Rtf = document.Rtf;
+                    oDocumentList.SelectedIndex = 0;
+                }
             }
         }
 
@@ -74,9 +81,13 @@ namespace MyCharacterSheet
         /// =========================================
         public void WriteCampainNotes()
         {
+            Document? document;
+
             if (oDocumentList.SelectedIndex != -1)
             {
-                (oDocumentList.Items[oDocumentList.SelectedIndex] as Document).Rtf = oCampainTextBox.Rtf;
+                document = (oDocumentList.Items[oDocumentList.SelectedIndex] as Document);
+                if (document != null)
+                    document.Rtf = oCampainTextBox.Rtf;
             }
             foreach (Document doc in oDocumentList.Items)
             {
@@ -569,7 +580,7 @@ namespace MyCharacterSheet
         /// =========================================
         private void oDocumentList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Document oldDoc, newDoc;
+            Document? oldDoc, newDoc;
 
             Changing = true;
 
@@ -578,12 +589,13 @@ namespace MyCharacterSheet
             {
                 newDoc = oDocumentList.Items[oDocumentList.SelectedIndex] as Document;
 
-                if (!newDoc.Name.Equals(LINE_SEPARATOR_KEY))
+                if (newDoc != null && !newDoc.Name.Equals(LINE_SEPARATOR_KEY))
                 {
                     if (!Deleting && SelectIndex != -1)
                     {
                         oldDoc = oDocumentList.Items[SelectIndex] as Document;
-                        oldDoc.Rtf = oCampainTextBox.Rtf;
+                        if (oldDoc != null)
+                            oldDoc.Rtf = oCampainTextBox.Rtf;
                     }
 
                     SelectIndex = oDocumentList.SelectedIndex;
@@ -606,9 +618,9 @@ namespace MyCharacterSheet
             PointF point;
             string listItem;
             Graphics g = e.Graphics;
-            ListBox lb = sender as ListBox;
+            ListBox? lb = sender as ListBox;
 
-            if (e.Index != -1)
+            if (e.Index != -1 && lb != null)
             {
                 listItem = lb.Items[e.Index].ToString();
 
@@ -679,6 +691,8 @@ namespace MyCharacterSheet
         /// =========================================
         private void oDocumentList_MouseDown(object sender, MouseEventArgs e)
         {
+            Document? document;
+
             //Open context menu
             if (e.Button == MouseButtons.Right)
             {
@@ -686,7 +700,8 @@ namespace MyCharacterSheet
 
                 if (DeleteIndex != -1)
                 {
-                    if ((oDocumentList.Items[DeleteIndex] as Document).Name.Equals(LINE_SEPARATOR_KEY))
+                    document = oDocumentList.Items[DeleteIndex] as Document;
+                    if (document != null && document.Name.Equals(LINE_SEPARATOR_KEY))
                         oDeleteContextMenu.Show(oDocumentList, e.Location);
                     else
                         oEditDocumentContextMenu.Show(oDocumentList, e.Location);
@@ -695,7 +710,7 @@ namespace MyCharacterSheet
             //Drag and drop list
             else if (e.Button == MouseButtons.Left)
             {
-                oDocumentList_SelectedIndexChanged(null, EventArgs.Empty);
+                oDocumentList_SelectedIndexChanged(new object(), EventArgs.Empty);
 
                 if (oDocumentList.SelectedIndex != -1)
                 {
@@ -750,17 +765,23 @@ namespace MyCharacterSheet
         /// =========================================
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Document? document = oDocumentList.Items[DeleteIndex] as Document;
             InputMessageBox inputMessageBox = new InputMessageBox();
-            string name, defaultText = (oDocumentList.Items[DeleteIndex] as Document).Name;
+            string? name;
+            string defaultText;
 
-            name = inputMessageBox.ShowMessage("Enter new name.", "Rename Document", defaultText);
-
-            if (name != null)
+            if (document != null)
             {
-                (oDocumentList.Items[DeleteIndex] as Document).Name = name;
+                defaultText = document.Name;
+                name = inputMessageBox.ShowMessage("Enter new name.", "Rename Document", defaultText);
 
-                oDocumentList.Invalidate();
-                Program.Modified = true;
+                if (name != null)
+                {
+                    document.Name = name;
+
+                    oDocumentList.Invalidate();
+                    Program.Modified = true;
+                }
             }
         }
 
@@ -771,7 +792,7 @@ namespace MyCharacterSheet
         {
             InputMessageBox inputMessageBox = new InputMessageBox();
             Document doc;
-            string name;
+            string? name;
 
             name = inputMessageBox.ShowMessage("Enter new document name.", "New Document", "New File");
 

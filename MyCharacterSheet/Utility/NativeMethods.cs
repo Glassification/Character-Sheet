@@ -4,13 +4,14 @@ using System.Windows.Forms;
 
 namespace MyCharacterSheet.Utility
 {
+    #nullable enable
     class NativeMethods : IMessageFilter
     {
 
         #region Members
 
         public  event    EventHandler FormClicked;
-        private readonly Form         form           = null;
+        private readonly Form?        form           = null;
         private readonly int          WM_LBUTTONDOWN = 0x201;
 
         [DllImport("user32.dll")]

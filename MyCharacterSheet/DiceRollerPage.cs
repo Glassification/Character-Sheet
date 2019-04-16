@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace MyCharacterSheet
 {
+    #nullable enable
     public partial class DiceRollerPage : Form
     {
 
@@ -41,7 +42,9 @@ namespace MyCharacterSheet
         public void ShowPane()
         {
             if (oHistoryGridView.Rows.Count > 0)
+            {
                 oHistoryGridView.FirstDisplayedScrollingRowIndex = 0;
+            }
 
             Show();
         }

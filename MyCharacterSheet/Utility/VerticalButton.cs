@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 namespace MyCharacterSheet.Utility
 {
+    #nullable enable
     class VerticalButton : Button
     {
 
@@ -17,6 +18,7 @@ namespace MyCharacterSheet.Utility
 
         public VerticalButton()
         {
+            VerticalText = "";
             format.Alignment = StringAlignment.Center;
             format.LineAlignment = StringAlignment.Center;
         }

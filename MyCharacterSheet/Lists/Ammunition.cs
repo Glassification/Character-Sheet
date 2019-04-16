@@ -3,6 +3,7 @@ using System;
 
 namespace MyCharacterSheet.Lists
 {
+    #nullable enable
     /// <summary>
     /// Represents information about the ammunition a player can carry.
     /// </summary>
@@ -26,6 +27,12 @@ namespace MyCharacterSheet.Lists
 
         public Ammunition(bool unique)
         {
+            Name = "";
+            Quantity = "";
+            Bonus = "";
+            Type = "";
+            Used = "";
+
             if (unique)
                 ID = Guid.NewGuid();
             else

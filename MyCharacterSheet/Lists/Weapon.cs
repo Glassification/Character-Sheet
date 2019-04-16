@@ -3,6 +3,7 @@ using System;
 
 namespace MyCharacterSheet.Lists
 {
+    #nullable enable
     /// <summary>
     /// Represents details about a weapon a player can wield.
     /// </summary>
@@ -30,6 +31,15 @@ namespace MyCharacterSheet.Lists
 
         public Weapon(bool unique)
         {
+            Name = "";
+            Ability = "";
+            Damage = "";
+            Misc = "";
+            Type = "";
+            Range = "";
+            Notes = "";
+            Weight = "";
+
             if (unique)
                 ID = Guid.NewGuid();
             else

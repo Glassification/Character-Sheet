@@ -3,6 +3,7 @@ using System;
 
 namespace MyCharacterSheet.Lists
 {
+    #nullable enable
     /// <summary>
     /// Represents an item that the player can carry or use.
     /// </summary>
@@ -26,6 +27,11 @@ namespace MyCharacterSheet.Lists
 
         public Inventory(bool unique)
         {
+            Name = "";
+            Amount = "";
+            Weight = "";
+            Note = "";
+
             if (unique)
                 ID = Guid.NewGuid();
             else
