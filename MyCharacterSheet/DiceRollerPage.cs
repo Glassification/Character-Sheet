@@ -42,7 +42,9 @@ namespace MyCharacterSheet
         public void ShowPane()
         {
             if (oHistoryGridView.Rows.Count > 0)
+            {
                 oHistoryGridView.FirstDisplayedScrollingRowIndex = 0;
+            }
 
             Show();
         }
