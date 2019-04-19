@@ -566,9 +566,6 @@ namespace MyCharacterSheet.Persistence
 
                     weapons.Add(weapon);
                 }
-
-                // TODO - Sort the actual xml file
-                weapons.Sort((x, y) => x.Name.CompareTo(y.Name));
             }
             catch (Exception e)
             {

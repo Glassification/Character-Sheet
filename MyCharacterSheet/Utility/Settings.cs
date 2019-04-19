@@ -32,8 +32,8 @@ namespace MyCharacterSheet.Utility
             AutosaveEnable      = false;
             AutosaveInterval    = 1;
             HideAnimalCompanion = false;
-            UseCoinWeight          = false;
-            UseEncumbrance         = false;
+            UseCoinWeight       = false;
+            UseEncumbrance      = false;
         }
 
         #endregion

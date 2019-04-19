@@ -8,19 +8,14 @@ namespace MyCharacterSheet.Utility
     class VerticalButton : Button
     {
 
-        #region Members
-
-        private StringFormat format = new StringFormat();
-
-        #endregion
-
         #region Constructor
 
         public VerticalButton()
         {
+            Format = new StringFormat();
             VerticalText = "";
-            format.Alignment = StringAlignment.Center;
-            format.LineAlignment = StringAlignment.Center;
+            Format.Alignment = StringAlignment.Center;
+            Format.LineAlignment = StringAlignment.Center;
         }
 
         #endregion
@@ -36,7 +31,7 @@ namespace MyCharacterSheet.Utility
 
             e.Graphics.TranslateTransform(0, Height);
             e.Graphics.RotateTransform(270);
-            e.Graphics.DrawString(VerticalText, Font, Brushes.White, new Rectangle(0, 0, Height, Width), format);
+            e.Graphics.DrawString(VerticalText, Font, Brushes.White, new Rectangle(0, 0, Height, Width), Format);
         }
 
         #endregion
@@ -44,6 +39,12 @@ namespace MyCharacterSheet.Utility
         #region Accessors
 
         public string VerticalText
+        {
+            get;
+            set;
+        }
+
+        private StringFormat Format
         {
             get;
             set;
