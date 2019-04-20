@@ -250,19 +250,20 @@ namespace MyCharacterSheet.Persistence
 
                 foreach (XElement elem in weapons)
                 {
-                    StringBuilder builder = new StringBuilder();
+                    Weapon weapon = new Weapon()
+                    {
+                        Name    = (string)elem.Attribute("name"),
+                        Ability = (string)elem.Attribute("ability"),
+                        Damage  = (string)elem.Attribute("dmg"),
+                        Misc    = (string)elem.Attribute("misc"),
+                        Type    = (string)elem.Attribute("dmgType"),
+                        Range   = (string)elem.Attribute("range"),
+                        Notes   =  (string)elem.Attribute("notes"),
+                        Weight  = (string)elem.Attribute("weight"),
+                        ID      = new Guid((string)elem.Attribute("id"))
+                    };
 
-                    builder.Append((string)elem.Attribute("name"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("ability")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("dmg"));     builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("misc"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("dmgType")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("range"));   builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("notes"));   builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("weight"));  builder.Append(Constants.DELIMITER);
-                    builder.Append( (string)elem.Attribute("id"));
-
-                    character.oWeapons.Add(new Weapon(builder.ToString()));
+                    character.oWeapons.Add(weapon);
                 }
 
                 //-------------------------------------------------------------------------------------------------------
@@ -272,34 +273,36 @@ namespace MyCharacterSheet.Persistence
 
                 foreach (XElement elem in ammunitions)
                 {
-                    StringBuilder builder = new StringBuilder();
+                    Ammunition ammunition = new Ammunition()
+                    {
+                        Name        = (string)elem.Attribute("name"),
+                        Quantity    = (string)elem.Attribute("amount"),
+                        Bonus       = (string)elem.Attribute("miscDmg"),
+                        Type        = (string)elem.Attribute("dmgType"),
+                        Used        = (string)elem.Attribute("used"),
+                        ID          = new Guid((string)elem.Attribute("id"))
+                };
 
-                    builder.Append((string)elem.Attribute("name"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("amount")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("miscDmg")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("dmgType")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("used"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("id"));
-
-                    character.oAmmo.Add(new Ammunition(builder.ToString()));
+                    character.oAmmo.Add(ammunition);
                 }
 
                 //-------------------------------------------------------------------------------------------------------
                 // Parse Inventory
                 //-------------------------------------------------------------------------------------------------------
-                var inventory = root.Element("Inventory").Elements("Item");
+                var inventories = root.Element("Inventory").Elements("Item");
 
-                foreach (XElement elem in inventory)
+                foreach (XElement elem in inventories)
                 {
-                    StringBuilder builder = new StringBuilder();
+                    Inventory inventory = new Inventory()
+                    {
+                        Name    = (string)elem.Attribute("name"),
+                        Amount  = (string)elem.Attribute("amount"),
+                        Weight  = (string)elem.Attribute("wgt"),
+                        Note    = (string)elem.Attribute("note"),
+                        ID      = new Guid((string)elem.Attribute("id"))
+                    };
 
-                    builder.Append((string)elem.Attribute("name"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("amount"));  builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("wgt"));     builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("note"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("id"));
-
-                    character.oInventory.Add(new Inventory(builder.ToString()));
+                    character.oInventory.Add(inventory);
                 }
 
                 //-------------------------------------------------------------------------------------------------------
@@ -309,17 +312,18 @@ namespace MyCharacterSheet.Persistence
 
                 foreach (XElement elem in abilities)
                 {
-                    StringBuilder builder = new StringBuilder();
+                    Ability ability = new Ability()
+                    {
+                        Name        = (string)elem.Attribute("name"),
+                        Level       = (string)elem.Attribute("level"),
+                        Uses        = (string)elem.Attribute("uses"),
+                        Recovery    = (string)elem.Attribute("recovery"),
+                        Action      = (string)elem.Attribute("action"),
+                        Note        = (string)elem.Attribute("notes"),
+                        ID          = new Guid((string)elem.Attribute("id"))
+                    };
 
-                    builder.Append((string)elem.Attribute("name"));     builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("level"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("uses"));     builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("recovery")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("action"));   builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("notes"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("id"));
-
-                    character.oAbility.Add(new Ability(builder.ToString()));
+                    character.oAbility.Add(ability);
                 }
 
                 //-------------------------------------------------------------------------------------------------------
@@ -358,16 +362,17 @@ namespace MyCharacterSheet.Persistence
 
                 foreach (XElement elem in classes)
                 {
-                    StringBuilder builder = new StringBuilder();
+                    Magic magic = new Magic()
+                    {
+                        Class       = (string)elem.Attribute("class"),
+                        Ability     = (string)elem.Attribute("ability"),
+                        Cantrips    = (string)elem.Attribute("cantrips"),
+                        Spells      = (string)elem.Attribute("known"),
+                        Prepared    = (string)elem.Attribute("prepared"),
+                        ID          = new Guid((string)elem.Attribute("id"))
+                    };
 
-                    builder.Append((string)elem.Attribute("class"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("ability"));  builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("cantrips")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("known"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("prepared")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("id"));
-
-                    character.Spellcasting.oMagic.Add(new Magic(builder.ToString()));
+                    character.Spellcasting.oMagic.Add(magic);
                 }
 
                 // Spell list
@@ -375,25 +380,26 @@ namespace MyCharacterSheet.Persistence
 
                 foreach (XElement elem in spells)
                 {
-                    StringBuilder builder = new StringBuilder();
+                    Spell spell = new Spell()
+                    {
+                        Name            = (string)elem.Attribute("name"),
+                        Level           = (string)elem.Attribute("level"),
+                        Page            = (string)elem.Attribute("page"),
+                        School          = (string)elem.Attribute("school"),
+                        Ritual          = (string)elem.Attribute("ritual"),
+                        Components      = (string)elem.Attribute("comp"),
+                        Concentration   = (string)elem.Attribute("concen"),
+                        Range           = (string)elem.Attribute("range"),
+                        Duration        = (string)elem.Attribute("duration"),
+                        Area            = (string)elem.Attribute("area"),
+                        Save            = (string)elem.Attribute("save"),
+                        Damage          = (string)elem.Attribute("damage"),
+                        Description     = (string)elem.Attribute("description"),
+                        Prepared        = (string)elem.Attribute("prepared"),
+                        ID              = new Guid((string)elem.Attribute("id"))
+                    };
 
-                    builder.Append((string)elem.Attribute("name"));        builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("level"));       builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("page"));        builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("school"));      builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("ritual"));      builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("comp"));        builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("concen"));      builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("range"));       builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("duration"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("area"));        builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("save"));        builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("damage"));      builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("description")); builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("prepared"));    builder.Append(Constants.DELIMITER);
-                    builder.Append((string)elem.Attribute("id"));
-
-                    character.Spellcasting.oSpells.Add(new Spell(builder.ToString()));
+                    character.Spellcasting.oSpells.Add(spell);
                 }
 
                 //-------------------------------------------------------------------------------------------------------
@@ -555,14 +561,15 @@ namespace MyCharacterSheet.Persistence
                 var SimpleMelee = root.Elements("Weapon");
                 foreach (XElement elem in SimpleMelee)
                 {
-                    Weapon weapon = new Weapon(false);
-
-                    weapon.Name = (string)elem.Attribute("name");
-                    weapon.Damage = (string)elem.Attribute("damage");
-                    weapon.Type = (string)elem.Attribute("type");
-                    weapon.Weight = (string)elem.Attribute("weight");
-                    weapon.Range = (string)elem.Attribute("range");
-                    weapon.Notes = (string)elem.Attribute("notes");
+                    Weapon weapon = new Weapon()
+                    {
+                        Name = (string)elem.Attribute("name"),
+                        Damage = (string)elem.Attribute("damage"),
+                        Type = (string)elem.Attribute("type"),
+                        Weight = (string)elem.Attribute("weight"),
+                        Range = (string)elem.Attribute("range"),
+                        Notes = (string)elem.Attribute("notes")
+                    };
 
                     weapons.Add(weapon);
                 }
@@ -591,11 +598,12 @@ namespace MyCharacterSheet.Persistence
                 var AdventuringGear = root.Elements("Item");
                 foreach (XElement elem in AdventuringGear)
                 {
-                    Inventory inventory = new Inventory(false);
-
-                    inventory.Name = (string)elem.Attribute("name");
-                    inventory.Weight = (string)elem.Attribute("weight");
-                    inventory.Note = (string)elem.Attribute("notes");
+                    Inventory inventory = new Inventory()
+                    {
+                        Name = (string)elem.Attribute("name"),
+                        Weight = (string)elem.Attribute("weight"),
+                        Note = (string)elem.Attribute("notes")
+                    };
 
                     inventories.Add(inventory);
                 }
@@ -624,10 +632,11 @@ namespace MyCharacterSheet.Persistence
                 var Ammunitions = root.Elements("Ammunition");
                 foreach (XElement elem in Ammunitions)
                 {
-                    Ammunition ammunition = new Ammunition(false);
-
-                    ammunition.Name = (string)elem.Attribute("name");
-                    ammunition.Quantity = (string)elem.Attribute("qty");
+                    Ammunition ammunition = new Ammunition()
+                    {
+                        Name = (string)elem.Attribute("name"),
+                        Quantity = (string)elem.Attribute("qty")
+                    };
 
                     ammo.Add(ammunition);
                 }
@@ -656,22 +665,23 @@ namespace MyCharacterSheet.Persistence
                 var Spells = root.Elements("Spell");
                 foreach (XElement elem in Spells)
                 {
-                    Spell spell = new Spell(false);
-
-                    spell.Name = (string)elem.Attribute("name");
-                    spell.Level = (string)elem.Attribute("level");
-                    spell.Page = (string)elem.Attribute("page");
-                    spell.School = (string)elem.Attribute("school");
-                    spell.Ritual = (string)elem.Attribute("ritual");
-                    spell.Components = ((string)elem.Attribute("comp")).Equals("") ? "N/A" : (string)elem.Attribute("comp");
-                    spell.Concentration = (string)elem.Attribute("concen");
-                    spell.Range = ((string)elem.Attribute("range")).Equals("") ? "N/A" : (string)elem.Attribute("range");
-                    spell.Duration = (string)elem.Attribute("duration");
-                    spell.Area = ((string)elem.Attribute("area")).Equals("") ? "N/A" : (string)elem.Attribute("area");
-                    spell.Save = ((string)elem.Attribute("save")).Equals("") ? "N/A" : (string)elem.Attribute("save");
-                    spell.Damage = ((string)elem.Attribute("damage")).Equals("") ? "N/A" : (string)elem.Attribute("damage");
-                    spell.Description = (string)elem.Attribute("description");
-                    spell.Prepared = (string)elem.Attribute("prepared");
+                    Spell spell = new Spell()
+                    {
+                        Name = (string)elem.Attribute("name"),
+                        Level = (string)elem.Attribute("level"),
+                        Page = (string)elem.Attribute("page"),
+                        School = (string)elem.Attribute("school"),
+                        Ritual = (string)elem.Attribute("ritual"),
+                        Components = ((string)elem.Attribute("comp")).Equals("") ? "N/A" : (string)elem.Attribute("comp"),
+                        Concentration = (string)elem.Attribute("concen"),
+                        Range = ((string)elem.Attribute("range")).Equals("") ? "N/A" : (string)elem.Attribute("range"),
+                        Duration = (string)elem.Attribute("duration"),
+                        Area = ((string)elem.Attribute("area")).Equals("") ? "N/A" : (string)elem.Attribute("area"),
+                        Save = ((string)elem.Attribute("save")).Equals("") ? "N/A" : (string)elem.Attribute("save"),
+                        Damage = ((string)elem.Attribute("damage")).Equals("") ? "N/A" : (string)elem.Attribute("damage"),
+                        Description = (string)elem.Attribute("description"),
+                        Prepared = (string)elem.Attribute("prepared")
+                    };
 
                     spells.Add(spell);
                 }

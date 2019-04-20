@@ -12,24 +12,7 @@ namespace MyCharacterSheet.Lists
 
         #region Constructor
 
-        public Weapon(string weapon)
-        {
-            string[] tokens;
-
-            tokens = weapon.Split(DELIMITER);
-
-            Name = tokens[0];
-            Ability = tokens[1];
-            Damage = tokens[2];
-            Misc = tokens[3];
-            Type = tokens[4];
-            Range = tokens[5];
-            Notes = tokens[6];
-            Weight = tokens[7];
-            ID = new Guid(tokens[8]);
-        }
-
-        public Weapon(bool unique)
+        public Weapon()
         {
             Name = "";
             Ability = "";
@@ -39,11 +22,7 @@ namespace MyCharacterSheet.Lists
             Range = "";
             Notes = "";
             Weight = "";
-
-            if (unique)
-                ID = Guid.NewGuid();
-            else
-                ID = Guid.Empty;
+            ID = Guid.Empty;
         }
 
         #endregion

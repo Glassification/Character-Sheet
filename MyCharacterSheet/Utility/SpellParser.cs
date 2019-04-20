@@ -32,7 +32,7 @@ namespace MyCharacterSheet.Utility
 
             foreach (string line in lines)
             {
-                spell = new Spell(false);
+                spell = new Spell();
                 tokens = line.Split(',');
                 ReplaceComma(tokens);
 

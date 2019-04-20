@@ -12,19 +12,15 @@ namespace MyCharacterSheet.Lists
 
         #region Constructor
 
-        public Ability(string ability)
+        public Ability()
         {
-            string[] tokens;
-
-            tokens = ability.Split(DELIMITER);
-
-            Name = tokens[0];
-            Level = tokens[1];
-            Uses = tokens[2];
-            Recovery = tokens[3];
-            Action = tokens[4];
-            Note = tokens[5];
-            ID = new Guid(tokens[6]);
+            Name = "";
+            Level = "";
+            Uses = "";
+            Recovery = "";
+            Action = "";
+            Note = "";
+            ID = Guid.Empty;
         }
 
         #endregion

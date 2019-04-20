@@ -179,19 +179,20 @@ namespace MyCharacterSheet
         /// =========================================
         private void AddWeapon()
         {
-            string weapon;
+            Weapon weapon = new Weapon()
+            {
+                Name = oWeaponNameComboBox.Text,
+                Ability = oWeaponsAbilityComboBox.Text,
+                Damage = oWeaponsDamageTextBox.Text,
+                Misc = oWeaponsMiscTextBox.Text,
+                Type = oWeaponsDamageTypeComboBox.Text,
+                Range = oWeaponsRangeTextBox.Text,
+                Notes = oWeaponsNotesTextBox.Text,
+                Weight = oWeaponWgtNumericUpDown.Value.ToString(),
+                ID = Guid.NewGuid()
+            };
 
-            weapon = oWeaponNameComboBox.Text + Constants.DELIMITER +
-                     oWeaponsAbilityComboBox.Text + Constants.DELIMITER +
-                     oWeaponsDamageTextBox.Text + Constants.DELIMITER +
-                     oWeaponsMiscTextBox.Text + Constants.DELIMITER +
-                     oWeaponsDamageTypeComboBox.Text + Constants.DELIMITER +
-                     oWeaponsRangeTextBox.Text + Constants.DELIMITER +
-                     oWeaponsNotesTextBox.Text + Constants.DELIMITER +
-                     oWeaponWgtNumericUpDown.Value + Constants.DELIMITER +
-                     Guid.NewGuid().ToString();
-
-            Program.Character.oWeapons.Add(new Weapon(weapon));
+            Program.Character.oWeapons.Add(weapon);
         }
 
         /// =========================================
@@ -267,16 +268,17 @@ namespace MyCharacterSheet
         /// =========================================
         private void AddAmmunition()
         {
-            string ammo;
+            Ammunition ammunition = new Ammunition()
+            {
+                Name = oAmmoNameComboBox.Text,
+                Quantity = oAmmoQtyNumericUpDown.Value.ToString(),
+                Bonus = oAmmoBonusTextBox.Text,
+                Type = oAmmoTypeComboBox.Text,
+                Used = oAmmoUsedNumericUpDown.Value.ToString(),
+                ID = Guid.NewGuid()
+            };
 
-            ammo = oAmmoNameComboBox.Text + Constants.DELIMITER +
-                   oAmmoQtyNumericUpDown.Value + Constants.DELIMITER +
-                   oAmmoBonusTextBox.Text + Constants.DELIMITER +
-                   oAmmoTypeComboBox.Text + Constants.DELIMITER +
-                   oAmmoUsedNumericUpDown.Value + Constants.DELIMITER +
-                   Guid.NewGuid().ToString();
-
-            Program.Character.oAmmo.Add(new Ammunition(ammo));
+            Program.Character.oAmmo.Add(ammunition);
         }
 
         /// =========================================
@@ -340,15 +342,16 @@ namespace MyCharacterSheet
         /// =========================================
         private void AddInventory()
         {
-            string inventory;
+            Inventory inventory = new Inventory()
+            {
+                Name = oInventoryNameComboBox.Text,
+                Amount = oInventoryQtyNumericUpDown.Value.ToString(),
+                Weight = oInventoryWgtNumericUpDown.Value.ToString(),
+                Note = oInventoryNoteTextBox.Text,
+                ID = Guid.NewGuid()
+            };
 
-            inventory = oInventoryNameComboBox.Text + Constants.DELIMITER +
-                        oInventoryQtyNumericUpDown.Value + Constants.DELIMITER +
-                        oInventoryWgtNumericUpDown.Value + Constants.DELIMITER +
-                        oInventoryNoteTextBox.Text + Constants.DELIMITER +
-                        Guid.NewGuid().ToString();
-
-            Program.Character.oInventory.Add(new Inventory(inventory));
+            Program.Character.oInventory.Add(inventory);
         }
 
         /// =========================================
@@ -400,17 +403,18 @@ namespace MyCharacterSheet
         /// =========================================
         private void AddAbility()
         {
-            string ability;
+            Ability ability = new Ability()
+            {
+                Name = oAbilityNameTextBox.Text,
+                Level = oAbilityLevelTextBox.Text,
+                Uses = oAbilityUsesTextBox.Text,
+                Recovery = oAbilityRecoveryTextBox.Text,
+                Action = oAbilityActionTextBox.Text,
+                Note = oAbilityNotesTextBox.Text,
+                ID = Guid.NewGuid()
+            };
 
-            ability = oAbilityNameTextBox.Text + Constants.DELIMITER +
-                        oAbilityLevelTextBox.Text + Constants.DELIMITER +
-                        oAbilityUsesTextBox.Text + Constants.DELIMITER +
-                        oAbilityRecoveryTextBox.Text + Constants.DELIMITER +
-                        oAbilityActionTextBox.Text + Constants.DELIMITER +
-                        oAbilityNotesTextBox.Text + Constants.DELIMITER +
-                        Guid.NewGuid().ToString();
-
-            Program.Character.oAbility.Add(new Ability(ability));
+            Program.Character.oAbility.Add(ability);
         }
 
         /// =========================================
@@ -476,16 +480,17 @@ namespace MyCharacterSheet
         /// =========================================
         private void AddMagic()
         {
-            string magic;
+            Magic magic = new Magic()
+            {
+                Class = oMagicClassTextBox.Text,
+                Ability = oMagicAbilityComboBox.Text,
+                Cantrips = oMagicCantripsNumericUpDown.Value.ToString(),
+                Spells = oMagicSpellsNumericUpDown.Value.ToString(),
+                Prepared = oMagicPreparedNumericUpDown.Value.ToString(),
+                ID = Guid.NewGuid()
+            };
 
-            magic = oMagicClassTextBox.Text + Constants.DELIMITER +
-                    oMagicAbilityComboBox.Text + Constants.DELIMITER +
-                    oMagicCantripsNumericUpDown.Value + Constants.DELIMITER +
-                    oMagicSpellsNumericUpDown.Value + Constants.DELIMITER +
-                    oMagicPreparedNumericUpDown.Value + Constants.DELIMITER +
-                    Guid.NewGuid().ToString();
-
-            Program.Character.Spellcasting.oMagic.Add(new Magic(magic));
+            Program.Character.Spellcasting.oMagic.Add(magic);
         }
 
         /// =========================================
@@ -558,25 +563,26 @@ namespace MyCharacterSheet
         /// =========================================
         private void AddSpell()
         {
-            string spell;
+            Spell spell = new Spell()
+            {
+                Name = oSpellNameComboBox.Text,
+                Level = oSpellLevelTextBox.Text,
+                Page = oSpellPageTextBox.Text,
+                School = oSpellSchoolComboBox.Text,
+                Ritual = oSpellRitualComboBox.Text,
+                Components = oSpellCompTextBox.Text,
+                Concentration = oSpellConcenComboBox.Text,
+                Range = oSpellRangeTextBox.Text,
+                Duration = oSpellDurationTextBox.Text,
+                Area = oSpellAreaTextBox.Text,
+                Save = oSpellSaveTextBox.Text,
+                Damage = oSpellDamageTextBox.Text,
+                Description = oSpellDescriptionTextBox.Text,
+                Prepared = oSpellPreparedComboBox.Text,
+                ID = Guid.NewGuid()
+            };
 
-            spell = oSpellNameComboBox.Text + Constants.DELIMITER +
-                    oSpellLevelTextBox.Text + Constants.DELIMITER +
-                    oSpellPageTextBox.Text + Constants.DELIMITER +
-                    oSpellSchoolComboBox.Text + Constants.DELIMITER +
-                    oSpellRitualComboBox.Text + Constants.DELIMITER +
-                    oSpellCompTextBox.Text + Constants.DELIMITER +
-                    oSpellConcenComboBox.Text + Constants.DELIMITER +
-                    oSpellRangeTextBox.Text + Constants.DELIMITER +
-                    oSpellDurationTextBox.Text + Constants.DELIMITER +
-                    oSpellAreaTextBox.Text + Constants.DELIMITER +
-                    oSpellSaveTextBox.Text + Constants.DELIMITER +
-                    oSpellDamageTextBox.Text + Constants.DELIMITER +
-                    oSpellDescriptionTextBox.Text + Constants.DELIMITER +
-                    oSpellPreparedComboBox.Text + Constants.DELIMITER +
-                    Guid.NewGuid().ToString();
-
-            Program.Character.Spellcasting.oSpells.Add(new Spell(spell));
+            Program.Character.Spellcasting.oSpells.Add(spell);
         }
 
         /// =========================================
@@ -668,6 +674,14 @@ namespace MyCharacterSheet
         #endregion
 
         #region Events
+
+        /// =========================================
+        /// TablePage_FormClosing()
+        /// =========================================
+        private void TablePage_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ClearAll();
+        }
 
         /// =========================================
         /// btnClose_Click()
@@ -878,9 +892,5 @@ namespace MyCharacterSheet
 
         #endregion
 
-        private void TablePage_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            ClearAll();
-        }
     }
 }

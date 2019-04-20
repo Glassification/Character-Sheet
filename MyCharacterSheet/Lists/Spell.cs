@@ -12,30 +12,7 @@ namespace MyCharacterSheet.Lists
 
         #region Constructor
 
-        public Spell(string spell)
-        {
-            string[] tokens;
-
-            tokens = spell.Split(DELIMITER);
-
-            Name = tokens[0];
-            Level = tokens[1];
-            Page = tokens[2];
-            School = tokens[3];
-            Ritual = tokens[4];
-            Components = tokens[5];
-            Concentration = tokens[6];
-            Range = tokens[7];
-            Duration = tokens[8];
-            Area = tokens[9];
-            Save = tokens[10];
-            Damage = tokens[11];
-            Description = tokens[12];
-            Prepared = tokens[13];
-            ID = new Guid(tokens[14]);
-        }
-
-        public Spell(bool unique)
+        public Spell()
         {
             Name = "";
             Level = "";
@@ -51,11 +28,7 @@ namespace MyCharacterSheet.Lists
             Damage = "";
             Description = "";
             Prepared = "";
-
-            if (unique)
-                ID = Guid.NewGuid();
-            else
-                ID = Guid.Empty;
+            ID = Guid.Empty;
         }
 
         #endregion
