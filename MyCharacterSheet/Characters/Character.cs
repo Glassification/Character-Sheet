@@ -33,6 +33,13 @@ namespace MyCharacterSheet.Characters
         public List<Ability>      oAbility      = new List<Ability>();
         public List<Document>     oDocuments    = new List<Document>();
 
+        private int iStrength;
+        private int iDexterity;
+        private int iConstitution;
+        private int iIntelligence;
+        private int iWisdom;
+        private int iCharisma;
+
         private enum ClassIndex { First, Second, Third};
 
         #endregion
@@ -822,66 +829,108 @@ namespace MyCharacterSheet.Characters
         [ReadOnly(false)]
         [Category("Character Attributes")]
         [DisplayName("Strength")]
-        [Description("Measures: Natural athleticism, bodily power.")]
+        [Description("Measures: Natural athleticism, bodily power. Maximum of 30.")]
         public int Strength
         {
-            get;
-            set;
+            get
+            {
+                return iStrength;
+            }
+            set
+            {
+                if (value >= MIN_SCORE && value <= MAX_SCORE)
+                    iStrength = value;
+            }
         }
 
         [Browsable(true)]
         [ReadOnly(false)]
         [Category("Character Attributes")]
         [DisplayName("Dexterity")]
-        [Description("Measures: Physical agility, reflexes, balance, poise.")]
+        [Description("Measures: Physical agility, reflexes, balance, poise. Maximum of 30.")]
         public int Dexterity
         {
-            get;
-            set;
+            get
+            {
+                return iDexterity;
+            }
+            set
+            {
+                if (value >= MIN_SCORE && value <= MAX_SCORE)
+                    iDexterity = value;
+            }
         }
 
         [Browsable(true)]
         [ReadOnly(false)]
         [Category("Character Attributes")]
         [DisplayName("Constitution")]
-        [Description("Measures: Health, stamina, vital force.")]
+        [Description("Measures: Health, stamina, vital force. Maximum of 30.")]
         public int Constitution
         {
-            get;
-            set;
+            get
+            {
+                return iConstitution;
+            }
+            set
+            {
+                if (value >= MIN_SCORE && value <= MAX_SCORE)
+                    iConstitution = value;
+            }
         }
 
         [Browsable(true)]
         [ReadOnly(false)]
         [Category("Character Attributes")]
         [DisplayName("Intelligence")]
-        [Description("Measures: Mental acuity, information recall, analytical skill.")]
+        [Description("Measures: Mental acuity, information recall, analytical skill. Maximum of 30.")]
         public int Intelligence
         {
-            get;
-            set;
+            get
+            {
+                return iIntelligence;
+            }
+            set
+            {
+                if (value >= MIN_SCORE && value <= MAX_SCORE)
+                    iIntelligence = value;
+            }
         }
 
         [Browsable(true)]
         [ReadOnly(false)]
         [Category("Character Attributes")]
         [DisplayName("Wisdom")]
-        [Description("Measures: Awareness, intuition, insight.")]
+        [Description("Measures: Awareness, intuition, insight. Maximum of 30.")]
         public int Wisdom
         {
-            get;
-            set;
+            get
+            {
+                return iWisdom;
+            }
+            set
+            {
+                if (value >= MIN_SCORE && value <= MAX_SCORE)
+                    iWisdom = value;
+            }
         }
 
         [Browsable(true)]
         [ReadOnly(false)]
         [Category("Character Attributes")]
         [DisplayName("Charisma")]
-        [Description("Measures: Confidence, eloquence, leadership.")]
+        [Description("Measures: Confidence, eloquence, leadership. Maximum of 30.")]
         public int Charisma
         {
-            get;
-            set;
+            get
+            {
+                return iCharisma;
+            }
+            set
+            {
+                if (value >= MIN_SCORE && value <= MAX_SCORE)
+                    iCharisma = value;
+            }
         }
 
         [Browsable(true)]

@@ -63,6 +63,8 @@ namespace MyCharacterSheet.Utility
         public const int    OFFSET      = 2;
         public const int    COIN_GROUP  = 50;
         public const float  SIZE_MOD    = 1.25f;
+        public const int    MAX_SCORE   = 30;
+        public const int    MIN_SCORE   = 0;
 
         //Enumerations
         public enum Tables { Abilities, Ammunition, Inventory, Magics, Spells, Weapons };

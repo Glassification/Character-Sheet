@@ -41,7 +41,6 @@ namespace MyCharacterSheet
         {
             oTableTabControl.SelectedIndex = (int)Program.LastTable;
 
-            ClearAll();
             ShowDialog();
 
             Program.LastTable = (Tables)oTableTabControl.SelectedIndex;
@@ -57,7 +56,6 @@ namespace MyCharacterSheet
         {
             InitializeEditing(table);
 
-            ClearAll();
             ShowDialog();
 
             ResetEditing();
@@ -880,5 +878,9 @@ namespace MyCharacterSheet
 
         #endregion
 
+        private void TablePage_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ClearAll();
+        }
     }
 }

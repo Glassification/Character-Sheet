@@ -1093,6 +1093,7 @@
             this.Name = "TablePage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tables";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TablePage_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.oTableTabControl.ResumeLayout(false);
