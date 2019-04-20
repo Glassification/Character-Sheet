@@ -56,7 +56,6 @@ namespace MyCharacterSheet.Utility
         private static List<Spell>      oSpellList;
 
         //Values
-        public const char   DELIMITER   = '|';
         public const int    MAX_LEVEL   = 20;
         public const string NEW_FILE    = "<NEW_FILE>";
         public const int    BASE_DC     = 8;

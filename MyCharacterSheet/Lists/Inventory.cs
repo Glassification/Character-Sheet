@@ -12,30 +12,13 @@ namespace MyCharacterSheet.Lists
 
         #region Constructor
 
-        public Inventory(string inventory)
-        {
-            string[] tokens;
-
-            tokens = inventory.Split(DELIMITER);
-
-            Name = tokens[0];
-            Amount = tokens[1];
-            Weight = tokens[2];
-            Note = tokens[3];
-            ID = new Guid(tokens[4]);
-        }
-
-        public Inventory(bool unique)
+        public Inventory()
         {
             Name = "";
             Amount = "";
             Weight = "";
             Note = "";
-
-            if (unique)
-                ID = Guid.NewGuid();
-            else
-                ID = Guid.Empty;
+            ID = Guid.Empty;
         }
 
         #endregion

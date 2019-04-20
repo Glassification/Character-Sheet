@@ -12,18 +12,14 @@ namespace MyCharacterSheet.Lists
 
         #region Constructor
 
-        public Magic(string magic)
+        public Magic()
         {
-            string[] tokens;
-
-            tokens = magic.Split(DELIMITER);
-
-            Class = tokens[0];
-            Ability = tokens[1];
-            Cantrips = tokens[2];
-            Spells = tokens[3];
-            Prepared = tokens[4];
-            ID = new Guid(tokens[5]);
+            Class = "";
+            Ability = "";
+            Cantrips = "";
+            Spells = "";
+            Prepared = "";
+            ID = Guid.Empty;
         }
 
         #endregion

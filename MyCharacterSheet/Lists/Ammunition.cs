@@ -11,32 +11,14 @@ namespace MyCharacterSheet.Lists
     {
         #region Constructor
 
-        public Ammunition(string ammo)
-        {
-            string[] tokens;
-
-            tokens = ammo.Split(DELIMITER);
-
-            Name = tokens[0];
-            Quantity = tokens[1];
-            Bonus = tokens[2];
-            Type = tokens[3];
-            Used = tokens[4];
-            ID = new Guid(tokens[5]);
-        }
-
-        public Ammunition(bool unique)
+        public Ammunition()
         {
             Name = "";
             Quantity = "";
             Bonus = "";
             Type = "";
             Used = "";
-
-            if (unique)
-                ID = Guid.NewGuid();
-            else
-                ID = Guid.Empty;
+            ID = Guid.Empty;
         }
 
         #endregion
