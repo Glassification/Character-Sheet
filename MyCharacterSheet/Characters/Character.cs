@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using MyCharacterSheet.Lists;
+using MyCharacterSheet.Persistence;
 using MyCharacterSheet.SavingThrowsNamespace;
 using MyCharacterSheet.SkillsNamespace;
-using System.ComponentModel;
-using MyCharacterSheet.Persistence;
-using MyCharacterSheet.Utility;
-using static MyCharacterSheet.Utility.Constants;
-using MyCharacterSheet.Lists;
-using System;
 using MyCharacterSheet.TypeConverters;
+using MyCharacterSheet.Utility;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet.Characters
 {
@@ -26,12 +26,12 @@ namespace MyCharacterSheet.Characters
         #region Members
 
         public List<SavingThrows> oSavingThrows = new List<SavingThrows>();
-        public List<Skills>       oSkills       = new List<Skills>();
-        public List<Weapon>       oWeapons      = new List<Weapon>();
-        public List<Ammunition>   oAmmo         = new List<Ammunition>();
-        public List<Inventory>    oInventory    = new List<Inventory>();
-        public List<Ability>      oAbility      = new List<Ability>();
-        public List<Document>     oDocuments    = new List<Document>();
+        public List<Skills> oSkills = new List<Skills>();
+        public List<Weapon> oWeapons = new List<Weapon>();
+        public List<Ammunition> oAmmo = new List<Ammunition>();
+        public List<Inventory> oInventory = new List<Inventory>();
+        public List<Ability> oAbility = new List<Ability>();
+        public List<Document> oDocuments = new List<Document>();
 
         private int iStrength;
         private int iDexterity;
@@ -40,7 +40,7 @@ namespace MyCharacterSheet.Characters
         private int iWisdom;
         private int iCharisma;
 
-        private enum ClassIndex { First, Second, Third};
+        private enum ClassIndex { First, Second, Third };
 
         #endregion
 
@@ -153,7 +153,7 @@ namespace MyCharacterSheet.Characters
         public string GetDC(string ability)
         {
             string dc;
-            
+
             switch (ability)
             {
                 case "STR":
@@ -414,78 +414,78 @@ namespace MyCharacterSheet.Characters
         /// =========================================
         public void Copy(Character copy)
         {
-            copy.Age                    = Age;
-            copy.Alignment              = Alignment;
-            copy.Armor                  = Armor;
-            copy.Background             = Background;
-            copy.Bond                   = Bond;
-            copy.Charisma               = Charisma;
-            copy.ClassResource          = ClassResource;
-            copy.Constitution           = Constitution;
-            copy.CP                     = CP;
-            copy.Dexterity              = Dexterity;
-            copy.EP                     = EP;
-            copy.EXP                    = EXP;
-            copy.EyeColour              = EyeColour;
-            copy.Flaw                   = Flaw;
-            copy.Gender                 = Gender;
-            copy.GP                     = GP;
-            copy.HairColour             = HairColour;
-            copy.Height                 = Height;
-            copy.Ideal                  = Ideal;
-            copy.InitiativeBonus        = InitiativeBonus;
-            copy.Intelligence           = Intelligence;
-            copy.Language               = Language;
-            copy.Marks                  = Marks;
-            copy.Movement               = Movement;
-            copy.Name                   = Name;
+            copy.Age = Age;
+            copy.Alignment = Alignment;
+            copy.Armor = Armor;
+            copy.Background = Background;
+            copy.Bond = Bond;
+            copy.Charisma = Charisma;
+            copy.ClassResource = ClassResource;
+            copy.Constitution = Constitution;
+            copy.CP = CP;
+            copy.Dexterity = Dexterity;
+            copy.EP = EP;
+            copy.EXP = EXP;
+            copy.EyeColour = EyeColour;
+            copy.Flaw = Flaw;
+            copy.Gender = Gender;
+            copy.GP = GP;
+            copy.HairColour = HairColour;
+            copy.Height = Height;
+            copy.Ideal = Ideal;
+            copy.InitiativeBonus = InitiativeBonus;
+            copy.Intelligence = Intelligence;
+            copy.Language = Language;
+            copy.Marks = Marks;
+            copy.Movement = Movement;
+            copy.Name = Name;
             copy.PassivePerceptionBonus = PassivePerceptionBonus;
-            copy.PersonalityBackground  = PersonalityBackground;
-            copy.PersonalityNotes       = PersonalityNotes;
-            copy.Pool                   = Pool;
-            copy.PP                     = PP;
-            copy.Race                   = Race;
-            copy.Shields                = Shields;
-            copy.SkinColour             = SkinColour;
-            copy.SP                     = SP;
-            copy.Spent                  = Spent;
-            copy.Strength               = Strength;
-            copy.Tools                  = Tools;
-            copy.Trait1                 = Trait1;
-            copy.Trait2                 = Trait2;
-            copy.Vision                 = Vision;
-            copy.Weapons                = Weapons;
-            copy.Weight                 = Weight;
-            copy.Wisdom                 = Wisdom;
+            copy.PersonalityBackground = PersonalityBackground;
+            copy.PersonalityNotes = PersonalityNotes;
+            copy.Pool = Pool;
+            copy.PP = PP;
+            copy.Race = Race;
+            copy.Shields = Shields;
+            copy.SkinColour = SkinColour;
+            copy.SP = SP;
+            copy.Spent = Spent;
+            copy.Strength = Strength;
+            copy.Tools = Tools;
+            copy.Trait1 = Trait1;
+            copy.Trait2 = Trait2;
+            copy.Vision = Vision;
+            copy.Weapons = Weapons;
+            copy.Weight = Weight;
+            copy.Wisdom = Wisdom;
 
             copy.PlayerClass1 = new PlayerClass(PlayerClass1.ClassName, PlayerClass1.ClassLevel, (int)ClassIndex.First);
             copy.PlayerClass2 = new PlayerClass(PlayerClass2.ClassName, PlayerClass2.ClassLevel, (int)ClassIndex.Second);
             copy.PlayerClass3 = new PlayerClass(PlayerClass3.ClassName, PlayerClass3.ClassLevel, (int)ClassIndex.Third);
 
-            copy.ArmorClass = new ArmorClass(ArmorClass.ArmorWorn, ArmorClass.ArmorType, ArmorClass.ArmorAC, ArmorClass.ArmorStealth, ArmorClass.ArmorWeight, ArmorClass.ShieldType, 
+            copy.ArmorClass = new ArmorClass(ArmorClass.ArmorWorn, ArmorClass.ArmorType, ArmorClass.ArmorAC, ArmorClass.ArmorStealth, ArmorClass.ArmorWeight, ArmorClass.ShieldType,
                                              ArmorClass.ShieldAC, ArmorClass.ShieldWeight, ArmorClass.MiscAC, ArmorClass.MagicAC, ArmorClass.ArmorStrength);
 
-            copy.HitPoints = new HitPoints(HitPoints.HP, HitPoints.MaxHP, HitPoints.TempHP, HitPoints.Conditions.Copy(), HitPoints.D6, HitPoints.D8, HitPoints.D10, 
+            copy.HitPoints = new HitPoints(HitPoints.HP, HitPoints.MaxHP, HitPoints.TempHP, HitPoints.Conditions.Copy(), HitPoints.D6, HitPoints.D8, HitPoints.D10,
                                            HitPoints.D12, HitPoints.SpentD6, HitPoints.SpentD8, HitPoints.SpentD10, HitPoints.SpentD12);
 
-            copy.Spellcasting = new Spellcasting(Spellcasting.Level, Spellcasting.PactTotal, Spellcasting.OneTotal, Spellcasting.TwoTotal, Spellcasting.ThreeTotal, 
-                                                 Spellcasting.FourTotal, Spellcasting.FiveTotal, Spellcasting.SixTotal, Spellcasting.SevenTotal, Spellcasting.EightTotal, 
-                                                 Spellcasting.NineTotal, Spellcasting.PactUsed, Spellcasting.OneUsed, Spellcasting.TwoUsed, Spellcasting.ThreeUsed, 
-                                                 Spellcasting.FourUsed, Spellcasting.FiveUsed, Spellcasting.SixUsed, Spellcasting.SevenUsed, Spellcasting.EightUsed, 
+            copy.Spellcasting = new Spellcasting(Spellcasting.Level, Spellcasting.PactTotal, Spellcasting.OneTotal, Spellcasting.TwoTotal, Spellcasting.ThreeTotal,
+                                                 Spellcasting.FourTotal, Spellcasting.FiveTotal, Spellcasting.SixTotal, Spellcasting.SevenTotal, Spellcasting.EightTotal,
+                                                 Spellcasting.NineTotal, Spellcasting.PactUsed, Spellcasting.OneUsed, Spellcasting.TwoUsed, Spellcasting.ThreeUsed,
+                                                 Spellcasting.FourUsed, Spellcasting.FiveUsed, Spellcasting.SixUsed, Spellcasting.SevenUsed, Spellcasting.EightUsed,
                                                  Spellcasting.NineUsed);
 
             copy.Companion = new Companion(Companion.Name, Companion.AC, Companion.HitDice, Companion.HP, Companion.CurrentHP, Companion.Speed, Companion.Strength,
                                            Companion.Dexterity, Companion.Constitution, Companion.Intelligence, Companion.Wisdom, Companion.Charisma, Companion.Perception,
-                                           Companion.Senses, Companion.Attack.Copy(), Companion.Type.Copy(), Companion.AtkBonus.Copy(), Companion.Damage.Copy(), 
+                                           Companion.Senses, Companion.Attack.Copy(), Companion.Type.Copy(), Companion.AtkBonus.Copy(), Companion.Damage.Copy(),
                                            Companion.DmgType.Copy(), Companion.Reach.Copy(), Companion.Notes.Copy());
 
-            copy.oWeapons   = new List<Weapon>(oWeapons);
-            copy.oAmmo      = new List<Ammunition>(oAmmo);
+            copy.oWeapons = new List<Weapon>(oWeapons);
+            copy.oAmmo = new List<Ammunition>(oAmmo);
             copy.oInventory = new List<Inventory>(oInventory);
-            copy.oAbility   = new List<Ability>(oAbility);
+            copy.oAbility = new List<Ability>(oAbility);
 
-            copy.Spellcasting.oMagic    = new List<Magic>(Spellcasting.oMagic);
-            copy.Spellcasting.oSpells   = new List<Spell>(Spellcasting.oSpells);
+            copy.Spellcasting.oMagic = new List<Magic>(Spellcasting.oMagic);
+            copy.Spellcasting.oSpells = new List<Spell>(Spellcasting.oSpells);
         }
 
         /// =========================================

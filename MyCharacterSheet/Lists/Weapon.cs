@@ -1,9 +1,8 @@
-﻿using static MyCharacterSheet.Utility.Constants;
-using System;
+﻿using System;
 
 namespace MyCharacterSheet.Lists
 {
-    #nullable enable
+#nullable enable
     /// <summary>
     /// Represents details about a weapon a player can wield.
     /// </summary>

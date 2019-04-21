@@ -2961,8 +2961,8 @@ namespace MyCharacterSheet
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
             MessageBox.Show("Concierge Current Version: " + version.Major + "." + version.Minor + "." + version.Build,
-                            "About Concierge", 
-                            MessageBoxButtons.OK, 
+                            "About Concierge",
+                            MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
 
             Sounds.ButtonClick();

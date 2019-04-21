@@ -7,7 +7,7 @@ using static MyCharacterSheet.Utility.Constants;
 
 namespace MyCharacterSheet
 {
-    #nullable enable
+#nullable enable
     public partial class TablePage : Form
     {
 
@@ -17,7 +17,7 @@ namespace MyCharacterSheet
         {
             InitializeComponent();
 
-            oTableTabControl.ItemSize = new Size((oTableTabControl.Width / oTableTabControl.TabCount)-1, 0);
+            oTableTabControl.ItemSize = new Size((oTableTabControl.Width / oTableTabControl.TabCount) - 1, 0);
             Editing = false;
             Data = new object();
 

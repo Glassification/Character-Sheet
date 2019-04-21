@@ -1,14 +1,12 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Media;
-using System.Speech.Synthesis;
 
 namespace MyCharacterSheet.Utility
 {
-    #nullable enable
+#nullable enable
     public static class Sounds
     {
-        
+
         #region Members
 
         private static SoundPlayer oClickSound;
@@ -23,7 +21,7 @@ namespace MyCharacterSheet.Utility
         static Sounds()
         {
             Stream stream;
-            
+
             stream = Properties.Resources.click;
             oClickSound = new SoundPlayer(stream);
 

@@ -4,11 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace MyCharacterSheet.Utility
 {
-    #nullable enable
+#nullable enable
     /// <summary>
     /// Provides constants and static methods for a D&D character sheet.
     /// </summary>
@@ -18,52 +17,52 @@ namespace MyCharacterSheet.Utility
         #region Constants
 
         //Arrays
-        private static int[]    oLevels             = { 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000,
+        private static int[] oLevels = { 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000,
                                                         120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000 , 0};
 
-        private static int[]    oProficiencies      = { 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6 };
+        private static int[] oProficiencies = { 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6 };
 
-        private static int[]    oAutosaveIntervals  = { 1, 5, 10, 15, 20, 30, 45, 60, 90, 120 };
+        private static int[] oAutosaveIntervals = { 1, 5, 10, 15, 20, 30, 45, 60, 90, 120 };
 
-        private static string[] oDamageTypes        = { "None", "Bludgeoning", "Piercing", "Slashing", "Acid", "Cold", "Fire", "Force",
+        private static string[] oDamageTypes = { "None", "Bludgeoning", "Piercing", "Slashing", "Acid", "Cold", "Fire", "Force",
                                                         "Lightning", "Necrotic", "Poison", "Psychic", "Radiant", "Thunder" };
 
-        private static string[] oSchools            = { "Abjuration", "Conjuration", "Divination", "Enchantment", "Evocation", "Illusion",
+        private static string[] oSchools = { "Abjuration", "Conjuration", "Divination", "Enchantment", "Evocation", "Illusion",
                                                         "Necromancy", "Transmutation", "Universal" };
 
-        private static string[] oRaces              = { "Aarakocra", "Aasimar", "Dragonborn", "Drow", "Dwarf", "Elf", "Firbolg", "Genasi",
+        private static string[] oRaces = { "Aarakocra", "Aasimar", "Dragonborn", "Drow", "Dwarf", "Elf", "Firbolg", "Genasi",
                                                         "Gnome", "Goblin", "Goliath", "Half-Elf", "Half-Giant", "Half-Orc", "Halfling",
                                                         "Human", "Tiefling" };
 
-        private static string[] oClasses            = { "Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger",
+        private static string[] oClasses = { "Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger",
                                                         "Rogue", "Sorcerer", "Warlock", "Wizard" };
 
-        private static string[] oAbilities          = { "NONE", "STR", "DEX", "CON", "INT", "WIS", "CHA" };
+        private static string[] oAbilities = { "NONE", "STR", "DEX", "CON", "INT", "WIS", "CHA" };
 
-        private static string[] oArmorTypes         = { "None", "Light", "Medium", "Heavy" };
+        private static string[] oArmorTypes = { "None", "Light", "Medium", "Heavy" };
 
-        private static string[] oStealth            = { "Normal", "Disadvantage" };
+        private static string[] oStealth = { "Normal", "Disadvantage" };
 
-        private static string[] oYesNo              = { "Yes", "No" };
+        private static string[] oYesNo = { "Yes", "No" };
 
-        private static string[] oConditionState     = { "Afflicted", "Cured" };
+        private static string[] oConditionState = { "Afflicted", "Cured" };
 
-        private static string[] oFatiguedState      = { "Cured", "Exhaustion 1", "Exhaustion 2", "Exhaustion 3", "Exhaustion 4", "Exhaustion 5", "Exhaustion 6" };
+        private static string[] oFatiguedState = { "Cured", "Exhaustion 1", "Exhaustion 2", "Exhaustion 3", "Exhaustion 4", "Exhaustion 5", "Exhaustion 6" };
 
-        private static List<Weapon>     oWeaponList;
-        private static List<Inventory>  oInventoryList;
+        private static List<Weapon> oWeaponList;
+        private static List<Inventory> oInventoryList;
         private static List<Ammunition> oAmmoList;
-        private static List<Spell>      oSpellList;
+        private static List<Spell> oSpellList;
 
         //Values
-        public const int    MAX_LEVEL   = 20;
-        public const string NEW_FILE    = "<NEW_FILE>";
-        public const int    BASE_DC     = 8;
-        public const int    OFFSET      = 2;
-        public const int    COIN_GROUP  = 50;
-        public const float  SIZE_MOD    = 1.25f;
-        public const int    MAX_SCORE   = 30;
-        public const int    MIN_SCORE   = 0;
+        public const int MAX_LEVEL = 20;
+        public const string NEW_FILE = "<NEW_FILE>";
+        public const int BASE_DC = 8;
+        public const int OFFSET = 2;
+        public const int COIN_GROUP = 50;
+        public const float SIZE_MOD = 1.25f;
+        public const int MAX_SCORE = 30;
+        public const int MIN_SCORE = 0;
 
         //Enumerations
         public enum Tables { Abilities, Ammunition, Inventory, Magics, Spells, Weapons };
@@ -75,10 +74,10 @@ namespace MyCharacterSheet.Utility
 
         static Constants()
         {
-            oWeaponList     = new List<Weapon>(Load.LoadWeaponLists());
-            oInventoryList  = new List<Inventory>(Load.LoadItemLists());
-            oAmmoList       = new List<Ammunition>(Load.LoadAmmoLists());
-            oSpellList      = new List<Spell>(Load.LoadSpellList());
+            oWeaponList = new List<Weapon>(Load.LoadWeaponLists());
+            oInventoryList = new List<Inventory>(Load.LoadItemLists());
+            oAmmoList = new List<Ammunition>(Load.LoadAmmoLists());
+            oSpellList = new List<Spell>(Load.LoadSpellList());
         }
 
         #endregion
