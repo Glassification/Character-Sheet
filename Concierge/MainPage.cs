@@ -148,6 +148,8 @@ namespace Concierge
 
                     AutosaveReset();
                     LoadSettings();
+
+                    Program.Modified = false;
                 }
             }
         }
