@@ -441,7 +441,7 @@ namespace MyCharacterSheet
 
                 if (result == DialogResult.OK)
                 {
-                    if (IsCCS(oOpenFileDialog.FileName))
+                    if (IsValidFormat(oOpenFileDialog.FileName))
                     {
                         Program.FileLocation = oOpenFileDialog.FileName;
                         Program.Character.LoadCharacterSheetFromFile();
@@ -611,18 +611,18 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// IsCCS()
+        /// IsValidFormat()
         /// =========================================
-        public bool IsCCS(string fileName)
+        public bool IsValidFormat(string fileName)
         {
-            bool isCCS;
+            bool isValid;
 
-            if (Path.GetExtension(fileName).Equals(".ccs"))
-                isCCS = true;
+            if (Path.GetExtension(fileName).Equals(".xml") || Path.GetExtension(fileName).Equals(".ccs"))
+                isValid = true;
             else
-                isCCS = false;
+                isValid = false;
 
-            return isCCS;
+            return isValid;
         }
 
         /// =========================================
