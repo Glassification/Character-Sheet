@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MyCharacterSheet;
-using MyCharacterSheet.Characters;
+using Concierge;
+using Concierge.Characters;
 using System;
 
-namespace MyCharacterSheetTests.Characters_Tests
+namespace ConciergeTests.Characters_Tests
 {
     [TestClass]
     public class CharacterTests

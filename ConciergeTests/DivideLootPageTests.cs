@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MyCharacterSheet;
-using MyCharacterSheet.Divide_Loot;
+using Concierge;
+using Concierge.Divide_Loot;
 using System;
 
-namespace MyCharacterSheetTests
+namespace ConciergeTests
 {
     [TestClass]
     public class DivideLootPageTests

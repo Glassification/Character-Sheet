@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MyCharacterSheet;
-using MyCharacterSheet.SavingThrowsNamespace;
+using Concierge;
+using Concierge.SavingThrowsNamespace;
 using System;
 
-namespace MyCharacterSheetTests.Saving_Throw_Tests
+namespace ConciergeTests.Saving_Throw_Tests
 {
     [TestClass]
     public class SavingThrowTests

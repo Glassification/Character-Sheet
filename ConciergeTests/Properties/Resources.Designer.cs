@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyCharacterSheetTests.Properties {
+namespace ConciergeTests.Properties {
     using System;
     
     
