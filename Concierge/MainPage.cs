@@ -131,6 +131,9 @@ namespace Concierge
 
         #region Methods
 
+        /// =========================================
+        /// LoadCharacterSheetFromCommandLine()
+        /// ========================================= 
         private void LoadCharacterSheetFromCommandLine()
         {
             string[] args = Environment.GetCommandLineArgs();
