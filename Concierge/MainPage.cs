@@ -131,6 +131,9 @@ namespace Concierge
 
         #region Methods
 
+        /// =========================================
+        /// LoadCharacterSheetFromCommandLine()
+        /// ========================================= 
         private void LoadCharacterSheetFromCommandLine()
         {
             string[] args = Environment.GetCommandLineArgs();
@@ -143,11 +146,14 @@ namespace Concierge
                     Program.FileLocation = args[FILE_INDEX];
                     Program.Character.LoadCharacterSheetFromFile();
                     LoadPageLists();
+                    oCampainPage.FillDocumentList();
 
                     InvalidateAll();
 
                     AutosaveReset();
                     LoadSettings();
+
+                    Program.Modified = false;
                 }
             }
         }
