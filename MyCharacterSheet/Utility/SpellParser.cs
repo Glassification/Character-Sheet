@@ -8,6 +8,9 @@ using System.Xml.Linq;
 
 namespace MyCharacterSheet.Utility
 {
+    /// <summary>
+    /// A helper class to convert a CVS file to a XML file
+    /// </summary>
     public static class SpellParser
     {
 
@@ -42,7 +45,7 @@ namespace MyCharacterSheet.Utility
                     spell.Level = tokens[1].Equals("0") ? "Cantrip" : tokens[1];
                     spell.School = tokens[2];
                     spell.Ritual = tokens[3].Equals("Ritual") ? "Yes" : "No";
-                    //tokens[4] = casting time
+                    //spell.CastingTime = tokens[4];
                     spell.Range = tokens[5];
                     spell.Area = tokens[6];
                     spell.Components = ParseComponents(tokens[7], tokens[8], tokens[9], tokens[10], tokens[11]);
@@ -50,7 +53,7 @@ namespace MyCharacterSheet.Utility
                     spell.Duration = tokens[13];
                     spell.Save = tokens[14];
                     spell.Damage = ParseDamageHeal(tokens[15], tokens[16]);
-                    //tokens[17] = Sourcebook
+                    //spell.SourceBook = tokens[17];
                     spell.Page = tokens[18];
                     spell.Description = tokens[19];
                     spell.Prepared = "No";

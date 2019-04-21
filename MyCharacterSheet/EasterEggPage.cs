@@ -41,18 +41,26 @@ namespace MyCharacterSheet
         #region Events
 
         /// =========================================
-        /// EasterEgg()
+        /// EasterEggPage_KeyDown()
         /// =========================================
         private void EasterEggPage_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            // Let user change the volume
+            if (e.KeyCode != Keys.VolumeUp && e.KeyCode != Keys.VolumeDown && e.KeyCode != Keys.VolumeMute)
             {
-                case Keys.Escape:
-                    Close();
-                    break;
+                Close();
             }
         }
 
+        /// =========================================
+        /// OPictureBox_Click()
+        /// =========================================
+        private void OPictureBox_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
         #endregion
+
     }
 }

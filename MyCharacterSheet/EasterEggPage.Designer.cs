@@ -42,6 +42,7 @@
             this.oPictureBox.Size = new System.Drawing.Size(480, 321);
             this.oPictureBox.TabIndex = 0;
             this.oPictureBox.TabStop = false;
+            this.oPictureBox.Click += new System.EventHandler(this.OPictureBox_Click);
             // 
             // EasterEggPage
             // 

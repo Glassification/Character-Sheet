@@ -35,8 +35,6 @@ namespace MyCharacterSheet.Utility
 
             stream = Properties.Resources.I_Say_Hey;
             oHeMan = new SoundPlayer(stream);
-
-            stream.Close();
         }
 
         #endregion

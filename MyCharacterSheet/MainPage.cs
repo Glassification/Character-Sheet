@@ -121,12 +121,36 @@ namespace MyCharacterSheet
             //Get absolute position of mouse
             AddNestedMouseHandler(this, NestedControl_Mousemove);
 
+            // Check if a file should be loaded
+            LoadCharacterSheetFromCommandLine();
+
             Program.Loading = false;
         }
 
         #endregion
 
         #region Methods
+
+        private void LoadCharacterSheetFromCommandLine()
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            const int FILE_INDEX = 1;
+
+            if (args.Length > FILE_INDEX)
+            {
+                if (IsValidFormat(args[FILE_INDEX]))
+                {
+                    Program.FileLocation = args[FILE_INDEX];
+                    Program.Character.LoadCharacterSheetFromFile();
+                    LoadPageLists();
+
+                    InvalidateAll();
+
+                    AutosaveReset();
+                    LoadSettings();
+                }
+            }
+        }
 
         /// =========================================
         /// NestedControl_Mousemove()
