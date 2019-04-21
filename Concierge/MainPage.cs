@@ -146,6 +146,7 @@ namespace Concierge
                     Program.FileLocation = args[FILE_INDEX];
                     Program.Character.LoadCharacterSheetFromFile();
                     LoadPageLists();
+                    oCampainPage.FillDocumentList();
 
                     InvalidateAll();
 
