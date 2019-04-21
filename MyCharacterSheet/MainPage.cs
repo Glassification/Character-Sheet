@@ -441,7 +441,7 @@ namespace MyCharacterSheet
 
                 if (result == DialogResult.OK)
                 {
-                    if (IsXML(oOpenFileDialog.FileName))
+                    if (IsCCS(oOpenFileDialog.FileName))
                     {
                         Program.FileLocation = oOpenFileDialog.FileName;
                         Program.Character.LoadCharacterSheetFromFile();
@@ -458,7 +458,7 @@ namespace MyCharacterSheet
                     }
                     else
                     {
-                        MessageBox.Show("Error: Non-XML file selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error: Non-CCS file selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -611,18 +611,18 @@ namespace MyCharacterSheet
         }
 
         /// =========================================
-        /// IsXML()
+        /// IsCCS()
         /// =========================================
-        public bool IsXML(string fileName)
+        public bool IsCCS(string fileName)
         {
-            bool isXML;
+            bool isCCS;
 
-            if (Path.GetExtension(fileName).Equals(".xml"))
-                isXML = true;
+            if (Path.GetExtension(fileName).Equals(".ccs"))
+                isCCS = true;
             else
-                isXML = false;
+                isCCS = false;
 
-            return isXML;
+            return isCCS;
         }
 
         /// =========================================
@@ -1207,7 +1207,7 @@ namespace MyCharacterSheet
 
             if (Program.Modified)
             {
-                result = MessageBox.Show("Save changes " + fileName + "before exiting?", "Character Sheet", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                result = MessageBox.Show("Save changes " + fileName + "before exiting?", "Concierge", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
                 switch (result)
                 {
@@ -1519,7 +1519,7 @@ namespace MyCharacterSheet
                     //Display death message
                     if (Program.Character.IsDead(damage))
                     {
-                        MessageBox.Show(Program.Character.Name + " has died.", "Character Sheet", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(Program.Character.Name + " has died.", "Concierge", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
                     //temp hit points
@@ -2936,8 +2936,8 @@ namespace MyCharacterSheet
         {
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
-            MessageBox.Show("Character Sheet Current Version: " + version.Major + "." + version.Minor + "." + version.Build, 
-                            "About Character Sheet", 
+            MessageBox.Show("Concierge Current Version: " + version.Major + "." + version.Minor + "." + version.Build,
+                            "About Concierge", 
                             MessageBoxButtons.OK, 
                             MessageBoxIcon.Information);
 

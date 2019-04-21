@@ -19,7 +19,7 @@ namespace MyCharacterSheet.Persistence
         /// =========================================
         public static void SaveCharacterSheetToFile(Character character)
         {
-            XDocument xml = SaveCharacterSheetXML(character);
+            XDocument xml = SaveCharacterSheet(character);
 
             xml.Save(Program.FileLocation);
         }
@@ -31,15 +31,15 @@ namespace MyCharacterSheet.Persistence
         {
             string xmlString = "";
 
-            xmlString = SaveCharacterSheetXML(character).ToString();
+            xmlString = SaveCharacterSheet(character).ToString();
 
             return xmlString;
         }
 
         /// =========================================
-        /// SaveCharacterSheetXML()
+        /// SaveCharacterSheet()
         /// =========================================
-        private static XDocument SaveCharacterSheetXML(Character character)
+        private static XDocument SaveCharacterSheet(Character character)
         {
             XDocument xml = new XDocument(
                 new XElement("Character",

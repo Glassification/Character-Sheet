@@ -7,7 +7,7 @@
     <ProjectGuid>{5C2AB76C-5CF4-481B-84B1-24A19FC2C0F5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>MyCharacterSheet</RootNamespace>
-    <AssemblyName>MyCharacterSheet</AssemblyName>
+    <AssemblyName>Concierge</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

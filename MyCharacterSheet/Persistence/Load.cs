@@ -25,7 +25,7 @@ namespace MyCharacterSheet.Persistence
         public static void LoadCharacterSheetFromFile(Character character)
         {
             XDocument xml = XDocument.Load(Program.FileLocation);
-            LoadCharacterSheetXML(character, xml);
+            LoadCharacterSheet(character, xml);
         }
 
         /// =========================================
@@ -34,13 +34,13 @@ namespace MyCharacterSheet.Persistence
         public static void LoadCharacterSheetFromString(Character character, string xmlString)
         {
             XDocument xml = XDocument.Parse(xmlString);
-            LoadCharacterSheetXML(character, xml);
+            LoadCharacterSheet(character, xml);
         }
 
         /// =========================================
-        /// LoadCharacterSheetXML()
+        /// LoadCharacterSheet()
         /// =========================================
-        private static void LoadCharacterSheetXML(Character character, XDocument xml)
+        private static void LoadCharacterSheet(Character character, XDocument xml)
         {
             try
             {

@@ -5982,7 +5982,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Character Sheet";
+            this.Text = "Concierge";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainPage_FormClosing);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainPage_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainPage_KeyDown);
